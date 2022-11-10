@@ -1,5 +1,5 @@
 /*
-	c++ -o plottiamo plottiamo.cpp `root-config --glibs --cflags`
+	c++ -o plottiamo_dx plottiamo_destra.cpp `root-config --glibs --cflags`
 */
 
 #include <iostream>
@@ -17,6 +17,8 @@
 #include "TFitResultPtr.h"
 #include "TFitResult.h"
 #include "TApplication.h"
+#include "TAxis.h"
+#include "TAttFill.h"
 #include "TMultiGraph.h"
 #include "TStyle.h"
 
@@ -53,11 +55,11 @@ int main(int argc, char **argv) {
 
 
   TGraphErrors g1;
-  for (int i = 0; i < v_media.size(); i++) {
+  for (int i = 0; i < v_media.size()-5; i++) {
     g1.SetPoint(i, v_soglie1.at(i), v_media.at(i)/v_tempo.at(i));
   }
 
-  for (int i = 0; i < v_sigma.size(); i++) {
+  for (int i = 0; i < v_sigma.size()-5; i++) {
     g1.SetPointError(i, 0., sqrt(v_media.at(i))/v_tempo.at(i)); //distribuzione poissoniana -> sigma=rad(n)
   }
 
@@ -70,53 +72,49 @@ int main(int argc, char **argv) {
   //g1.GetHistogram()->GetYaxis()->SetRangeUser(-5., 600.);
   g1.GetHistogram()-> GetYaxis()->SetTitle("Conteggi/Minuto");
 
-  g1.RemovePoint(1);
-  g1.RemovePoint(7);
+
+  double rangeX_min, rangeX_max;
+
+  rangeX_min = .410;
+  rangeX_max = .509;
 
 
-
-
-
-  //double rangeX_min, rangeX_max;
-
-  //trova_plateu(rangeX_min, rangeX_max, v_soglie1, v_media, v_sigma);
-
-  //rangeX_min = 1.1;
-  //rangeX_max = 1.25;
-
-/*
   TGraph g_fill1, g_fill2;
-  for (int i = 0; i < 100; i++) {
-    g_fill1.SetPoint(i, rangeX_min, i*1000);
-    g_fill2.SetPoint(i, rangeX_min, i*1000);
+  for (int i = 0; i < 505; i++) {
+    g_fill1.SetPoint(i, rangeX_min, i);
+    g_fill2.SetPoint(i, rangeX_max, i);
   }
 
   g_fill1.SetLineColor(4);
   g_fill1.SetLineWidth(8000);
   g_fill1.SetFillStyle(3004);
   g_fill1.SetFillColor(6);
+  g_fill1.SetMarkerColor(0);
 
   g_fill2.SetLineColor(4);
-  g_fill2.SetLineWidth(-8000);
+  g_fill2.SetLineWidth(-10800);
   g_fill2.SetFillStyle(3004);
   g_fill2.SetFillColor(6);
+  g_fill2.SetMarkerColor(0);
 
   TMultiGraph multi;
-  multi.Add(&g1);
   multi.Add(&g_fill1);
   multi.Add(&g_fill2);
-  //multi.GetYaxis()->SetRange(0,100000);
-*/
+  multi.Add(&g1);
+
   TCanvas c1;
   c1.SetGridx ();
   c1.SetGridy ();
+  c1.SetLeftMargin(.15);
   c1.SetWindowSize (1050, 900);
-  c1.SetLeftMargin (0.15);
 
-  g1.SetTitle("Conteggi degli eventi al variare della tensione di soglia; V_{soglia} [V]; #frac{Conteggi}{Minuto} #left[#frac{1}{Minuto}#right]");
-  g1.Draw("ACP");
+  multi.SetTitle("Conteggi degli eventi al variare della tensione di soglia; V_{soglia} [V]; #frac{Conteggi}{Minuto} #left[#frac{1}{Minuto}#right]");
+  multi.GetHistogram()->GetYaxis()->SetRangeUser(0., 505.);
+  multi.GetHistogram()->GetXaxis()->SetRangeUser(0., 1.12);
+  multi.Draw("ACP");
 
-  //c1.Print("plottissimo.pdf", "pdf");
+
+  //c1.Print("plot_destra.pdf", "pdf");
   theApp.Run();
 
 
