@@ -1,0 +1,1 @@
+ gcc tdc.c -g -I. -I/usr/local/pcicc32-6.9/lib/ -I/usr/include -Wall -o tdc /usr/local/pcicc32-6.9/lib/libcc32.so.3.0.0

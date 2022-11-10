@@ -1,0 +1,177 @@
+// g++ -o Analisi_efficienza `root-config --cflags` libreria.cc Analisi_efficienza.cpp `root-config --gilibs`
+
+
+#include "libreria.h"
+
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+#include <vector>
+#include <string>
+
+#include "TCanvas.h"
+#include "TGraph.h"
+#include "TAxis.h"
+
+#define Nfile 3
+
+using namespace std;
+
+int main (int argc, char ** argv)
+ {
+   ifstream temp_file;
+   double temp_dati;
+   vector<vector<double>> dati_in;
+
+   for (int i = 0; i < Nfile; i++){
+      dati_in.push_back (NULL);
+
+      temp_file.open (argv[i], ios::in);
+ 
+      if (file.is_open() == false){
+        cout << "Impossibile aprire file" << i << endl;
+        return 1;
+       }
+
+      while (true){
+        temp_file >> temp_dati;
+
+        if (temp_file.eof() == true)  break;
+        dati_in[i].push_back (temp_dati);
+       }
+
+      temp_file.close();
+     }
+
+   file1.open (argv[1], ios::in);
+   file2.open (argv[2], ios::in);
+
+   if (file1.is_open() == false)
+     {
+       cout << "Impossibile aprire file1" << endl;
+       return 1;
+     }
+
+   if (file2.is_open() == false)
+     {
+       cout << "Impossibile aprire file2" << endl;
+       return 1;
+     }
+
+   while (true)
+     {
+       temp_file >> temp_V;
+       temp_file >> temp_n_T1;
+       temp_file >> temp_n_S1;
+       temp_file >> temp_n_S2;
+       temp_file >> temp_n_T2;
+       temp_file >> temp_n_double;
+       temp_file >> temp_n_triple1;
+       temp_file >> temp_n_S2;
+
+       if (temp_file.eof() == true)  break;
+
+       V.push_back (temp_V_down);
+       n_T1.push_back (temp_n_T1);
+       n_S1.push_back (temp_n_S1);
+       n_S2.push_back (temp_n_S2);
+       n_T2.push_back (temp_n_T2);
+       n_double.push_back (temp_n_double);
+       n_triple1.push_back (temp_n_triple1);
+       n_triple2.push_back (temp_n_triple2);
+     }
+
+   temp_file.close();
+   vector <double> V, n_T1, n_S1, n_S2, n_T2, N_double, n_triple1, n_triple2;
+   lettura ("Dati_coincidenze.txt", V, n_T1, n_S1, n_S2, n_T2, N_double, n_triple1, n_triple2);
+
+   vector <double> eff1, eff2;
+
+   for (int i = 0; i < V.size(); ++i)
+     {
+       eff1.push_back (n_triple1 / n_double);
+       eff2.push_back (n_triple2 / n_double);
+     }
+      
+
+   TCanvas c_1, c_2, c_3, c_4;
+
+   c_1.SetTickx ();
+   c_1.SetTicky ();
+   c_1.SetGridx ();
+   c_1.SetGridy ();
+   c_1.SetWindowSize (1050, 900);
+   c_1.SetLeftMargin (0.15);
+
+   c_2.SetTickx ();
+   c_2.SetTicky ();
+   c_2.SetGridx ();
+   c_2.SetGridy ();
+   c_2.SetWindowSize (1050, 900);
+   c_2.SetLeftMargin (0.15);
+
+   c_3.SetTickx ();
+   c_3.SetTicky ();
+   c_3.SetGridx ();
+   c_3.SetGridy ();
+   c_3.SetWindowSize (1050, 900);
+   c_3.SetLeftMargin (0.15);
+
+   c_4.SetTickx ();
+   c_4.SetTicky ();
+   c_4.SetGridx ();
+   c_4.SetGridy ();
+   c_4.SetWindowSize (1050, 900);
+   c_4.SetLeftMargin (0.15);
+
+   TGraph g_eff1, g_eff2, g_counts1, g_counts2;
+
+   for (int i = 0; i < V_down.size(); ++i)
+     {
+       g_eff1.SetPoint (g_eff1.GetN(), V[i], eff1[i]); 
+       g_eff2.SetPoint (g_eff2.GetN(), V[i], eff2[i]);
+       g_counts1.SetPoint (g_counts1.GetN(), V[i], n_S1[i]);
+       g_counts2.SetPoint (g_counts2.GetN(), V[i], n_S2[i]);
+     }   
+
+   g_eff1.SetMarkerStyle (8);
+   g_eff1.SetMarkerColor (kGreen + 2);
+   g_eff1.GetXaxis()->SetTitleOffset (1.2);
+   g_eff1.SetTitle ("Efficienza rivelatore superiore (tempo misurazione = 5 min);V [V];#epsilon_{S1}");
+
+   g_eff2.SetMarkerStyle (8);
+   g_eff2.SetMarkerColor (kRed);
+   g_eff2.GetXaxis()->SetTitleOffset (1.2);
+   g_eff2.SetTitle ("Efficienza rivelatore inferiore (tempo misurazione = 5 min);V [V];#epsilon_{S2}");
+
+   g_counts1.SetMarkerStyle (8);
+   g_counts1.SetMarkerColor (kGreen + 2);
+   g_counts1.GetXaxis()->SetTitleOffset (1.2);
+   g_counts1.SetTitle ("Conteggi rivelatore superiore (tempo misurazione = 5 min);V [V];n#circ conteggi");
+
+   g_counts2.SetMarkerStyle (8);
+   g_counts2.SetMarkerColor (kRed);
+   g_counts2.GetXaxis()->SetTitleOffset (1.2);
+   g_counts2.SetTitle ("Conteggi rivelatore inferiore (tempo misurazione = 5 min);V [V];n#circ conteggi");
+
+
+   c_1.cd ();
+   g_eff1.Draw ("AP");
+
+   c_2.cd ();
+   g_eff2.Draw ("AP");
+
+   c_3.cd ();
+   g_counts1.Draw ("AP");
+
+   c_4.cd ();
+   g_counts2.Draw ("AP");
+
+   c_1.Print ("Grafici eff - V per S1.png", "png");
+   c_2.Print ("Grafici eff - V per S2.png", "png");
+   c_3.Print ("Grafici counts - V per S1.png", "png");
+   c_4.Print ("Grafici counts - V per S2.png", "png");
+
+
+   return 0;
+ }

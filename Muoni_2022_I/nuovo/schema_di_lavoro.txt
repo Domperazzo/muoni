@@ -1,0 +1,90 @@
+DATI FINORA RACCOLTI:
+
+Misure dei rivelatori:
+
+* Piccoli	26cm x 8cm
+* Grandi	80cm x 30cm
+
+ 1. Studio SOGLIA dei rivelatori PICCOLI
+   
+Dati raccolti il 13 gennaio. Il 20 gennaio abbiamo ripreso la misura per altre soglie, ma i dati ottenuti non erano in accordo con quelli raccolti in precedenza --> esclusi dati del 20 gennaio
+
+Nel grafico abbiamo sull'asse delle ascisse il valore della tensione di soglia e su quello delle ordinate il numero di conteggi
+
+Soglia ottimale:
+ * T1 (superiore) 975 mV
+ * T2 (inferiore) 1030 mV
+
+ 2. Studio TENSIONE DI ALIMENTAZIONE (e contemporaneamente SOGLIA) dei rivelatori GRANDI
+
+Impostiamo una soglia minima per il segnale proveniente dai rivelatori grandi, mentre per i rivelatori piccoli impostiamo la soglia ottimale.
+
+I dati raccolti (20 gennaio) sono contenuti in tre diversi file poiché abbiamo studiato l'andamento dei conteggi in funzione della tensione di alimentazione per 3 diverse soglie. Infatti:
+
+ * Primo campionamento (soglia S1 = soglia S2 = 800 mV)
+   Problemi con i dati di S2: l'efficienza si ferma a 0.5 
+   Soglia impostata è troppo alta --> abbassiamo la soglia di S2
+
+ * Secondo campionamento (soglia S1 = 800 mV, soglia S2 = 400 mV)
+   Problemi con l'andamento dei campionamenti di S2: non è esponenziale
+   Siccome la soglia è bassa, non viene fermato il rumore e il lettore dei conteggi viene saturato, per cui a un certo punto ricomincia il conteggio da capo  --> alziamo la soglia di S2
+
+ * Terzo campionamento (soglia S1 = 800 mV, soglia S2 = 600 mV)
+   DA FINIRE (o meglio, iniziare)
+
+Alla fine abbiamo scelto una soglia di 760 mV per S1 e una soglia di 460 mV per S2. Le tensioni di alimentazione trovate sono:
+ * S1 (superiore) 1300 V
+ * S2 (inferiore) 1150 V
+
+In questi campionamenti abbiamo avuto dei problemi con S2: per la soglia compresa tra 400 mV e 800 mV si trovano troppi segnali. E l'efficienza è molto ridotta. Quindi visualizziamo diverse cose sull'oscilloscopio:
+
+ 1) Segnale S2 (in uscita dal discriminatore e direttament edal rivelatore)
+    Alziamo la soglia finché non eliminiamo la maggior parte del rumore --> troviamo una soglia buona di circa 3V
+ 2) Segnali S1 e S2 in uscita dai rivelatori e dai discriminatori
+
+A questo punto, studiamo l'efficienza e quindi controlliamo i delay e l'ampiezza del segnale logico in uscita dal QUAD. Poiché stiamo studiando i segnali con una tensione di alimentazione alta (1300 V), ci aspettiamo di ottenere un'efficienza ~ 1. Quindi, sull'oscilloscopio visualizziamo contemporaneamente le coincidenze doppie e quelle triple di un rivelatore grande. Variamo la tensione di soglia del rivelatore grande (la abbassiamo) finché, triggerando il segnale delle doppie, vedremo che compare sempre anche il segnale delle triple
+
+N.B. Per verificare che i delay siano corretti, visualizziamo il segnale in uscita dalle doppie e quello in uscita dal discriminatore del rivelatore grande contemporaneamente sull'oscilloscopio
+
+Soglie ottimali:
+ * S1 --> 760 mV
+ * S2 --> 460 mV
+
+ 3. Studio COINCIDENZE ACCIDENTALI
+
+Dati raccolti tra il 3 marzo e il 10 marzo con una width (alla base) di 10 ns (la larghezza del segnale a metà altezza è di 5 ns). Inizialmente abbiamo osservato un andamento poco piacevole dei dati raccolti per bassi delay, dovuto al fatto che non avevamo usato le T e il segnale veniva smorzato troppo. Usando le T, abbiamo ottenuto segnali molto più intensi, in accordo con queli raccolti per delay più alti. 
+Resta da capire perché l'andamento per delay < 50 ns non sia costante ma sia "a campana"...
+Abbiamo finalmente capito che i campionamenti variano di giorno in giorno a causa delle diverse condizioni atmosferiche.
+
+ 4. CALIBRAZIONE del TDC
+
+Possiamo scegliere range di 100, 200 o 500 ns. Giriamo la vite verso i 500 ns.
+
+ 5. Misura del TEMPO di VOLO
+Abbiamo dapprima utilizzato il modello 2249A dell'ADC, che però presentava dei problemi: i dati restituiti erano tutti compresi tra 2030 e 2040. 
+Cambiando modello e utilizzando il 2259B abbiamo risolto il problema. Girando la vite a lato, le misure presentano problemi: i tempi scorrono troppo rapidamente e non vengono quasi restituiti dati. Ma ripristinando la posizione iniziale, il problema non si presenta.
+
+Distanze considerate:
+ * 8.4 cm   (24 marzo e 31 marzo)
+ * 40.4 cm  (24 marzo)
+ * 65.9 cm  (24 marzo)
+ * 68.8 cm  (24 marzo)
+ * 104.4 cm (29 marzo)
+ * 133.2 cm (28 marzo)
+ * 172.8 cm (24 marzo)
+
+Dispersioni dovute alle dimensioni del rivelatore:
+Sovrapponiamo i rivelatori con i punti della tensione di alimentazione agli estremi opposti e sovrapposizione delle aree utili pari a 18 cm. (RIPRENDERE DATI)
+Poi li sovrapponiamo con i punti di alimentazione agli stessi estremi e sovrapposizione delle aree utili pari a 27 cm.
+Misure effettuate tra il 29 e il 31 marzo.
+
+N.B. Per l'Amplitude Walk ci è stato consigliato di usare il TProfile di Root
+N.B. Potremmo avere problemi con l'Amplitude Walk perché lo sdoppiatore restituisce un segnale logico
+
+6. MISURE di FLUSSO	
+Iniziamo questo studio il 5 aprile. Orientiamo i rivelatori con l'asse di rotazione in direzione Nord-Sud: l'estremo con i fili è in direzione Sud e quello senza è in direzione Nord.
+Angoli negativi --> direzione ovest
+Angoli positivi --> direzione est
+
+Cosa va fatto?
+ - studio della soglia con una sorgente radioattiva - studio del flusso dei muoni in funzione dell'angolo dei rivelatori (anche simulazione)

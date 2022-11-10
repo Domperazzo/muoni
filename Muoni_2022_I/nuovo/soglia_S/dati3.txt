@@ -1,0 +1,31 @@
+Secondo campionamento per lo studio della tensione di alimentazione di S. Cambiata la tensione di soglia di S2, perché avevamo troppi conteggi (vedi dati2.txt)
+
+tensione soglia S1 = 802 mV
+tensione soglia S2 = 605 mV
+tensione soglia T1 = 975 mV
+tensione soglia T2 = 1030 mV
+
+Dati acquisiti il 20 gennaio. Tempo di misurazione = 3 min
+
+-------------------------------------------------------------
+tensione alimentazione S1 = 1300 V
+tensione alimentazione S2 = 1300 V
+
+33 69892 588386 39 2 2 1 
+66 139395 1160062 93 4 4 1 
+114 209380 1546353 137 7 6 2 
+144 279448 1891877 179 13 10 7 
+180 349691 2185586 214 20 14 11 
+215 419844 2533099 241 22 15 13 
+247 489594 3215061 284 26 19 16 
+276 559637 3768534 330 32 23 22 
+297 629597 4197728 361 34 24 24 
+335 700131 4725023 392 36 26 25 
+366 769744 5417239 426 38 28 27 
+395 839685 5528662 465 41 30 29 
+432 909864 5186010 499 46 34 32 
+459 980400 5342680 532 46 34 32 
+496 1051025 5506333 576 50 36 35 
+530 1120735 5809013 611 54 40 38 
+557 1190889 6044484 641 57 42 40 
+586 1261035 6282750 678 60 45 41  
