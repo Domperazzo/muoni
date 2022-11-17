@@ -25,7 +25,7 @@
 int main(int argc, char **argv) {
   TApplication theApp("theApp", &argc, argv);
   gStyle->SetOptFit(1112);
-
+//abbiamo usato una soglia di 800mV
   std::ifstream dati;
   dati.open("dati.txt", std::ios::in);
   std::vector<double> v_AlimentazioneS1, v_AlimentazioneS2, v_doppia, v_triplaS1, v_triplaS2, v_conteggiS1, v_conteggiS2;
