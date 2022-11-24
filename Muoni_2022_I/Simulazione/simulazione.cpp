@@ -8,6 +8,7 @@
 #define zmax 100;
 #define points_number 1000;
 #define time_increment 1.0;
+#define simulation_time 100;
 
 double rand_range (double min, double max)
   {
@@ -28,7 +29,23 @@ int main(int argc, char const *argv[]) {
         - y(t=0) = posizione generata casualmente
         - z(t=0) = posizione generata casualmente
   */
-  
+
+  v_posX.push_back(rand_range(0, xmax));
+  v_posY.push_back(rand_range(0, ymax));
+  v_posZ.push_back(rand_range(0, zmax));
+
+  double time = 0.;
+
+  do {
+
+    v_posX.push_back();
+    v_posY.push_back();
+    v_posZ.push_back();
+
+    time = time + time_increment;
+  } while(time < simulation_time);
+
+
 
 
 

@@ -338,10 +338,7 @@ void muon_simulation(){
     c008->SaveAs("plots/xy_not_in_bottom_scint.root");
     c008->SaveAs("plots/xy_not_in_bottom_scint.png");
 
-} // end void muon_simulation()
-
-
-
+}
 
 double cumulative_cos2(double input_value) {
 	return 0.5*(input_value + sin(input_value)*cos(input_value)) - 0.5*(-0.5*M_PI+sin(-0.5*M_PI)*cos(-0.5*M_PI));
