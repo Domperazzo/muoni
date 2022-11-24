@@ -60,9 +60,20 @@ int main(int argc, char **argv) {
   TGraphErrors g_S1, g_S2, g_conteggiS1, g_conteggiS2;
   for (int i = 0; i < v_efficienzaS1.size(); i++) {
     g_S1.SetPoint(i, v_AlimentazioneS1.at(i), v_efficienzaS1.at(i));
+    g_S1.SetPointError(i, 0., sqrt(v_triplaS1.at(i)*v_efficienzaS1.at(i)*(1-v_efficienzaS1.at(i))/v_doppia.at(i)));
+
     g_S2.SetPoint(i, v_AlimentazioneS2.at(i), v_efficienzaS2.at(i));
+    g_S2.SetPointError(i, 0., sqrt(v_triplaS2.at(i)*v_efficienzaS2.at(i)*(1-v_efficienzaS2.at(i))/v_doppia.at(i)));
+
     g_conteggiS1.SetPoint(i, v_AlimentazioneS1.at(i), v_conteggiS1.at(i));
+    g_conteggiS1.SetPointError(i, 0., sqrt(v_conteggiS1.at(i)));
+
     g_conteggiS2.SetPoint(i, v_AlimentazioneS2.at(i), v_conteggiS2.at(i));
+    g_conteggiS2.SetPointError(i, 0., sqrt(v_conteggiS2.at(i)));
+  }
+
+  for (int i = 0; i < v_efficienzaS1.size(); i++) {
+    std::cout << sqrt(v_triplaS1.at(i)*v_efficienzaS1.at(i)*(1-v_efficienzaS1.at(i))) << '\n';
   }
 
   g_S1.RemovePoint(10);
@@ -86,7 +97,7 @@ int main(int argc, char **argv) {
   g_S1.SetTitle("Conteggi degli eventi rilevati da S1 al variare della tensione di alimentazione; V_{alimentazione} [V]; Efficienza");
   //g_S1.GetHistogram()->GetYaxis()->SetRangeUser(0., 505.);
   //g_S1.GetHistogram()->GetXaxis()->SetRangeUser(0., 1.12);
-  g_S1.Draw("ALP");
+  g_S1.Draw("AP");
 
   TCanvas c2;
   c2.SetGridx();
@@ -97,7 +108,7 @@ int main(int argc, char **argv) {
   g_S2.SetTitle("Conteggi degli eventi rilevati da S2 al variare della tensione di alimentazione; V_{alimentazione} [V]; Efficienza");
   //g_S2.GetHistogram()->GetYaxis()->SetRangeUser(0., 505.);
   //g_S2.GetHistogram()->GetXaxis()->SetRangeUser(0., 1.12);
-  g_S2.Draw("ALP");
+  g_S2.Draw("AP");
 
   TCanvas c3;
   c3.SetGridx();
@@ -108,7 +119,7 @@ int main(int argc, char **argv) {
   g_conteggiS1.SetTitle("Conteggi vs Alimentazione per S1; V_{alimentazione} [V]; Conteggi");
   //g_S2.GetHistogram()->GetYaxis()->SetRangeUser(0., 505.);
   //g_S2.GetHistogram()->GetXaxis()->SetRangeUser(0., 1.12);
-  g_conteggiS1.Draw("ALP");
+  g_conteggiS1.Draw("AP");
 
   TCanvas c4;
   c4.SetGridx();
@@ -119,7 +130,7 @@ int main(int argc, char **argv) {
   g_conteggiS2.SetTitle("Conteggi vs Alimentazione per S2; V_{alimentazione} [V]; Conteggi");
   //g_S2.GetHistogram()->GetYaxis()->SetRangeUser(0., 505.);
   //g_S2.GetHistogram()->GetXaxis()->SetRangeUser(0., 1.12);
-  g_conteggiS2.Draw("ALP");
+  g_conteggiS2.Draw("AP");
 
   theApp.Run();
 

@@ -49,7 +49,9 @@ int main(int argc, char **argv) {
     TGraphErrors g_S1, g_S2, g_conteggiS1, g_conteggiS2;
     for (int i = 0; i < v_sogliaS1.size(); i++) {
       g_S1.SetPoint(i, v_sogliaS1.at(i), v_conteggiS1.at(i)/2);
+      g_S1.SetPointError(i, 0., sqrt(v_conteggiS1.at(i)/2));
       g_S2.SetPoint(i, v_sogliaS2.at(i), v_conteggiS2.at(i)/2);
+      g_S2.SetPointError(i, 0., sqrt(v_conteggiS2.at(i)/2));
     }
 
 
@@ -69,7 +71,7 @@ int main(int argc, char **argv) {
     g_S1.SetTitle("Conteggi degli eventi rilevati da S1 al variare della tensione di soglia; V_{soglia} [V]; #frac{Conteggi}{Minuto}");
     //g_S1.GetHistogram()->GetYaxis()->SetRangeUser(0., 505.);
     //g_S1.GetHistogram()->GetXaxis()->SetRangeUser(0., 1.12);
-    g_S1.Draw("ALP");
+    g_S1.Draw("AP");
 
     TCanvas c2;
     c2.SetGridx();
@@ -80,7 +82,7 @@ int main(int argc, char **argv) {
     g_S2.SetTitle("Conteggi degli eventi rilevati da S2 al variare della tensione di soglia; V_{soglia} [V]; #frac{Conteggi}{Minuto}");
     //g_S2.GetHistogram()->GetYaxis()->SetRangeUser(0., 505.);
     //g_S2.GetHistogram()->GetXaxis()->SetRangeUser(0., 1.12);
-    g_S2.Draw("ALP");
+    g_S2.Draw("AP");
 
     theApp.Run();
 
