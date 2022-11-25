@@ -1,9 +1,0 @@
-#ignora eseguibili
-main/
-plottiamo/
-analisi_efficienza/
-medie_to_file/
-plottiamo_dx/
-plottiamo_sx/
-
-*.txt
