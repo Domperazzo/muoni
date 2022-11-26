@@ -33,6 +33,8 @@ double muone::get_vel_component(int component){
     if (component==3) {
       return modulo_vel()*cos(ang_theta);
     }
+    return 0;
+
 }
 
 

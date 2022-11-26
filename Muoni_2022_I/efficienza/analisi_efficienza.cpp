@@ -89,6 +89,7 @@ int main(int argc, char **argv) {
   g_conteggiS2.SetMarkerSize(0.5);
 
   TCanvas c1;
+  c1.cd(1);
   c1.SetGridx();
   c1.SetGridy();
   c1.SetLeftMargin(.15);
@@ -100,6 +101,7 @@ int main(int argc, char **argv) {
   g_S1.Draw("AP");
 
   TCanvas c2;
+  c2.cd(2);
   c2.SetGridx();
   c2.SetGridy();
   c2.SetLeftMargin(.15);
@@ -111,6 +113,7 @@ int main(int argc, char **argv) {
   g_S2.Draw("AP");
 
   TCanvas c3;
+  c3.cd(3);
   c3.SetGridx();
   c3.SetGridy();
   c3.SetLeftMargin(.15);
@@ -122,6 +125,7 @@ int main(int argc, char **argv) {
   g_conteggiS1.Draw("AP");
 
   TCanvas c4;
+  c4.cd(4);
   c4.SetGridx();
   c4.SetGridy();
   c4.SetLeftMargin(.15);
