@@ -2,7 +2,7 @@
 #include <math.h>
 #include <vector>
 
-muone::muone(double pos_x, double pos_y,double pos_z, double theta, double phi, double angolo, std::vector<double> vel, double time):
+muone::muone(double pos_x, double pos_y,double pos_z, double theta, double phi, std::vector<double> vel, double time):
   x(pos_x),
   y(pos_y),
   z(pos_z),
@@ -17,11 +17,11 @@ muone::~muone(){
 
 }
 
-double modulo_vel(){
+double muone::modulo_vel(){
   return sqrt(pow(v_vel.at(0), 2) + pow(v_vel.at(1), 2) + pow(v_vel.at(2), 2));
 }
 
-double get_vel_component(int component){
+double muone::get_vel_component(int component){
     if (component==1) {
       return modulo_vel()*sin(ang_theta)*cos(ang_phi);
     }
