@@ -60,10 +60,10 @@ int main(int argc, char **argv) {
   TGraphErrors g_S1, g_S2, g_conteggiS1, g_conteggiS2;
   for (int i = 0; i < v_efficienzaS1.size(); i++) {
     g_S1.SetPoint(i, v_AlimentazioneS1.at(i), v_efficienzaS1.at(i));
-    g_S1.SetPointError(i, 0., sqrt(v_triplaS1.at(i)*v_efficienzaS1.at(i)*(1-v_efficienzaS1.at(i))/v_doppia.at(i)));
+    g_S1.SetPointError(i, 0., sqrt(v_doppia.at(i)*v_efficienzaS1.at(i)*(1-v_efficienzaS1.at(i))/v_doppia.at(i)));
 
     g_S2.SetPoint(i, v_AlimentazioneS2.at(i), v_efficienzaS2.at(i));
-    g_S2.SetPointError(i, 0., sqrt(v_triplaS2.at(i)*v_efficienzaS2.at(i)*(1-v_efficienzaS2.at(i))/v_doppia.at(i)));
+    g_S2.SetPointError(i, 0., sqrt(v_doppia.at(i)*v_efficienzaS2.at(i)*(1-v_efficienzaS2.at(i))/v_doppia.at(i)));
 
     g_conteggiS1.SetPoint(i, v_AlimentazioneS1.at(i), v_conteggiS1.at(i));
     g_conteggiS1.SetPointError(i, 0., sqrt(v_conteggiS1.at(i)));

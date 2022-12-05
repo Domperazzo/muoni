@@ -1,0 +1,23 @@
+#ignora tutti gli eseguibili in cartella
+
+finderr
+leggiscaler
+spline
+tempi_volo
+correzione_golf
+findbestlimits
+new_meteo
+histotempi
+compara_istogrammi
+
+#immagini
+
+immagini/
+
+#ignora i txt, in quanto file di dati
+
+*.TXT
+*.txt
+
+# ignora codice non mio !
+strtk.hpp

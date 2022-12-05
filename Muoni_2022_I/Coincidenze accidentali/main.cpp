@@ -74,7 +74,7 @@ int main(int argc, char **argv) {
 
 
 
-/*
+
   TF1 modello("modello", "gaus");
   TFitResultPtr fit_result = g2.Fit(&modello, "S");
 
@@ -90,14 +90,14 @@ int main(int argc, char **argv) {
 
 
   std::cout << risultato<< "\n";
-*/
+/*
 
   TF1 retta("retta", "[0]*x+[1]");
   TFitResultPtr fit_result2 = g1.Fit(&retta, "S");
   retta.SetParName(0, "m");
   retta.SetParName(1, "q");
   retta.SetParameter(0, 1.);
-
+*/
   TMultiGraph multi;
 
   multi.Add(&g1);
