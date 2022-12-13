@@ -1,4 +1,5 @@
 #include <iostream>
+/* A Node is a class that has a value and a pointer to the next Node */
 
 class Node{
   private:
@@ -17,14 +18,18 @@ class Node{
 };
 
 class LinkedList{
+/*
+ * It creates a linked list.
+ */
+
   private:
     Node *head;
   public:
-    //costruttore
+    //Constructor
     LinkedList(){
       this->head = nullptr;
     }
-    //distruttore
+    //Destructor
     ~LinkedList(){
       while (this->head != nullptr) {
         pop();
@@ -66,41 +71,23 @@ class LinkedList{
       return count;
     }
     //Find a value
-    bool find(int value){
-      for (Node *curNode = this->head; curNode != nullptr; curNode = curNode->getNext()){
-          if (curNode->getValue() == value) {
-              return true;
-          }
-      }
-      return false;
-    }
 
 };
 
 int main(int argc, char const *argv[]) {
-    
-    LinkedList list;
+  LinkedList list;
 
-    list.push(1);
-    list.push(2);
-    list.push(3);
-    list.push(4);
-    list.push(5);
-
+  list.push(1);
+  list.push(2);
+  list.push(3);
+  list.push(4);
+  list.push(5);
 
 
 
-    std::cout << "List after adding: " << list << std::endl;
-    std::cout << "Lenght: " << list.lenght() << std::endl;
-    std::cout << "Find 3: " << list.find(3) << std::endl;
-    std::cout << "Find 6: " << list.find(6) << std::endl;
-    
-    std::cout << "Removed: " << list.pop() << std::endl;
-    std::cout << "Removed: " << list.pop() << std::endl;
-    std::cout << "Removed: " << list.pop() << std::endl;
-    std::cout << "Removed: " << list.pop() << std::endl;
-    
-    std::cout << "List after removing: " << list << std::endl;
-    
+  std::cout << "List after adding: " << list << std::endl;
+
+  std::cout << "Lenght: " << list.lenght() << std::endl;
+
   return 0;
 }

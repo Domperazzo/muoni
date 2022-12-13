@@ -16,8 +16,9 @@ public:
 double coeff_x();
 double coeff_y();
 
-double rand_phi (double min, double max);
-double rand_theta(double valore_centrale);
+double get_raggio();
+double get_theta();
+double get_phi();
 
 private:
   double raggio;
