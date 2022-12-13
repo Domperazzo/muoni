@@ -3,8 +3,6 @@
 #include <iostream>
 #include <algorithm>
 
-
-
 #define larghezza 80.0 //in cm
 #define profondita 30.0 //in cm
 
