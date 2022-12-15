@@ -2,6 +2,7 @@
 #include <cmath>
 #include <iostream>
 #include <algorithm>
+#include <math.h>
 
 
 
@@ -26,11 +27,27 @@ double y_coinc_coord(double L, double k_y, double y0){
 }
 
 double rand_phi(double min, double max){
-    return min + (max - min) * rand() /static_cast<double> (RAND_MAX);
+    double k=0;
+    do{
+        k=min + (max - min) * rand() /static_cast<double> (RAND_MAX);
+    }while(k==2*M_PI);
+    return k;
 }
 
-double rand_theta(double valore_centrale){
-    return 0.5*(valore_centrale + sin(valore_centrale)*cos(valore_centrale)) -0.5*(-0.5*M_PI+sin(-0.5*M_PI)*cos(-0.5*M_PI));
+double f_cos2(double x){
+    return 4*pow(cos(x), 2)/M_PI;
+}
+
+double rand_theta(double f(double), double xMin, double xMax, double yMax)
+{
+    double x = 0.;
+    double y = 0.;
+    do
+    {
+        x = rand_range(xMin, xMax);
+        y = rand_range(0, yMax);
+    } while (y > f(x));
+    return x;
 }
 
 double rand_range(double min, double max){
