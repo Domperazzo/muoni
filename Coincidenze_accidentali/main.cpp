@@ -53,8 +53,6 @@ int main(int argc, char **argv) {
   dati2.close();
 
 
-
-
   TGraphErrors g1, g2;
   for (int i = 0; i < v_conteggi.size(); i++) {
     g1.SetPoint(i, v_ritardo.at(i), v_conteggi.at(i));
