@@ -17,7 +17,7 @@ int main (int argc, char ** argv)
     TH2F h2 ("h2", "Eventi in funzione di ADC1 e ADC2", 200, MIN, MAX, 200, MIN, MAX) ;
 
     ifstream myfile;
-      myfile.open("Dati_tdcadc97,15cm.txt");
+      myfile.open("Dati_tdcadc_38,2cm.txt");
   
     while(!myfile.eof())
     {
@@ -31,9 +31,10 @@ int main (int argc, char ** argv)
 
     h2.GetXaxis ()->SetTitle ("energie ADC1") ;
     h2.GetYaxis ()->SetTitle ("energie ADC2") ;
-    h2.Draw ("LEGO") ;
+    h2.Draw ("COLZ1") ;
 
-    c1.Print ("Eventi_Vs_energie.png", "png") ;
+
+    c1.Print ("Eventi_Vs_energie_38,2cm.pdf", "pdf") ;
 
     return 0 ;
   }
