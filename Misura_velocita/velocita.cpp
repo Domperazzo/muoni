@@ -1,41 +1,45 @@
-
 #include <iostream>
 #include <fstream> 
 #include <sstream>
 #include <string>
 #include <cmath>
 #include <vector>
-/*
+
 #include "TApplication.h"
 #include "TCanvas.h"
 #include "TGraphErrors.h"
+#include "TH1F.h"
 #include "TAxis.h"
-#include "TF1.h"
 #include "TFitResult.h"
-*/
-#define NEV 100
+
+#define NEV 80000
 
 using namespace std;
 int main(int argc, char* argv[]){
+    
+    TApplication theApp("theApp", &argc, argv);
+    TH1F distribuzione_tempi ("hist", "Distribuzione dei tempi di volo", sqrt(NEV), 10., 50.); // nome, n bin, min, max
+
+
     ifstream dati;
-    dati.open("datiAdcTdc.txt", ios::in);
+    dati.open("Dati_tdcadc_97,15cm.txt", ios::in);
     double TDCdata, ADCdata1, ADCdata2;
-    vector <double> v_tempo_misurato, v_tempo_corretto;
-    vector <double> v_energia1, v_energia2;
+
     double m[] = {0.1221, 0.0008013};
     double q[] = {0.8727, 0.3014};
 
-    for(int i = 0; i<NEV; i++){
+    while(!dati.eof()){
         dati >> TDCdata;
         dati >> ADCdata1;
         dati >> ADCdata2;
-        v_tempo_misurato.push_back(TDCdata*m[0] + q[0]);
-        v_energia1.push_back(ADCdata1);
-        v_energia2.push_back(ADCdata2);
-
+        distribuzione_tempi.Fill(TDCdata*m[0] + q[0]);
     }
-
-    
     dati.close();
+
+//distribuzione dei tempi di volo per ogni distanza L
+    distribuzione_tempi.SetFillColor (kOrange + 2) ;
+    distribuzione_tempi.Draw ();
+    theApp.Run();
+
     return 0;
 }

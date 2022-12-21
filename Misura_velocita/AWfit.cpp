@@ -22,7 +22,7 @@ double funz(double * x, double * par)
 
 int main (int argc, char ** argv)
 {
-  double TDCdata, ADCdata1, ADCdata2;
+  double TDCdata, ADCdata1, ADCdata2, TDCdata_corretto;
   double m[] = {0.1221, 0.0008013}; //coefficiente angolare retta di calibrazione TDC
   double q[] = {0.8727, 0.3014}; //intercetta retta di calibrazione TDC
     
@@ -46,8 +46,9 @@ int main (int argc, char ** argv)
   while(!myfile.eof())
   {
     myfile >> TDCdata;
-    if(TDCdata>=2){ //escludo i numeri bassi perche altrimenti il fit col log non da successo, la domanda è perchè ci sono questi dati strani?
-    vy.push_back (TDCdata*m[0] + q[0]);
+    TDCdata_corretto = TDCdata*m[0] + q[0];
+    if(TDCdata_corretto >= pow(10, -8)){ //escludo i numeri bassi perche altrimenti il fit col log non da successo, la domanda è perchè ci sono questi dati strani?
+    vy.push_back (TDCdata_corretto);
     ey.push_back (0);
     }
 
