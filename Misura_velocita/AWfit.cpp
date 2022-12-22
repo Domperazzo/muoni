@@ -1,8 +1,13 @@
+/*
+  c++ -o AWfit AWfit.cpp `root-config --glibs --cflags`
+*/
+
 #include <fstream>
 #include <iostream>
 #include <vector>
 #include <cmath>
 
+#include "TProfile.h"
 #include "TF1.h"
 #include "TGraphErrors.h"
 #include "TAxis.h"
@@ -63,7 +68,20 @@ int main (int argc, char ** argv)
 
   TGraphErrors g_funz (vx.size (), &vx[0], &vy[0], &ex[0], &ey[0]) ;
 
+  TProfile *hprofile = new TProfile("hprof", "Profile", sqrt(vx.size()), 0, 2000);
+
+  for (int i = 0; i < vx.size(); i++){
+    hprofile->Fill(vx.at(i), vy.at(i));
+  }
+  
+
+  g_funz.SetMarkerStyle(20);
+  g_funz.SetMarkerSize(0.3);
+
+
   TFitResultPtr fit_result = g_funz.Fit (&f, "S") ;
+
+  TFitResultPtr fit_profile = hprofile->Fit(&f, "S");
 
   cout.precision (5) ;
   cout << "risultato del fit: " << fit_result->IsValid () << endl ;
@@ -82,6 +100,10 @@ int main (int argc, char ** argv)
   TCanvas c1 ("c1", "", 800, 800) ;
   g_funz.Draw ("AP") ;
   c1.Print ("AWfit_38,2cm_energia2.pdf", "pdf") ; 
+
+  TCanvas *c2 = new TCanvas();
+  hprofile->Draw();
+  c2->Print("AWfit_38,2cm_energia - TProfile.pdf", "pdf");
 
   return 0 ;
 }
