@@ -20,7 +20,7 @@
 
 using namespace std ;
 double funz(double * x, double * par){
-    return par[0] + par[1] * log(x[0]/(x[0]-Vs)) ;
+    return par[0] + par[1] * log(x[0]/(x[0]-1.4)) ;
   }
 
 
@@ -59,11 +59,12 @@ int main (int argc, char ** argv){
     }
     
     myfile >> ADCdata1;
-    myfile >> ADCdata2;
-    if(ADCdata2>=2){
-    vx.push_back (ADCdata2) ;
+    if(ADCdata1>=140 && ADCdata1<=300){ //38,2: 140 - 300 || 97,15 : 120 - 280
+    vx.push_back (ADCdata1) ;
     ex.push_back (0) ;
     }  
+    myfile >> ADCdata2;
+    
 
   }
   myfile.close();
@@ -82,8 +83,6 @@ int main (int argc, char ** argv){
 
   TFitResultPtr fit_profile1 = hprofile1->Fit(&f, "S");
 
-  TFitResultPtr fit_profile = hprofile->Fit(&f, "S");
-
   cout.precision (5) ;
   cout << "risultato del fit: " << fit_profile1->IsValid () << endl ;
   cout << "k : " << f.GetParameter (0) << "\t+- " << f.GetParError (0) << endl ;
@@ -99,7 +98,7 @@ int main (int argc, char ** argv){
 
   TCanvas c1 ("c1", "", 800, 800);
   hprofile1->Draw ("AP");
-  c1.Print ("AWfit_97,15cm_energia1.pdf", "pdf"); 
+  c1.Print ("AWfit_38,2cm_energia1 - TProfile.pdf", "pdf"); 
 
 //svuota i vettori
   vx.clear();
@@ -112,7 +111,7 @@ int main (int argc, char ** argv){
 
 //grafico energia 2-----------------------------------------------------------------
   
-  myfile.open("Dati_tdcadc_97,15cm.txt");
+  myfile.open("Dati_tdcadc_38,2cm.txt");
   while(!myfile.eof()){
     myfile >> TDCdata;
     TDCdata_corretto = TDCdata*m[0] + q[0];
@@ -153,13 +152,9 @@ int main (int argc, char ** argv){
   hprofile2->GetYaxis()->SetTitle("tempo[ns]");
   
 
-  TCanvas c2 ("c2", "", 800, 800) ;
-  hprofile2->Draw ("AP") ;
-  c2.Print ("AWfit_97,15cm_energia2.pdf", "pdf") ; 
-
   TCanvas *c2 = new TCanvas();
-  hprofile->Draw();
-  c2->Print("AWfit_38,2cm_energia - TProfile.pdf", "pdf");
+  hprofile2->Draw();
+  c2->Print("AWfit_38,2cm_energia2 - TProfile.pdf", "pdf");
 
   return 0 ;
 }
