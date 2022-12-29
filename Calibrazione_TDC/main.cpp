@@ -30,7 +30,7 @@ int main(int argc, char **argv) {
 
 
   std::ifstream dati;
-  dati.open("calibrazione_TDC.txt", std::ios::in);
+  dati.open("calibrazione_TDC2.txt", std::ios::in);
   std::vector<double> v_tempo, v_tdc;
   while (true) {
       double tempo, tdc;
@@ -46,7 +46,7 @@ int main(int argc, char **argv) {
 
   for (int i = 0; i < v_tempo.size(); i++) {
     g1.SetPoint(i, v_tdc.at(i), v_tempo.at(i));
-    g1.SetPointError(i, 0.,  0.4);
+    g1.SetPointError(i, 1.,  0.4);
   }
 
   g1.SetMarkerStyle(20);

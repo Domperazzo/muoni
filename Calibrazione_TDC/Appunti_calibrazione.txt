@@ -1,0 +1,10 @@
+tentativo 1
+
+Coefficiente angolare: 0,1221 +- 0,0008013
+Intercetta: 0,8727 +- 0,3014
+
+tentativo 2 ( con media, abbiamo preso 12 misure, gli errori sono = dev_std/sart(12), nel programma sono stati usati gli errori = 1 )
+
+Coefficiente angolare: 0,111 +- 0,001
+Intercetta: 9,4 +- 0,3
+
