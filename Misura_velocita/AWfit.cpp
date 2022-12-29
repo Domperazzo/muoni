@@ -7,6 +7,7 @@
 #include <vector>
 #include <cmath>
 
+#include "TProfile.h"
 #include "TF1.h"
 #include "TGraphErrors.h"
 #include "TAxis.h"
@@ -81,6 +82,8 @@ int main (int argc, char ** argv){
 
   TFitResultPtr fit_profile1 = hprofile1->Fit(&f, "S");
 
+  TFitResultPtr fit_profile = hprofile->Fit(&f, "S");
+
   cout.precision (5) ;
   cout << "risultato del fit: " << fit_profile1->IsValid () << endl ;
   cout << "k : " << f.GetParameter (0) << "\t+- " << f.GetParError (0) << endl ;
@@ -153,6 +156,10 @@ int main (int argc, char ** argv){
   TCanvas c2 ("c2", "", 800, 800) ;
   hprofile2->Draw ("AP") ;
   c2.Print ("AWfit_97,15cm_energia2.pdf", "pdf") ; 
+
+  TCanvas *c2 = new TCanvas();
+  hprofile->Draw();
+  c2->Print("AWfit_38,2cm_energia - TProfile.pdf", "pdf");
 
   return 0 ;
 }
