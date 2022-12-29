@@ -20,7 +20,7 @@ int main (int argc, char ** argv)
     TH2F h2 ("h2", "Eventi in funzione di ADC1 e ADC2", 200, MIN, MAX, 200, MIN, MAX) ;
 
     ifstream myfile;
-      myfile.open("Dati_tdcadc_38,2cm.txt");
+      myfile.open("Dati_tdcadc_38,2.txt");
   
     while(!myfile.eof())
     {
