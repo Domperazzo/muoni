@@ -20,7 +20,7 @@
 
 using namespace std ;
 double funz(double * x, double * par){
-    return par[0] + par[1] * log(x[0]/(x[0]-1.4)) ;
+    return par[0] + par[1] * log(x[0]/(x[0] - par[2] )) ;
   }
 
 
@@ -34,15 +34,17 @@ int main (int argc, char ** argv){
   vector<double> vy ;
   vector<double> ex ;
   vector<double> ey ;
-  double k;
 
   gStyle->SetOptFit(1112);
 
-  TF1 f ("f", funz, 0., 1000, 2) ;
+  TF1 f ("f", funz, 0., 1000, 3) ;
   f.SetParameter (0, 31.5) ;
   f.SetParameter (1, 12.8) ;
+  f.SetParameter (2, 18.) ;
   f.SetParName(0, "k");
   f.SetParName(1, "#tau");
+  f.SetParName(2, "Vs");
+
 
 
   ifstream myfile;
@@ -60,8 +62,8 @@ int main (int argc, char ** argv){
     
     myfile >> ADCdata1;
     if(ADCdata1>=140 && ADCdata1<=300){ //38,2: 140 - 300 || 97,15 : 120 - 280
-    vx.push_back (ADCdata1) ;
-    ex.push_back (0) ;
+    vx.push_back (ADCdata1);
+    ex.push_back (0);
     }  
     myfile >> ADCdata2;
     
