@@ -42,7 +42,7 @@ int main (int argc, char ** argv){
 
     myfile >> adc1;
     myfile >> adc2;
-    if(adc1>=10  && adc1<=300 && adc2 >=40 && adc2 <= 220){  
+    if(adc1>=140  && adc1<=320 && adc2 >=100 && adc2 <= 240){  
 
     ADC1.push_back(adc1);
     ADC2.push_back(adc2);
@@ -130,7 +130,7 @@ int main (int argc, char ** argv){
   funz2.GetYaxis()->SetTitle("TDC");
 
 //fit energia 1
-/*
+
   TF1 f_fit ("f_fit", logo, minADC1-bin1, maxADC1+bin1, 3) ;
   //f_fit.SetParameter (0, 31); //solo il secondo decommentato "funziona" (errori piu piccoli)
   f_fit.SetParameter (1, 10);
@@ -147,13 +147,13 @@ int main (int argc, char ** argv){
   TCanvas c1 ("c1", "", 800, 800) ;
   funz.Draw ("AP") ;
   c1.Print ("amplitude_walk_ADC1.png", "png") ; 
-*/
+
 // fit energia 2
 
   TF1 f_fit2 ("f_fit2", logo, minADC2-bin2, maxADC2+bin2, 3) ;
   f_fit2.SetParameter (0, 31); //solo il primo commentato "funziona" (errori piu piccoli) ma tau e Vs diversi da ADC1
-  f_fit2.SetParameter (1, -120);
-  f_fit2.SetParameter (2, 40); //perche i tagli tolgono la parte piu interessante del fit?(dove non è piu una retta)
+  //f_fit2.SetParameter (1, -2);
+  f_fit2.SetParameter (2, -0.40); //perche i tagli tolgono la parte piu interessante del fit?(dove non è piu una retta)
   TFitResultPtr fit_result2 = funz2.Fit (&f_fit2, "S") ;
 
   cout << endl ;
