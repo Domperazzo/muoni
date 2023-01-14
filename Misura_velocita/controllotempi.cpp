@@ -1,5 +1,5 @@
 /*
-  c++ -o t_profile_fatto_in_casa t_profile_fatto_in_casa.cpp `root-config --glibs --cflags`
+  c++ -o controllotempi controllotempi.cpp `root-config --glibs --cflags`
 */
 
 #include <iostream>
@@ -14,12 +14,11 @@
 #include "TAxis.h"
 #include "TApplication.h"
 #include "TStyle.h"
-#include "TLatex.h"
 
 
 double logo (double * x, double * par)
   {
-    return par[0] + par[1] * log(x[0]/(x[0]-par[2])) ;
+    return par[0] + par[1]*x[0] ;
   }
 
 using namespace std ;
@@ -27,8 +26,8 @@ using namespace std ;
 int main (int argc, char ** argv){
 
     gStyle->SetOptFit(1112);
-    TApplication theApp("theApp", &argc, argv);
 
+    double Vs1 = 1.38, Vs2 = 0.92, tau1 = 108, tau2 = 94.7;
     int nbin = 100;
     double sigma_TDC1;
     double sigma_TDC2;
@@ -55,7 +54,7 @@ int main (int argc, char ** argv){
 
         ADC1.push_back(adc1);
         ADC2.push_back(adc2);
-        TDC.push_back(tdc);
+        TDC.push_back(tdc - tau1 * log(adc1 / (adc1 - Vs1)) + tau2 * log(adc2 / (adc2 - Vs2)));
 
         if (adc1 < minADC1)
           minADC1 = adc1;
@@ -71,6 +70,19 @@ int main (int argc, char ** argv){
       }
   }
   myfile.close();
+  
+  
+  ofstream OutFile; /* Dichiarazione di tipo */
+  OutFile.open ("Dati_tdcadc_38,2cm_AWcorr.txt"); /* Apertura del file */
+  if (!OutFile) {
+    cout << "Errore di apertura del file" << endl; /* controllo */
+  } else {
+  for(int i=0;i<ADC1.size();i++) {
+    OutFile << TDC.at(i) <<" "<< ADC1.at(i) << " " << ADC2.at(i) << "\n" << endl; /* scrittura dati */
+  }
+  OutFile.close(); /* chiusura file */
+  }
+
 
   bin1=(maxADC1-minADC1)/nbin;
       
@@ -95,12 +107,12 @@ int main (int argc, char ** argv){
           
     x1.push_back(minADC1+i*bin1+bin1/2);
     ex1.push_back(0);
-    //cout<<x1.at(i)<<" \n "<<endl;
+    cout<<x1.at(i)<<" \n "<<endl;
 
     y1.push_back(somma1/conta1);
     sigma_TDC1 = (somma1q/conta1+(somma1/conta1)*(somma1/conta1))/conta1;
     e1.push_back(sqrt(  pow(q[1], 2) + pow(m[0]*sigma_TDC1, 2) + pow((somma1/conta1)*m[1], 2)  ));
-    //cout<<y1.at(i)<<" \n "<<endl;
+    cout<<y1.at(i)<<" \n "<<endl;
 
     x2.push_back(minADC2+i*bin2+bin2/2);
     ex2.push_back(0);
@@ -118,65 +130,55 @@ int main (int argc, char ** argv){
   }
 
 
-
-
   TGraphErrors funz (x1.size (), &x1[0], &y1[0], &ex1[0], &e1[0]) ;
   TGraphErrors funz2 (x2.size (), &x2[0], &y2[0], &ex2[0], &e2[0]) ;
 
-  funz.SetMarkerStyle (105) ;
-  funz.SetMarkerColor (4) ;
-  funz2.SetMarkerStyle (105) ;
-  funz2.SetMarkerColor (4) ;
+  funz.SetMarkerStyle(105);
+  funz.SetMarkerColor(4);
+  funz2.SetMarkerStyle(105);
+  funz2.SetMarkerColor(4);
 
-  funz.SetTitle("Tempi di volo vs Energia rivelatore S1");
+  funz.SetTitle("tempi di volo Vs energia 1");
 
   funz.GetXaxis()->SetTitle("ADC1");
   funz.GetYaxis()->SetTitle("TDC");
 
-  funz2.SetTitle("Tempi di volo vs Energia rivelatore S2");
+  funz2.SetTitle("tempi di volo Vs energia 2");
 
   funz2.GetXaxis()->SetTitle("ADC2");
   funz2.GetYaxis()->SetTitle("TDC");
 
 //fit energia 1
-
-  TF1 f_fit ("f_fit", logo, minADC1-bin1, maxADC1+bin1, 3) ;
-  //f_fit.SetParameter (0, 31); 
-  f_fit.SetParameter (1, 44);
-  //f_fit.SetParameter (2, 18); //perche i tagli tolgono la parte piu interessante del fit?(dove non è piu una retta)
-  TFitResultPtr fit_result = funz.Fit (&f_fit, "SQ") ;
+  TF1 f_fit ("f_fit", logo, minADC1-bin1, maxADC1+bin1, 2) ;
+ //perche i tagli tolgono la parte piu interessante del fit?(dove non � piu una retta)
+  TFitResultPtr fit_result = funz.Fit (&f_fit, "S") ;
 
   cout << endl ;
   cout.precision (3) ;
   cout << "risultato del fit: " << fit_result->IsValid () << endl ;
   cout << " k: " << f_fit.GetParameter (0) << "\t+- " << f_fit.GetParError (0) << endl ;
-  cout << " tau: " << f_fit.GetParameter (1) << "\t+- " << f_fit.GetParError (1) << endl ;
-  cout << " Vs: " << f_fit.GetParameter (2) << "\t+- " << f_fit.GetParError (2) << endl ;
+  cout << " m: " << f_fit.GetParameter(1) << "\t+- " << f_fit.GetParError(1) << endl;
 
   TCanvas c1 ("c1", "", 800, 800) ;
   funz.Draw ("AP") ;
-  c1.Print ("amplitude_walk_ADC1.pdf", "pdf") ; 
+  c1.Print("corretto-amplitude_walk_ADC1.pdf", "pdf");
 
-// fit energia 2
+  // fit energia 2
 
-  TF1 f_fit2 ("f_fit2", logo, minADC2-bin2, maxADC2+bin2, 3) ;
+  TF1 f_fit2 ("f_fit2", logo, minADC2-bin2, maxADC2+bin2, 2) ;
   f_fit2.SetParameter (0, 31); 
-  //f_fit2.SetParameter (1, -2);
-  f_fit2.SetParameter (2, -0.40); //perche i tagli tolgono la parte piu interessante del fit?(dove non è piu una retta)
-  TFitResultPtr fit_result2 = funz2.Fit (&f_fit2, "SQ") ;
+  TFitResultPtr fit_result2 = funz2.Fit (&f_fit2, "S") ;
 
   cout << endl ;
   cout.precision (3) ;
   cout << "risultato del fit: " << fit_result2->IsValid () << endl ;
   cout << " k: " << f_fit2.GetParameter (0) << "\t+- " << f_fit2.GetParError (0) << endl ;
-  cout << " tau: " << f_fit2.GetParameter (1) << "\t+- " << f_fit2.GetParError (1) << endl ;
-  cout << " Vs: " << f_fit2.GetParameter (2) << "\t+- " << f_fit2.GetParError (2) << endl ;
+  cout << " m: " << f_fit2.GetParameter(1) << "\t+- " << f_fit2.GetParError(1) << endl;
 
   TCanvas c2 ("c2", "", 800, 800) ;
   funz2.Draw ("AP") ;
-  c2.Print ("amplitude_walk_ADC2.pdf", "pdf") ; 
+  c2.Print ("corretto-amplitude_walk_ADC2.pdf", "pdf") ; 
 
-  theApp.Run();
 
     return 0 ;
   }
