@@ -1,5 +1,5 @@
 /*
-  c++ -o mediamo mediamo.cpp lib.cc `root-config --glibs --cflags`
+  c++ -o mediamo mediamo.cpp `root-config --glibs --cflags`
 */
 
 #include <iostream>
@@ -21,25 +21,32 @@
 
 int main(int argc, char* argv[]){
 
-    double angolo = argv[1];
-    TH1F h_conteggi("h_conteggi", "h_conteggi", 50, 0, 100);
+    TApplication theApp("theApp", &argc, argv);
+    gStyle->SetOptFit(1112);
+
+    double angolo = 0.;
+    TH1F h_conteggi("h_conteggi", "h_conteggi", 50, 0, 1500);
 
     std::ifstream dati;
-    dati.open("g1.txt", std::ios::in);
+    dati.open("SCA_0deg.txt", std::ios::in);
     std::vector<double> v_conteggi;
     while (true){
         double conteggi;
         dati >> conteggi;
         if (dati.eof() == true)
             break;
-        //v_conteggi.push_back(conteggi);
         h_conteggi.Fill(conteggi);
     }
     dati.close();
+    /*
+        TCanvas c1;
+        h_conteggi.Draw();
+        theApp.Run();
+    */
 
-    std::ofstream outfile_media("medie_angoli.txt", std::ios::app);
+    std::ofstream outfile_media("medie_angoliOvest.txt", std::ios::app);
     if (outfile_media.is_open()){
-        outfile_media << angolo << "\t" << h_conteggi.GetMean() << std::endl;
+        outfile_media << angolo << "\t" << h_conteggi.GetMean() << "\t" << h_conteggi.GetStdDev() << "\n" << std::endl;
         outfile_media.close();
     }
 
