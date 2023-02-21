@@ -40,7 +40,7 @@ int main (int argc, char ** argv){
     double adc1, adc2, tdc, maxADC1 = 0, minADC1 = 10000, maxADC2 = 0, minADC2 = 10000, bin1, bin2, somma1 = 0, somma1q = 0, somma2 = 0, somma2q = 0, conta1 = 0, conta2 = 0, i = 0, j = 0;
 
     ifstream myfile;
-    myfile.open("Dati_tdcadc_38,2cm.txt");
+    myfile.open("Dati_tdcadc_9,5cm.txt");
 
     while (!myfile.eof())
     {
@@ -155,7 +155,7 @@ int main (int argc, char ** argv){
 
   TCanvas c1 ("c1", "", 800, 800) ;
   funz.Draw ("AP") ;
-  c1.Print ("amplitude_walk_ADC1.pdf", "pdf") ; 
+  c1.Print ("amplitude_walk_9,5_ADC1.pdf", "pdf") ; 
 
 // fit energia 2
 
@@ -174,7 +174,7 @@ int main (int argc, char ** argv){
 
   TCanvas c2 ("c2", "", 800, 800) ;
   funz2.Draw ("AP") ;
-  c2.Print ("amplitude_walk_ADC2.pdf", "pdf") ; 
+  c2.Print ("amplitude_walk_9,5_ADC2.pdf", "pdf") ; 
 
   theApp.Run();
 
