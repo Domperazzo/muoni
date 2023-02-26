@@ -17,12 +17,11 @@
 using namespace std;
 int main(int argc, char* argv[]){
     
-    TApplication theApp("theApp", &argc, argv);
     TH1F distribuzione_tempi ("hist", "Distribuzione dei tempi di volo", sqrt(NEV), 10., 50.); // nome, n bin, min, max
 
 
     ifstream dati;
-    dati.open("Dati_tdcadc_97,15cm.txt", ios::in);
+    dati.open("Dati/Dati_tdcadc_97,15cm.txt", ios::in);
     double TDCdata, ADCdata1, ADCdata2;
 
     double m[] = {0.1221, 0.0008013};
@@ -37,9 +36,11 @@ int main(int argc, char* argv[]){
     dati.close();
 
 //distribuzione dei tempi di volo per ogni distanza L
+    TCanvas c1 ("c1", "", 800, 800) ;
+
     distribuzione_tempi.SetFillColor (kOrange + 2) ;
     distribuzione_tempi.Draw ();
-    theApp.Run();
+    c1.Print("Grafici/Distribuzione_tempi_38,2cm.pdf", "pdf");
 
     return 0;
 }

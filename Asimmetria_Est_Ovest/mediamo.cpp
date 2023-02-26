@@ -20,7 +20,6 @@
 
 
 int main(int argc, char* argv[]){
-    printf("ok");
 
     TApplication theApp("theApp", &argc, argv);
     gStyle->SetOptFit(1112);
@@ -29,7 +28,7 @@ int main(int argc, char* argv[]){
     TH1F h_conteggi("h_conteggi", "h_conteggi", 50, 0, 1500);
 
     std::ifstream dati;
-    dati.open("SCA_20deg.txt", std::ios::in);
+    dati.open("SCA_20deg_Est.txt", std::ios::in);
     std::vector<double> v_conteggi;
     while (true){
         double conteggi;
@@ -39,19 +38,16 @@ int main(int argc, char* argv[]){
         h_conteggi.Fill(conteggi);
     }
     dati.close();
-    printf("ci sono quasi");
     /*
         TCanvas c1;
         h_conteggi.Draw();
         theApp.Run();
     */
-    printf("ancora un attimo");
     std::ofstream outfile_media("medie_angoliEst.txt", std::ios::app);
     if (outfile_media.is_open()){
         outfile_media << angolo << "\t" << h_conteggi.GetMean() << "\t" << h_conteggi.GetStdDev() << "\n" << std::endl;
         outfile_media.close();
     }
-    printf("ho finito");
 
     return 0;
 }

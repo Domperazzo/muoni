@@ -25,60 +25,75 @@ using namespace std ;
 
 int main (int argc, char ** argv){
 
-    gStyle->SetOptFit(1112);
+  gStyle->SetOptFit(1112);
+  
+  double tau1[2], tau2[2], Vs1[2], Vs2[2];
+  ifstream parametri;
+  parametri.open("Dati/Parametri_medi.txt");
+  parametri.ignore(numeric_limits<streamsize>::max(), '\n');
+  parametri >> tau1[0] >> tau1[1] >> tau2[0] >> tau2[1] >> Vs1[0] >> Vs1[1] >> Vs2[0] >> Vs2[1];
 
-    double Vs1 = 1.38, Vs2 = 0.92, tau1 = 108, tau2 = 94.7;
-    int nbin = 100;
-    double sigma_TDC1;
-    double sigma_TDC2;
+  parametri.close();
 
-    double m[] = {0.1221, 0.0008013}; // coefficiente angolare retta di calibrazione TDC
-    double q[] = {0.8727, 0.3014};    // intercetta retta di calibrazione TDC
+  cout<<tau1[0]<<endl;
+  cout<<tau1[1]<<endl;
 
-    vector<double> ADC1, ADC2, TDC, x1, e1, y1, ex1, x2, e2, ex2, y2;
-    double adc1, adc2, tdc, maxADC1 = 0, minADC1 = 10000, maxADC2 = 0, minADC2 = 10000, bin1, bin2, somma1 = 0, somma1q = 0, somma2 = 0, somma2q = 0, conta1 = 0, conta2 = 0, i = 0, j = 0;
 
-    ifstream myfile;
-    myfile.open("Dati_tdcadc_38,2cm.txt");
+  int nbin = 100;
+  double sigma_TDC1;
+  double sigma_TDC2;
 
-    while (!myfile.eof())
+  double m[] = {0.1221, 0.0008013}; // coefficiente angolare retta di calibrazione TDC
+  double q[] = {0.8727, 0.3014};    // intercetta retta di calibrazione TDC
+
+  vector<double> ADC1, ADC2, TDC_megacorretto, e_TDC_megacorretto, TDC_scorretto, eTDC, x1, e1, y1, ex1, x2, e2, ex2, y2;
+  double adc1, adc2, tdc_c, tdc_s, maxADC1 = 0, minADC1 = 10000, maxADC2 = 0, minADC2 = 10000, bin1, bin2, peso1, peso2, somma1 = 0, sommapesi1 = 0, somma2 = 0, sommapesi2 = 0, varianza_tdc, i = 0, j = 0;
+
+  ifstream dati;
+  dati.open("Dati/Dati_tdcadc_9,5cm.txt");
+
+  while (!dati.eof())
+  {
+
+    dati >> tdc_s;
+    tdc_c = tdc_s * m[0] + q[0];
+
+    dati >> adc1;
+    dati >> adc2;
+    if (adc1 >= 140 && adc1 <= 320 && adc2 >= 100 && adc2 <= 240)
     {
 
-      myfile >> tdc;
-      tdc = tdc * m[0] + q[0];
+      ADC1.push_back(adc1);
+      ADC2.push_back(adc2);
+      TDC_scorretto.push_back(tdc_s);
+      TDC_megacorretto.push_back(tdc_c - tau1[0] * log(adc1 / (adc1 - Vs1[0])) + tau2[0] * log(adc2 / (adc2 - Vs2[0]))); /*correzione tempi*/
+      varianza_tdc = pow(q[1], 2) + pow(tdc_s*m[1], 2) + pow(tau1[1]*log( adc1/(adc1-Vs1[0]) ), 2) + pow(tau2[1]*log(adc2/(adc2-Vs2[0])), 2) + pow(Vs1[1]*tau1[0]/(adc1-Vs1[0]), 2) + pow(Vs2[1]*tau2[0]/(adc2-Vs2[0]), 2);
+      e_TDC_megacorretto.pushback( sqrt(varianza_tdc) );
 
-      myfile >> adc1;
-      myfile >> adc2;
-      if (adc1 >= 140 && adc1 <= 320 && adc2 >= 100 && adc2 <= 240)
-      {
+      if (adc1 < minADC1)
+        minADC1 = adc1;
 
-        ADC1.push_back(adc1);
-        ADC2.push_back(adc2);
-        TDC.push_back(tdc - tau1 * log(adc1 / (adc1 - Vs1)) + tau2 * log(adc2 / (adc2 - Vs2)));
+      if (adc2 < minADC2)
+        minADC2 = adc2;
 
-        if (adc1 < minADC1)
-          minADC1 = adc1;
+      if (adc1 > maxADC1)
+        maxADC1 = adc1;
 
-        if (adc2 < minADC2)
-          minADC2 = adc2;
-
-        if (adc1 > maxADC1)
-          maxADC1 = adc1;
-
-        if (adc2 > maxADC2)
-          maxADC2 = adc2;
-      }
+      if (adc2 > maxADC2)
+        maxADC2 = adc2;
+    }
   }
-  myfile.close();
+  dati.close();
+  
   
   
   ofstream OutFile; /* Dichiarazione di tipo */
-  OutFile.open ("Dati_tdcadc_38,2cm_AWcorr.txt"); /* Apertura del file */
+  OutFile.open ("Dati/Dati_tdcadc_9,5cm_AWcorr.txt"); /* Apertura del file */
   if (!OutFile) {
     cout << "Errore di apertura del file" << endl; /* controllo */
   } else {
   for(int i=0;i<ADC1.size();i++) {
-    OutFile << TDC.at(i) <<" "<< ADC1.at(i) << " " << ADC2.at(i) << "\n" << endl; /* scrittura dati */
+    OutFile << TDC_megacorretto.at(i) <<" "<< e_TDC_megacorretto.at(i) <<" "<< ADC1.at(i) << " " << ADC2.at(i) << "\n" << endl; /* scrittura dati */
   }
   OutFile.close(); /* chiusura file */
   }
@@ -92,14 +107,16 @@ int main (int argc, char ** argv){
           
     for(j=0;j<ADC1.size();j++){
       if( ( ADC1.at(j)<(minADC1+(i+1)*bin1) )&&( ADC1.at(j)>(minADC1+i*bin1))){
-        somma1=somma1+TDC.at(j);
-        somma1q=somma1q+TDC.at(j)*TDC.at(j);
-        conta1++;
+        peso1 = 1/( pow(e_TDC_megacorretto.at(j), 2) ); /* peso = 1/sigma quadra */
+        somma1=somma1+TDC_megacorretto.at(j)*peso1;
+        sommapesi1=sommapesi1+peso1;
+
       }
       if( ( ADC2.at(j)<(minADC2+(i+1)*bin2) )&&( ADC2.at(j)>(minADC2+i*bin2))){
-        somma2=somma2+TDC.at(j);
-        somma2q=somma2q+TDC.at(j)*TDC.at(j);
-        conta2++;
+        peso2 = 1/( pow(e_TDC_megacorretto.at(j), 2) ); 
+        somma2=somma2+TDC_megacorretto.at(j)*peso2;
+        sommapesi2=sommapesi2+peso2;
+
       }
           
           
@@ -107,26 +124,22 @@ int main (int argc, char ** argv){
           
     x1.push_back(minADC1+i*bin1+bin1/2);
     ex1.push_back(0);
-    cout<<x1.at(i)<<" \n "<<endl;
 
-    y1.push_back(somma1/conta1);
-    sigma_TDC1 = (somma1q/conta1+(somma1/conta1)*(somma1/conta1))/conta1;
-    e1.push_back(sqrt(  pow(q[1], 2) + pow(m[0]*sigma_TDC1, 2) + pow((somma1/conta1)*m[1], 2)  ));
-    cout<<y1.at(i)<<" \n "<<endl;
+    y1.push_back(somma1/sommapesi1);
+    e1.push_back();
+
 
     x2.push_back(minADC2+i*bin2+bin2/2);
     ex2.push_back(0);
 
-    y2.push_back(somma2/conta2);
-    sigma_TDC2 = (somma2q/conta2+(somma2/conta2)*(somma2/conta2))/conta2;
-    e2.push_back(sqrt(  pow(q[1], 2) + pow(m[0]*sigma_TDC2, 2) + pow((somma2/conta2)*m[1], 2)  ));
+    y2.push_back(somma2/sommapesi2);    
+    e2.push_back();
           
     somma1=0;
-    conta1=0;
-    somma1q = 0;
+    sommapesi1=0;
     somma2=0;
-    conta2=0;
-    somma2q = 0;
+    sommapesi2=0;
+
   }
 
 
@@ -150,7 +163,7 @@ int main (int argc, char ** argv){
 
 //fit energia 1
   TF1 f_fit ("f_fit", logo, minADC1-bin1, maxADC1+bin1, 2) ;
- //perche i tagli tolgono la parte piu interessante del fit?(dove non � piu una retta)
+
   TFitResultPtr fit_result = funz.Fit (&f_fit, "S") ;
 
   cout << endl ;
@@ -161,7 +174,7 @@ int main (int argc, char ** argv){
 
   TCanvas c1 ("c1", "", 800, 800) ;
   funz.Draw ("AP") ;
-  c1.Print("corretto-amplitude_walk_ADC1.pdf", "pdf");
+  c1.Print("Grafici/9,5_corretto_ADC1.pdf", "pdf");
 
   // fit energia 2
 
@@ -177,7 +190,7 @@ int main (int argc, char ** argv){
 
   TCanvas c2 ("c2", "", 800, 800) ;
   funz2.Draw ("AP") ;
-  c2.Print ("corretto-amplitude_walk_ADC2.pdf", "pdf") ; 
+  c2.Print ("Grafici/9,5_corretto_ADC2.pdf", "pdf") ; 
 
 
     return 0 ;

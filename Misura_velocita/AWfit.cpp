@@ -51,7 +51,7 @@ int main (int argc, char ** argv){
 
 //grafico energia 1-----------------------------------------------------------------
 
-  myfile.open("Dati_tdcadc_38,2cm.txt");
+  myfile.open("Dati/Dati_tdcadc_38,2cm.txt");
   while(!myfile.eof()){
     myfile >> TDCdata;
     TDCdata_corretto = TDCdata*m[0] + q[0];
@@ -100,7 +100,7 @@ int main (int argc, char ** argv){
 
   TCanvas c1 ("c1", "", 800, 800);
   hprofile1->Draw ("AP");
-  c1.Print ("AWfit_38,2cm_energia1 - TProfile.pdf", "pdf"); 
+  c1.Print ("Grafici/AWfit_38,2cm_energia1 - TProfile.pdf", "pdf"); 
 
 //svuota i vettori
   vx.clear();
@@ -113,7 +113,7 @@ int main (int argc, char ** argv){
 
 //grafico energia 2-----------------------------------------------------------------
   
-  myfile.open("Dati_tdcadc_38,2cm.txt");
+  myfile.open("Dati/Dati_tdcadc_38,2cm.txt");
   while(!myfile.eof()){
     myfile >> TDCdata;
     TDCdata_corretto = TDCdata*m[0] + q[0];
@@ -156,7 +156,7 @@ int main (int argc, char ** argv){
 
   TCanvas *c2 = new TCanvas();
   hprofile2->Draw();
-  c2->Print("AWfit_38,2cm_energia2 - TProfile.pdf", "pdf");
+  c2->Print("Grafici/AWfit_38,2cm_energia2 - TProfile.pdf", "pdf");
 
   return 0 ;
 }

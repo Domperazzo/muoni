@@ -60,7 +60,7 @@ int main(int argc, char **argv) {
   TFitResultPtr fit_result = g1.Fit(&modello, "S");
 
   TCanvas c1;
-  g1.SetTitle("Calibrazione TDC; TDC; Tempo [s]");
+  g1.SetTitle("Calibrazione TDC; TDC; Tempo [ns]");
   g1.Draw("AP");
   theApp.Run();
 
