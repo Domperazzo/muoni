@@ -25,6 +25,7 @@ using namespace std ;
 
 int main (int argc, char ** argv){
 
+  TApplication theApp("theApp", &argc, argv);
   gStyle->SetOptFit(1112);
   
   double tau1[2], tau2[2], Vs1[2], Vs2[2];
@@ -34,9 +35,6 @@ int main (int argc, char ** argv){
   parametri >> tau1[0] >> tau1[1] >> tau2[0] >> tau2[1] >> Vs1[0] >> Vs1[1] >> Vs2[0] >> Vs2[1];
 
   parametri.close();
-
-  cout<<tau1[0]<<endl;
-  cout<<tau1[1]<<endl;
 
 
   int nbin = 100;
@@ -50,7 +48,10 @@ int main (int argc, char ** argv){
   double adc1, adc2, tdc_c, tdc_s, maxADC1 = 0, minADC1 = 10000, maxADC2 = 0, minADC2 = 10000, bin1, bin2, peso1, peso2, somma1 = 0, sommapesi1 = 0, somma2 = 0, sommapesi2 = 0, varianza_tdc, i = 0, j = 0;
 
   ifstream dati;
-  dati.open("Dati/Dati_tdcadc_9,5cm.txt");
+  string fileDati = "Dati/Dati_tdcadc_";
+  string lunghezza = argv[1];
+  string estensione = ".txt";
+  dati.open((fileDati+lunghezza+estensione).c_str());
 
   while (!dati.eof())
   {
@@ -67,8 +68,8 @@ int main (int argc, char ** argv){
       ADC2.push_back(adc2);
       TDC_scorretto.push_back(tdc_s);
       TDC_megacorretto.push_back(tdc_c - tau1[0] * log(adc1 / (adc1 - Vs1[0])) + tau2[0] * log(adc2 / (adc2 - Vs2[0]))); /*correzione tempi*/
-      varianza_tdc = pow(q[1], 2) + pow(tdc_s*m[1], 2) + pow(tau1[1]*log( adc1/(adc1-Vs1[0]) ), 2) + pow(tau2[1]*log(adc2/(adc2-Vs2[0])), 2) + pow(Vs1[1]*tau1[0]/(adc1-Vs1[0]), 2) + pow(Vs2[1]*tau2[0]/(adc2-Vs2[0]), 2);
-      e_TDC_megacorretto.pushback( sqrt(varianza_tdc) );
+      varianza_tdc = pow(q[1], 2) + pow(1*m[0], 2) + pow(tdc_s*m[1], 2) + pow(tau1[1]*log( adc1/(adc1-Vs1[0]) ), 2) + pow(tau2[1]*log(adc2/(adc2-Vs2[0])), 2) + pow(Vs1[1]*tau1[0]/(adc1-Vs1[0]), 2) + pow(Vs2[1]*tau2[0]/(adc2-Vs2[0]), 2);
+      e_TDC_megacorretto.push_back( sqrt(varianza_tdc) );
 
       if (adc1 < minADC1)
         minADC1 = adc1;
@@ -88,7 +89,8 @@ int main (int argc, char ** argv){
   
   
   ofstream OutFile; /* Dichiarazione di tipo */
-  OutFile.open ("Dati/Dati_tdcadc_9,5cm_AWcorr.txt"); /* Apertura del file */
+  string estensioneCorr = "_AWcorr.txt";
+  OutFile.open ((fileDati+lunghezza+estensioneCorr).c_str()); /* Apertura del file */
   if (!OutFile) {
     cout << "Errore di apertura del file" << endl; /* controllo */
   } else {
@@ -126,14 +128,14 @@ int main (int argc, char ** argv){
     ex1.push_back(0);
 
     y1.push_back(somma1/sommapesi1);
-    e1.push_back();
+    e1.push_back(1);
 
 
     x2.push_back(minADC2+i*bin2+bin2/2);
     ex2.push_back(0);
 
     y2.push_back(somma2/sommapesi2);    
-    e2.push_back();
+    e2.push_back(1);
           
     somma1=0;
     sommapesi1=0;
@@ -145,6 +147,12 @@ int main (int argc, char ** argv){
 
   TGraphErrors funz (x1.size (), &x1[0], &y1[0], &ex1[0], &e1[0]) ;
   TGraphErrors funz2 (x2.size (), &x2[0], &y2[0], &ex2[0], &e2[0]) ;
+
+  funz.SetMinimum(20);
+  funz.SetMaximum(40);
+  
+  funz2.SetMinimum(20);
+  funz2.SetMaximum(40);
 
   funz.SetMarkerStyle(105);
   funz.SetMarkerColor(4);
@@ -174,7 +182,11 @@ int main (int argc, char ** argv){
 
   TCanvas c1 ("c1", "", 800, 800) ;
   funz.Draw ("AP") ;
-  c1.Print("Grafici/9,5_corretto_ADC1.pdf", "pdf");
+  string fileGrafici = "Grafici/";
+  string estensionePDF1 = "_corretto_ADC1.pdf";
+ 
+
+  c1.Print((fileGrafici+lunghezza+estensionePDF1).c_str(), "pdf");
 
   // fit energia 2
 
@@ -190,8 +202,11 @@ int main (int argc, char ** argv){
 
   TCanvas c2 ("c2", "", 800, 800) ;
   funz2.Draw ("AP") ;
-  c2.Print ("Grafici/9,5_corretto_ADC2.pdf", "pdf") ; 
+  string estensionePDF2 = "_corretto_ADC2.pdf";
+  
 
+  c2.Print ((fileGrafici+lunghezza+estensionePDF2).c_str(), "pdf") ; 
+  theApp.Run();
 
     return 0 ;
   }

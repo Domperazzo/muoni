@@ -21,7 +21,10 @@ int main(int argc, char* argv[]){
 
 
     ifstream dati;
-    dati.open("Dati/Dati_tdcadc_97,15cm.txt", ios::in);
+	string fileDati = "Dati/Dati_tdcadc_";
+    string lunghezza = argv[1];
+    string estensione = ".txt";
+    dati.open((fileDati+lunghezza+estensione).c_str(), ios::in);
     double TDCdata, ADCdata1, ADCdata2;
 
     double m[] = {0.1221, 0.0008013};
@@ -40,7 +43,9 @@ int main(int argc, char* argv[]){
 
     distribuzione_tempi.SetFillColor (kOrange + 2) ;
     distribuzione_tempi.Draw ();
-    c1.Print("Grafici/Distribuzione_tempi_38,2cm.pdf", "pdf");
+    string fileGrafici = "Grafici/Distribuzione_tempi_";
+    string estensionePDF = ".pdf";
+    c1.Print((fileGrafici+lunghezza+estensionePDF).c_str(), "pdf");
 
     return 0;
 }

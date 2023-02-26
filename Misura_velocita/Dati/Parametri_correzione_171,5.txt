@@ -1,3 +1,0 @@
-tau1 	 e_tau1 	 tau2 	 e_tau2 	 Vs1 	 e_vs1 		 Vs2 	 e_vs2 
-0.04 nan 	 64.9348 3.60615 	 140.9 nan 	 2.40466 0.134688 
-
