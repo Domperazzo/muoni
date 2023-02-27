@@ -8,44 +8,79 @@
 #include "TApplication.h"
 #include "TCanvas.h"
 #include "TGraphErrors.h"
-#include "TH1F.h"
+#include "TF1.h"
 #include "TAxis.h"
 #include "TFitResult.h"
+#include "TStyle.h"
 
-#define NEV 80000
+double retta (double * x, double * par)
+  {
+    return par[0] + par[1] * x[0] ;
+  }
 
 using namespace std;
 int main(int argc, char* argv[]){
-    
-    TH1F distribuzione_tempi ("hist", "Distribuzione dei tempi di volo", sqrt(NEV), 10., 50.); // nome, n bin, min, max
 
+    gStyle->SetOptFit(1112);
 
-    ifstream dati;
-	string fileDati = "Dati/Dati_tdcadc_";
-    string lunghezza = argv[1];
-    string estensione = ".txt";
-    dati.open((fileDati+lunghezza+estensione).c_str(), ios::in);
-    double TDCdata, ADCdata1, ADCdata2;
-
-    double m[] = {0.1221, 0.0008013};
-    double q[] = {0.8727, 0.3014};
-
-    while(!dati.eof()){
-        dati >> TDCdata;
-        dati >> ADCdata1;
-        dati >> ADCdata2;
-        distribuzione_tempi.Fill(TDCdata*m[0] + q[0]);
+    vector<double> TDC, TDC_err, dist, dist_err;
+    double adc1, adc2, tdc, e_tdc, somma=0, peso, sommapesi=0;
+    TCanvas c1 ("c1", "c1", 100, 100, 1000, 1000) ;
+    double correzione[4] = {1.26, 1.26, 1.26, 1.26};
+	
+    ifstream dati_corretti;
+    string fileDati = "Dati/Dati_tdcadc_";
+  	string estensioneCorr = "_AWcorr.txt";
+  	for(int i = 0; i<4; i++){
+    dati_corretti.open((fileDati+argv[i+1]+estensioneCorr).c_str());
+ 
+	while(!dati_corretti.eof()){
+		dati_corretti >> tdc;
+		dati_corretti >> e_tdc;
+		dati_corretti >> adc1; //ignorato
+		dati_corretti >> adc2; //ignorato
+		
+		peso = 1/pow(e_tdc, 2);
+		somma=somma+tdc*peso;
+		sommapesi=sommapesi+peso;
+	}
+	dati_corretti.close();
+	  
+    TDC.push_back(somma/sommapesi);
+    cout << "media tempi: " << somma/sommapesi << endl;
+    TDC_err.push_back(sqrt(1/sommapesi));
+    cout << "errore:" <<sqrt(1/sommapesi) << endl;
+   
+    dist.push_back(correzione[i]*stod(argv[i+1])/100.);
+    cout << "lunghezza in metri: " << stod(argv[i+1])/100. << endl;
+    dist_err.push_back(correzione[i]*0.002);
+   
+    somma = 0; 
+    sommapesi = 0;
     }
-    dati.close();
 
-//distribuzione dei tempi di volo per ogni distanza L
-    TCanvas c1 ("c1", "", 800, 800) ;
+	TGraphErrors funz (dist.size (), &dist[0], &TDC[0], &dist_err[0], &TDC_err[0]) ;
+	funz.SetMarkerStyle (4) ;
+	funz.SetMarkerColor (kRed) ;
+	
+	funz.GetXaxis()->SetTitle("distanze [m]");
+    funz.GetYaxis()->SetTitle("tempi[ns]");
+    
+    funz.SetTitle("tempi di volo Vs distanze");
 
-    distribuzione_tempi.SetFillColor (kOrange + 2) ;
-    distribuzione_tempi.Draw ();
-    string fileGrafici = "Grafici/Distribuzione_tempi_";
-    string estensionePDF = ".pdf";
-    c1.Print((fileGrafici+lunghezza+estensionePDF).c_str(), "pdf");
+    TF1 f_fit ("f_fit", retta, 0., 3., 2) ;
+    TFitResultPtr fit_result = funz.Fit (&f_fit, "S") ;
+
+  	cout << endl ;
+	cout.precision (3) ;
+    cout << "risultato del fit: " << fit_result->IsValid () << endl ;
+    cout << "termine noto : " << f_fit.GetParameter (0) << "\t+- " << f_fit.GetParError (0) << endl ;
+    cout << "pendenza (inverso velocità muoni)     : " << f_fit.GetParameter (1) << "\t+- " << f_fit.GetParError (1) << endl ;
+
+
+    funz.Draw ("AP") ;
+    c1.Print ("velocità_finale.pdf", "pdf") ; 
+
 
     return 0;
 }
