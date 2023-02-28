@@ -1,5 +1,6 @@
 /*
   c++ -o controllotempi controllotempi.cpp `root-config --glibs --cflags`
+  ./controllotempi 9.5cm
 */
 
 #include <iostream>
@@ -29,6 +30,8 @@ int main (int argc, char ** argv){
   gStyle->SetOptFit(1112);
   
   double tau1[2], tau2[2], Vs1[2], Vs2[2];
+  e_TDC;
+
   ifstream parametri;
   parametri.open("Dati/Parametri_medi.txt");
   parametri.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -61,6 +64,20 @@ int main (int argc, char ** argv){
 
     dati >> adc1;
     dati >> adc2;
+
+    if(stod(argv[1]) == 9.5){
+      e_TDC = 17.15; //canali
+    }
+    if(stod(argv[1]) == 38.2){
+      e_TDC = 19.04; //canali
+    }
+    if(stod(argv[1]) == 97.15){
+      e_TDC = 23.8; //canali
+    }
+    if(stod(argv[1]) == 171.5){
+      e_TDC = 26.94; //canali
+    }
+
     if (adc1 >= 140 && adc1 <= 320 && adc2 >= 100 && adc2 <= 240)
     {
 
@@ -68,7 +85,7 @@ int main (int argc, char ** argv){
       ADC2.push_back(adc2);
       TDC_scorretto.push_back(tdc_s);
       TDC_megacorretto.push_back(tdc_c - tau1[0] * log(adc1 / (adc1 - Vs1[0])) + tau2[0] * log(adc2 / (adc2 - Vs2[0]))); /*correzione tempi*/
-      varianza_tdc = pow(q[1], 2) + pow(1*m[0], 2) + pow(tdc_s*m[1], 2) + pow(tau1[1]*log( adc1/(adc1-Vs1[0]) ), 2) + pow(tau2[1]*log(adc2/(adc2-Vs2[0])), 2) + pow(Vs1[1]*tau1[0]/(adc1-Vs1[0]), 2) + pow(Vs2[1]*tau2[0]/(adc2-Vs2[0]), 2);
+      varianza_tdc = pow(q[1], 2) + pow(e_TDC*m[0], 2) + pow(tdc_s*m[1], 2) + pow(tau1[1]*log( adc1/(adc1-Vs1[0]) ), 2) + pow(tau2[1]*log(adc2/(adc2-Vs2[0])), 2) + pow(Vs1[1]*tau1[0]/(adc1-Vs1[0]), 2) + pow(Vs2[1]*tau2[0]/(adc2-Vs2[0]), 2);
       e_TDC_megacorretto.push_back( sqrt(varianza_tdc) );
 
       if (adc1 < minADC1)

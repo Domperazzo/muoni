@@ -28,6 +28,7 @@ double y_coinc_coord(double L, double k_y, double y0){
 
 double rand_phi(double min, double max){
     double k=0;
+    
     do{
         k=min + (max - min) * rand() /static_cast<double> (RAND_MAX);
     }while(k==2*M_PI);
@@ -35,7 +36,7 @@ double rand_phi(double min, double max){
 }
 
 double f_cos2(double x){
-    return 4*pow(cos(x), 2)/M_PI;
+    return 4*pow(cos(x), 2)/M_PI; //integrale 
 }
 
 double rand_theta(double f(double), double xMin, double xMax, double yMax)
@@ -59,3 +60,5 @@ double get_path (double L, double K_x, double K_y, double x0, double y0){
     double delta_y = y0 - L*K_y; 
     return sqrt(pow(x0 - delta_x, 2) + pow(y0 - delta_y, 2) + pow(L, 2) );
 } 
+
+

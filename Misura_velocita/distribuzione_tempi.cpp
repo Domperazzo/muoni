@@ -1,3 +1,8 @@
+/*
+c++ -o distribuzione_tempi distribuzione_tempi.cpp `root-config --glibs --cflags`
+./distribuzione_tempi 9.5cm
+*/
+
 #include <iostream>
 #include <fstream> 
 #include <sstream>
@@ -18,7 +23,7 @@ using namespace std;
 int main(int argc, char* argv[]){
 
 //distribuzione dei tempi di volo per ogni distanza L    
-    TH1F distribuzione_tempi ("hist", "Distribuzione dei tempi di volo", sqrt(NEV), 10., 50.); // nome, n bin, min, max
+    TH1F distribuzione_tempi ("hist", "Distribuzione dei tempi di volo", sqrt(NEV), 1., 500.); // nome, n bin, min, max
 
     ifstream dati;
 	string fileDati = "Dati/Dati_tdcadc_";
@@ -34,7 +39,7 @@ int main(int argc, char* argv[]){
         dati >> TDCdata;
         dati >> ADCdata1;
         dati >> ADCdata2;
-        distribuzione_tempi.Fill(TDCdata*m[0] + q[0]);
+        distribuzione_tempi.Fill(TDCdata);
     }
     dati.close();
 

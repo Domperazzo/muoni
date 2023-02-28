@@ -1,5 +1,6 @@
 /*
   c++ -o t_profile_fatto_in_casa t_profile_fatto_in_casa.cpp `root-config --glibs --cflags`
+  ./t_profile_fatto_in_casa 9.5cm
 */
 
 #include <iostream>
@@ -33,6 +34,7 @@ int main (int argc, char ** argv){
     int nbin = 100;
     double sigma_TDC1;
     double sigma_TDC2;
+    double e_TDC;
 
     double m[] = {0.1221, 0.0008013}; // coefficiente angolare retta di calibrazione TDC
     double q[] = {0.8727, 0.3014};    // intercetta retta di calibrazione TDC
@@ -80,18 +82,31 @@ int main (int argc, char ** argv){
   bin1=(maxADC1-minADC1)/nbin;
       
   bin2=(maxADC2-minADC2)/nbin;
+
+  if(stod(argv[1]) == 9.5){
+    e_TDC = 17.15; //canali
+  }
+  if(stod(argv[1]) == 38.2){
+    e_TDC = 19.04; //canali
+  }
+  if(stod(argv[1]) == 97.15){
+    e_TDC = 23.8; //canali
+  }
+  if(stod(argv[1]) == 171.5){
+    e_TDC = 26.94; //canali
+  }
       
   for(i=0;i<nbin;i++){
           
     for(j=0;j<ADC1.size();j++){
       if( ( ADC1.at(j)<(minADC1+(i+1)*bin1) )&&( ADC1.at(j)>(minADC1+i*bin1))){
-        peso1 = 1/( pow(q[1], 2) + pow(1*m[0], 2) +pow(TDC_scorretto.at(j)*m[1], 2) ); /* peso = 1/sigma quadra */
+        peso1 = 1/( pow(q[1], 2) + pow(e_TDC*m[0], 2) +pow(TDC_scorretto.at(j)*m[1], 2) ); /* peso = 1/sigma quadra */
         somma1=somma1+TDC_corretto.at(j)*peso1;
         sommapesi1=sommapesi1+peso1;
 
       }
       if( ( ADC2.at(j)<(minADC2+(i+1)*bin2) )&&( ADC2.at(j)>(minADC2+i*bin2))){
-        peso2 = 1/( pow(q[1], 2) + pow(1*m[0], 2) + pow(TDC_scorretto.at(j)*m[1], 2) ); 
+        peso2 = 1/( pow(q[1], 2) + pow(e_TDC*m[0], 2) + pow(TDC_scorretto.at(j)*m[1], 2) ); 
         somma2=somma2+TDC_corretto.at(j)*peso2;
         sommapesi2=sommapesi2+peso2;
 
