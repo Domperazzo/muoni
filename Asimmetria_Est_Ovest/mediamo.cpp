@@ -28,7 +28,7 @@ int main(int argc, char* argv[]){
     TH1F h_conteggi("h_conteggi", "h_conteggi", 50, 0, 1500);
 
     std::ifstream dati;
-    dati.open("SCA_20deg_Est.txt", std::ios::in);
+    dati.open("Dati/SCA_20deg_Est.txt", std::ios::in);
     std::vector<double> v_conteggi;
     while (true){
         double conteggi;

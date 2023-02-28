@@ -52,13 +52,13 @@ int main(int argc, char const *argv[]) {
   mediaS2 = calcMedia(v_S2);
   varS2 = sqrt(calcVarianza(v_S2)/v_S2.size());
 
-  std::ofstream outfile_media1("S1.txt", std::ios::app);
+  std::ofstream outfile_media1("Dati/S1.txt", std::ios::app);
   if (outfile_media1.is_open()) {
     outfile_media1 << mediaS1 << "\t" << varS1 << std::endl;
     outfile_media1.close();
   }
 
-  std::ofstream outfile_media2("S2.txt", std::ios::app);
+  std::ofstream outfile_media2("Dati/S2.txt", std::ios::app);
   if (outfile_media2.is_open()) {
     outfile_media2 << mediaS2 << "\t" << varS2 << std::endl;
     outfile_media2.close();

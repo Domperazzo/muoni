@@ -28,7 +28,7 @@ int main(int argc, char **argv) {
   gStyle->SetOptFit(1112);
 //alimentazione S1 = 1275 S2 = 1350
   std::ifstream dati;
-  dati.open("dati.txt", std::ios::in);
+  dati.open("Dati/dati.txt", std::ios::in);
   std::vector<double> v_sogliaS1, v_sogliaS2, v_conteggiS1, v_conteggiS2;
   while (true) {
       double sogliaS1, sogliaS2, conteggiS1, conteggiS2;

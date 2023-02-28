@@ -30,7 +30,7 @@ int main(int argc, char **argv){
     int angoliEst = 0;
     int angoliOvest = 0;
     std::ifstream datiEst;
-    datiEst.open("medie_angoliEst.txt", std::ios::in);
+    datiEst.open("Dati/medie_angoliEst.txt", std::ios::in);
     std::vector<double> v_angoliEst, v_meanEst, v_sigmaEst;
     while (true){
         double p0, p1, p2;

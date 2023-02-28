@@ -67,7 +67,7 @@ int main(int argc, char **argv) {
   gStyle->SetOptFit(1112);
 
   std::ifstream dati;
-  dati.open("S1.txt", std::ios::in);
+  dati.open("Dati/S1.txt", std::ios::in);
   std::vector<double> v_media, v_sigma;
   while (true) {
       double media, sigma;
@@ -79,7 +79,7 @@ int main(int argc, char **argv) {
   dati.close();
 
   std::ifstream soglia;
-  soglia.open("soglie.txt", std::ios::in);
+  soglia.open("Dati/soglie.txt", std::ios::in);
   std::vector<double> v_soglie1, v_soglie2;
   while (true) {
       double sogliola1, sogliola2;

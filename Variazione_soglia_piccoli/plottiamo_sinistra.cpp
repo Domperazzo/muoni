@@ -27,7 +27,7 @@ int main(int argc, char **argv) {
   gStyle->SetOptFit(1112);
 
   std::ifstream dati;
-  dati.open("Tsinistra.txt", std::ios::in);
+  dati.open("Dati/Tsinistra.txt", std::ios::in);
   std::vector<double> v_media, v_soglie;// v_sigma;
   while (true) {
       double soglia, media1, media2;// sigma;

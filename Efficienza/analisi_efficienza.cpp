@@ -27,7 +27,7 @@ int main(int argc, char **argv) {
   gStyle->SetOptFit(1112);
 //abbiamo usato una soglia di 800mV
   std::ifstream dati;
-  dati.open("dati.txt", std::ios::in);
+  dati.open("Dati/dati.txt", std::ios::in);
   std::vector<double> v_AlimentazioneS1, v_AlimentazioneS2, v_doppia, v_triplaS1, v_triplaS2, v_conteggiS1, v_conteggiS2;
   while (true) {
       double AlimentazioneS1, AlimentazioneS2, doppia, triplaS1, triplaS2, conteggiS1, conteggiS2;

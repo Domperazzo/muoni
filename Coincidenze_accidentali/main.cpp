@@ -29,7 +29,7 @@ int main(int argc, char **argv) {
   gStyle->SetOptFit(1112);
 
   std::ifstream dati;
-  dati.open("g1.txt", std::ios::in);
+  dati.open("Dati/g1.txt", std::ios::in);
   std::vector<double> v_ritardo, v_conteggi;
   while (true) {
       double ritardo, conteggi;
@@ -41,7 +41,7 @@ int main(int argc, char **argv) {
   dati.close();
 
   std::ifstream dati2;
-  dati2.open("g2.txt", std::ios::in);
+  dati2.open("Dati/g2.txt", std::ios::in);
   std::vector<double> v_ritardo2, v_conteggi2;
   while (true) {
       double ritardo2, conteggi2;
