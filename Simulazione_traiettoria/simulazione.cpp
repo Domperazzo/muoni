@@ -16,8 +16,8 @@
 #include "muon_class.h"
 
 
-#define L 1 //distanza tra i 2 rivelatori in cm
-#define N 10e7 //tentativi
+#define L 9.5 //distanza tra i 2 rivelatori in cm
+#define N 1e9 //tentativi
 #define R 80
 #define larghezza 80.0 //in cm
 #define profondita 30.0 //in cm
@@ -37,7 +37,7 @@ int main (int argc, char ** argv){
     int j=0;
     int conteggi = 0;
     while (j < N){
-      muone muon(rand_theta(f_cos2, -M_PI/2, 0, 4/M_PI), rand_phi(0, 2*M_PI));
+      muone muon(rand_theta(f_cos2, -M_PI/2, 0, 3), rand_phi(0, 2*M_PI));
       double x0 = rand_range(-larghezza / 2, larghezza / 2);
       double y0 = rand_range(-profondita / 2, profondita / 2);
       if (is_coincidence(L, muon.coeff_x(), muon.coeff_y(), x0, y0) == true)
@@ -72,33 +72,13 @@ int main (int argc, char ** argv){
     TCanvas c1;
     h_path.SetFillColor (kOrange + 1) ;
     h_path.Draw ();
-    c1.Print ("Distanze simulate L=1.pdf", "pdf") ;
+    c1.Print ("Distanze simulate L=9,5.pdf", "pdf") ;
 
     TCanvas c2;
     c2.SetRightMargin(.15);
     gStyle->SetPalette(57);
     h2_positions.Draw("COLZ1");
-    c2.Print("Distribuzione2D L=1.pdf", "pdf");
-
-    TCanvas c3;
-    projh2X->SetFillColor(kAzure);
-    projh2X->Draw();
-    c3.Print("Distribuzione2Dx.pdf", "pdf");
-    TCanvas c4;
-    projh2Y->SetFillColor(kViolet);
-    projh2Y->Draw();
-    c4.Print("Distribuzione2Dy.pdf", "pdf");
-    TCanvas c5;
-    g2d.SetMarkerStyle(20);
-    g2d.Draw("surf2");
-    c5.Print("Posizioni iniziali.pdf", "pdf");
-
-    TCanvas c6;
-    h_theta.Draw();
-    c6.Print()
-    TCanvas c7;
-    h_phi.Draw();
-    c6.Print();
+    c2.Print("Distribuzione2D L=9,5.pdf", "pdf");
     
     theApp.Run();
     return 0;
