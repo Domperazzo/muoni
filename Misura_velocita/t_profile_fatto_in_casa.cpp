@@ -174,18 +174,18 @@ int main (int argc, char ** argv){
          2 --> 31
   38,2:  0 --> 31 
          1 --> 0.4 
-         2 --> 31
+         2 --> 18
   97,15: 0 --> 31
          1 --> 0.4
-         2 --> 10
+         2 --> 18
   171,5: 0 --> 31
-         1 --> 0.04
-         2 --> 88
+         1 --> 0.4
+         2 --> 18
 
   */
   f_fit.SetParameter (0, 31);
-  f_fit.SetParameter (1, 0.04);
-  f_fit.SetParameter (2, 31); //perche i tagli tolgono la parte piu interessante del fit?(dove non è piu una retta)
+  f_fit.SetParameter (1, 0.4);
+  f_fit.SetParameter (2, 18); //perche i tagli tolgono la parte piu interessante del fit?(dove non è piu una retta)
   TFitResultPtr fit_result = funz.Fit (&f_fit, "SQ") ;
 
   cout << endl ;
@@ -217,12 +217,12 @@ int main (int argc, char ** argv){
          1 --> -0.04
          2 --> 18
   171,5: 0 --> 31
-         1 --> -1.3
-         2 --> 31
+         1 --> -0.04
+         2 --> 18
   */
   f_fit2.SetParameter (0, 31); 
-  f_fit2.SetParameter (1, -3.86);
-  f_fit2.SetParameter (2, 31); 
+  f_fit2.SetParameter (1, -0.04);
+  f_fit2.SetParameter (2, 18); 
   TFitResultPtr fit_result2 = funz2.Fit (&f_fit2, "SQ") ;
 
   cout << endl ;

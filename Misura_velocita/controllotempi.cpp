@@ -30,7 +30,7 @@ int main (int argc, char ** argv){
   gStyle->SetOptFit(1112);
   
   double tau1[2], tau2[2], Vs1[2], Vs2[2];
-  e_TDC;
+  double e_TDC;
 
   ifstream parametri;
   parametri.open("Dati/Parametri_medi.txt");
