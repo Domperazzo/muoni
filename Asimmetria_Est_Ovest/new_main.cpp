@@ -28,6 +28,7 @@ int get_i_max(std::vector<double> vec){
     return i_max;
 }
 
+
 double get_perc(int i, std::vector<double> v1, std::vector<double> v2){
     double perc = 0.0;
     if (v1.at(i)>v2.at(i)){
@@ -35,6 +36,32 @@ double get_perc(int i, std::vector<double> v1, std::vector<double> v2){
     } else {
         perc = (v1.at(i) / v2.at(i)) * 100;
     }
+    return perc;
+}
+
+double mean_perc(std::vector<double> v1, std::vector<double> v2){ //v1 diff
+    double temp = 0;
+    for (int i = 0; i < v1.size(); i++){
+        temp += v1.at(i)/v2.at(i);
+        
+    }
+    return temp*100/v1.size();
+}
+
+
+double get_error(std::vector<double> v1, std::vector<double> v2){
+    double temp = 0;
+    for (int i = 0; i < v1.size(); i++){
+        temp +=v1.at(i)+v2.at(i);
+    }
+    return temp/v1.size();
+}
+
+double get_err_perc(double p1, double p2, double p3, double p4){
+    double perc = 0.0;
+
+    perc = p2/p3+(p1*p4)/(p3*p3);
+
     return perc;
 }
 
@@ -52,18 +79,54 @@ void analisi_differenze(std::vector<double> v1, std::vector<double> v2, std::vec
     std::cout << "La distanza massima si trova a " << v3.at(i_max) << " gradi e la differenza è di " << diff.at(i_max) << " in percentuale: " << 100-get_perc(i_max, v1, v2)  << "%" << "\n";
 }
 
+double calcola_media(std::vector<double> vec){
+    double temp = 0.0;
+    for (int i = 0; i < vec.size(); i++){
+        temp += vec.at(i);
+    }
+    return temp/vec.size();
+}
+
+double get_sigma(std::vector<double> v_campione)
+{
+    double media = 0.;
+    double numeratore = 0.;
+    media = calcola_media(v_campione);
+    for (int i = 0; i < v_campione.size(); i++)
+    {
+        numeratore += (v_campione.at(i) - media) * (v_campione.at(i) - media);
+    }
+    return (numeratore / (v_campione.size()));
+}
+
 double propagazione_errori( double x, double y, double sigma_x, double sigma_y)
 {
 	return sqrt( pow(x*sigma_y, 2) + pow(y*sigma_x , 2) )/pow(y,2);
 }
 
-int main(int argc, char **argv)
+std::vector<double> get_diff(std::vector<double> v1, std::vector<double> v2){
+    std::vector<double> diff;
+    for (int i = 0; i < v2.size(); i++)
+    {
+        diff.push_back(v2.at(i) - v1.at(i));
+    }
+    for (int i = 0; i < diff.size(); i++)
+    {
+        if (diff.at(i) < 0)
+        {
+            diff.at(i) = -diff.at(i);
+        }
+    }
+    return diff;
+}
+
+    int main(int argc, char **argv)
 {
     gStyle->SetOptFit(1112);
     TApplication theApp("theApp", &argc, argv);
 
     std::ifstream datiEst;
-    datiEst.open("medie_angoliEst.txt", std::ios::in);
+    datiEst.open("Dati/medie_angoliEst.txt", std::ios::in);
     std::vector<double> v_angoliEst, v_meanEst, v_sigmaEst;
     do
     {
@@ -78,7 +141,7 @@ int main(int argc, char **argv)
     datiEst.close();
 
     std::ifstream datiOvest;
-    datiOvest.open("medie_angoliOvest.txt", std::ios::in);
+    datiOvest.open("Dati/medie_angoliOvest.txt", std::ios::in);
     std::vector<double> v_angoliOvest, v_meanOvest, v_sigmaOvest;
     do
     {
@@ -94,10 +157,26 @@ int main(int argc, char **argv)
     datiOvest.close();
     
     analisi_differenze(v_meanEst, v_meanOvest, v_angoliEst);
+    
 
- //  v_meanOvest[1] = v_meanEst[1];
-   double normalizzazione = v_meanEst[0];
-   double n_sigma = v_sigmaEst[0];
+    double media_diff = calcola_media(get_diff(v_meanEst, v_meanOvest));
+    double sigma_diff = get_sigma(get_diff(v_meanEst, v_meanOvest));
+    double err_perc = get_err_perc(media_diff, sigma_diff, calcola_media(v_meanEst), get_sigma(v_meanEst));
+    std::vector<double> v_perc;
+
+
+    for (int i = 0; i < v_meanEst.size()-1; i++){
+        std::vector<double> v1 = get_diff(v_meanEst, v_meanOvest);
+        v_perc.push_back(v1.at(i)/v_meanEst.at(i)*100);
+    }
+    
+
+
+    std::cout << "La percentuale media è: " << mean_perc(get_diff(v_meanEst, v_meanOvest), v_meanEst) << "e l'errore sulla percentuale è: " << sqrt(get_sigma(v_perc)) << "\n";
+
+    //  v_meanOvest[1] = v_meanEst[1];
+    double normalizzazione = v_meanEst[0];
+    double n_sigma = v_sigmaEst[0];
 
     TGraphErrors * punti_E = new TGraphErrors();
     TGraphErrors * punti_O = new TGraphErrors();
@@ -146,7 +225,7 @@ int main(int argc, char **argv)
     TCanvas * c1 = new TCanvas;
     multi->Draw("AP");
     c1->BuildLegend();
-    theApp.Run();
+   // theApp.Run();
 
    
    return 0;

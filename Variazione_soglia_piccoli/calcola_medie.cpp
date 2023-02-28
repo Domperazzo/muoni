@@ -63,13 +63,13 @@ int main(int argc, char const *argv[]) {
   mediaS1 = somma_vec(v_S1);
   mediaS2 = somma_vec(v_S2);
 
-  std::ofstream outfile_media1("Tsinistra.txt", std::ios::app);
+  std::ofstream outfile_media1("Dati/Tsinistra.txt", std::ios::app);
   if (outfile_media1.is_open()) {
     outfile_media1 << mediaS1 << "\t" << varS1 << std::endl;
     outfile_media1.close();
   }
 
-  std::ofstream outfile_media2("Tdestra.txt", std::ios::app);
+  std::ofstream outfile_media2("Dati/Tdestra.txt", std::ios::app);
   if (outfile_media2.is_open()) {
     outfile_media2 << mediaS2 << "\t" << varS2 << std::endl;
     outfile_media2.close();

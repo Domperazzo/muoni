@@ -30,7 +30,7 @@ int main(int argc, char **argv) {
 
 
   std::ifstream dati;
-  dati.open("calibrazione_TDC2.txt", std::ios::in);
+  dati.open("Dati/calibrazione_TDC2.txt", std::ios::in);
   std::vector<double> v_tempo, v_tdc;
   while (true) {
       double tempo, tdc;
