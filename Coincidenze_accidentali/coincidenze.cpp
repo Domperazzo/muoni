@@ -101,7 +101,7 @@ int main(int argc, char **argv) {
   TFitResultPtr fit_result = g2.Fit(&modello, "S");
 
   double sigma = modello.GetParameter(2);
-  double resolving_time_ns = sigma ;
+  double resolving_time_ns = sigma/2;
   cout << " resolving time secondo il fit a campana = " << resolving_time_ns << " ns" << endl;
 
   //dai dati.txt dell'Effiecienza, conteggi/min associati alle tensioni di Alimentazione scelte 

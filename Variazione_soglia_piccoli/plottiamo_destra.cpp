@@ -106,15 +106,21 @@ int main(int argc, char **argv) {
   c1.SetGridx ();
   c1.SetGridy ();
   c1.SetLeftMargin(.15);
+  c1.SetBottomMargin(.15);
+
   c1.SetWindowSize (1050, 900);
 
-  multi.SetTitle("Conteggi degli eventi al variare della tensione di soglia; V_{soglia} [V]; #frac{Conteggi}{Minuto} #left[#frac{1}{Minuto}#right]");
+  multi.SetTitle(" ; V_{soglia} [V]; #frac{Conteggi}{Minuto} #left[#frac{1}{min}#right]");
   multi.GetHistogram()->GetYaxis()->SetRangeUser(0., 505.);
   multi.GetHistogram()->GetXaxis()->SetRangeUser(0., 1.12);
+  multi.GetHistogram()->GetXaxis()->SetTitleSize(0.05);
+  multi.GetHistogram()->GetYaxis()->SetTitleSize(0.04);
+  multi.GetHistogram()->GetXaxis()->SetLabelOffset(0.005);
+  multi.GetHistogram()->GetYaxis()->SetLabelOffset(0.001);
   multi.Draw("ACP");
 
 
-  //c1.Print("plot_destra.pdf", "pdf");
+  c1.Print("Grafici/plot_destra(rivelatore2).pdf", "pdf");
   theApp.Run();
 
 
