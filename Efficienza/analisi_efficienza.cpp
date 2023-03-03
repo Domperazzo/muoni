@@ -64,16 +64,16 @@ int main(int argc, char **argv) {
   TGraphErrors g_S1, g_S2, g_conteggiS1, g_conteggiS2;
   for (int i = 0; i < v_efficienzaS1.size(); i++) {
     g_S1.SetPoint(i, v_AlimentazioneS1.at(i), v_efficienzaS1.at(i));
-    g_S1.SetPointError(i, 0., sqrt(v_doppia.at(i)*v_efficienzaS1.at(i)*(1-v_efficienzaS1.at(i))/v_doppia.at(i)));
+    g_S1.SetPointError(i, 2., sqrt(v_doppia.at(i)*v_efficienzaS1.at(i)*(1-v_efficienzaS1.at(i))/v_doppia.at(i)));
 
     g_S2.SetPoint(i, v_AlimentazioneS2.at(i), v_efficienzaS2.at(i));
-    g_S2.SetPointError(i, 0., sqrt(v_doppia.at(i)*v_efficienzaS2.at(i)*(1-v_efficienzaS2.at(i))/v_doppia.at(i)));
+    g_S2.SetPointError(i, 2., sqrt(v_doppia.at(i)*v_efficienzaS2.at(i)*(1-v_efficienzaS2.at(i))/v_doppia.at(i)));
 
     g_conteggiS1.SetPoint(i, v_AlimentazioneS1.at(i), v_conteggiS1.at(i));
-    g_conteggiS1.SetPointError(i, 0., sqrt(v_conteggiS1.at(i)));
+    g_conteggiS1.SetPointError(i, 2., sqrt(v_conteggiS1.at(i)));
 
     g_conteggiS2.SetPoint(i, v_AlimentazioneS2.at(i), v_conteggiS2.at(i));
-    g_conteggiS2.SetPointError(i, 0., sqrt(v_conteggiS2.at(i)));
+    g_conteggiS2.SetPointError(i, 2., sqrt(v_conteggiS2.at(i)));
   }
 
   for (int i = 0; i < v_efficienzaS1.size(); i++) {
@@ -97,48 +97,82 @@ int main(int argc, char **argv) {
   c1.SetGridx();
   c1.SetGridy();
   c1.SetLeftMargin(.15);
-  //c1.SetWindowSize (1050, 900);
+  c1.SetBottomMargin(.15);
 
-  g_S1.SetTitle("Conteggi degli eventi rilevati da S1 al variare della tensione di alimentazione; V_{alimentazione} [V]; Efficienza");
+  c1.SetWindowSize (1250, 900);
+  g_S1.GetHistogram()->GetXaxis()->SetTitleSize(0.06);
+  g_S1.GetHistogram()->GetYaxis()->SetTitleSize(0.04);
+  g_S1.GetHistogram()->GetXaxis()->SetLabelOffset(0.005);
+  g_S1.GetHistogram()->GetYaxis()->SetLabelOffset(0.001);
+
+  g_S1.SetTitle("; V_{alimentazione} [V]; Efficienza");
   //g_S1.GetHistogram()->GetYaxis()->SetRangeUser(0., 505.);
   //g_S1.GetHistogram()->GetXaxis()->SetRangeUser(0., 1.12);
   g_S1.Draw("AP");
+  c1.Print("Grafici/efficienzaS1.pdf", "pdf");
+
 
   TCanvas c2;
   c2.cd(2);
   c2.SetGridx();
   c2.SetGridy();
   c2.SetLeftMargin(.15);
-  //c2.SetWindowSize (1050, 900);
+  c2.SetBottomMargin(.15);
 
-  g_S2.SetTitle("Conteggi degli eventi rilevati da S2 al variare della tensione di alimentazione; V_{alimentazione} [V]; Efficienza");
+  c2.SetWindowSize (1150, 900);
+  g_S2.GetHistogram()->GetXaxis()->SetTitleSize(0.06);
+  g_S2.GetHistogram()->GetYaxis()->SetTitleSize(0.04);
+  g_S2.GetHistogram()->GetXaxis()->SetLabelOffset(0.005);
+  g_S2.GetHistogram()->GetYaxis()->SetLabelOffset(0.001);
+
+  g_S2.SetTitle("; V_{alimentazione} [V]; Efficienza");
   //g_S2.GetHistogram()->GetYaxis()->SetRangeUser(0., 505.);
   //g_S2.GetHistogram()->GetXaxis()->SetRangeUser(0., 1.12);
   g_S2.Draw("AP");
+
+  c2.Print("Grafici/efficienzaS2.pdf", "pdf");
+
 
   TCanvas c3;
   c3.cd(3);
   c3.SetGridx();
   c3.SetGridy();
   c3.SetLeftMargin(.15);
-  //c2.SetWindowSize (1050, 900);
+  c3.SetBottomMargin(.15);
 
-  g_conteggiS1.SetTitle("Conteggi vs Alimentazione per S1; V_{alimentazione} [V]; Conteggi");
+  c3.SetWindowSize (1150, 900);
+  g_conteggiS1.GetHistogram()->GetXaxis()->SetTitleSize(0.06);
+  g_conteggiS1.GetHistogram()->GetYaxis()->SetTitleSize(0.04);
+  g_conteggiS1.GetHistogram()->GetXaxis()->SetLabelOffset(0.005);
+  g_conteggiS1.GetHistogram()->GetYaxis()->SetLabelOffset(0.001);
+
+  g_conteggiS1.SetTitle(" ; V_{alimentazione} [V]; #frac{Conteggi}{Minuto} #left[#frac{1}{min}#right]");
   //g_S2.GetHistogram()->GetYaxis()->SetRangeUser(0., 505.);
   //g_S2.GetHistogram()->GetXaxis()->SetRangeUser(0., 1.12);
   g_conteggiS1.Draw("AP");
+  c3.Print("Grafici/conteggiS1.pdf", "pdf");
+
 
   TCanvas c4;
   c4.cd(4);
   c4.SetGridx();
   c4.SetGridy();
   c4.SetLeftMargin(.15);
-  //c2.SetWindowSize (1050, 900);
+  c4.SetBottomMargin(.15);
 
-  g_conteggiS2.SetTitle("Conteggi vs Alimentazione per S2; V_{alimentazione} [V]; Conteggi");
+  c4.SetWindowSize (1150, 900);
+  g_conteggiS2.GetHistogram()->GetXaxis()->SetTitleSize(0.06);
+  g_conteggiS2.GetHistogram()->GetYaxis()->SetTitleSize(0.04);
+  g_conteggiS2.GetHistogram()->GetXaxis()->SetLabelOffset(0.005);
+  g_conteggiS2.GetHistogram()->GetYaxis()->SetLabelOffset(0.001);
+
+
+  g_conteggiS2.SetTitle(" ; V_{alimentazione} [V]; #frac{Conteggi}{Minuto} #left[#frac{1}{min}#right]");
   //g_S2.GetHistogram()->GetYaxis()->SetRangeUser(0., 505.);
   //g_S2.GetHistogram()->GetXaxis()->SetRangeUser(0., 1.12);
   g_conteggiS2.Draw("AP");
+  c4.Print("Grafici/conteggiS2.pdf", "pdf");
+
 
   theApp.Run();
 

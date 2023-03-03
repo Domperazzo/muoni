@@ -74,7 +74,7 @@ int main(int argc, char **argv) {
     //g_S1.GetHistogram()->GetYaxis()->SetRangeUser(0., 505.);
     //g_S1.GetHistogram()->GetXaxis()->SetRangeUser(0., 1.12);
     g_S1.GetHistogram()->GetXaxis()->SetTitleSize(0.07);
-    g_S1.GetHistogram()->GetYaxis()->SetTitleSize(0.04);
+    g_S1.GetHistogram()->GetYaxis()->SetTitleSize(0.05);
     g_S1.GetHistogram()->GetXaxis()->SetLabelOffset(0.005);
     g_S1.GetHistogram()->GetYaxis()->SetLabelOffset(0.001);
 
@@ -94,7 +94,7 @@ int main(int argc, char **argv) {
     //g_S2.GetHistogram()->GetYaxis()->SetRangeUser(0., 505.);
     //g_S2.GetHistogram()->GetXaxis()->SetRangeUser(0., 1.12);
     g_S2.GetHistogram()->GetXaxis()->SetTitleSize(0.07);
-    g_S2.GetHistogram()->GetYaxis()->SetTitleSize(0.04);
+    g_S2.GetHistogram()->GetYaxis()->SetTitleSize(0.05);
     g_S2.GetHistogram()->GetXaxis()->SetLabelOffset(0.005);
     g_S2.GetHistogram()->GetYaxis()->SetLabelOffset(0.001);
     g_S2.Draw("AP");

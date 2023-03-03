@@ -86,7 +86,7 @@ int main(int argc, char **argv) {
   c1.SetLeftMargin(.15);
   c1.SetBottomMargin(.15);
 
-  c1.SetWindowSize (1050, 900);
+  c1.SetWindowSize (1150, 900);
 
 
   multi.SetTitle(" ; V_{soglia} [V]; #frac{Conteggi}{Minuto} #left[#frac{1}{min}#right]");
