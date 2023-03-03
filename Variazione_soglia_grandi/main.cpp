@@ -49,9 +49,9 @@ int main(int argc, char **argv) {
     TGraphErrors g_S1, g_S2, g_conteggiS1, g_conteggiS2;
     for (int i = 0; i < v_sogliaS1.size(); i++) {
       g_S1.SetPoint(i, v_sogliaS1.at(i), v_conteggiS1.at(i)/2);
-      g_S1.SetPointError(i, 0., sqrt(v_conteggiS1.at(i)/2));
+      g_S1.SetPointError(i, .001, sqrt(v_conteggiS1.at(i)/2));
       g_S2.SetPoint(i, v_sogliaS2.at(i), v_conteggiS2.at(i)/2);
-      g_S2.SetPointError(i, 0., sqrt(v_conteggiS2.at(i)/2));
+      g_S2.SetPointError(i, .001, sqrt(v_conteggiS2.at(i)/2));
     }
 
 
@@ -65,24 +65,42 @@ int main(int argc, char **argv) {
     c1.SetGridx();
     c1.SetGridy();
     c1.SetLeftMargin(.15);
+    c1.SetBottomMargin(.15);
+
 
     //c1.SetWindowSize (1050, 900);
 
-    g_S1.SetTitle("Conteggi degli eventi rilevati da S1 al variare della tensione di soglia; V_{soglia} [V]; #frac{Conteggi}{Minuto}");
+    g_S1.SetTitle(" ; V_{soglia} [V]; #frac{Conteggi}{Minuto} #left[#frac{1}{min}#right]");
     //g_S1.GetHistogram()->GetYaxis()->SetRangeUser(0., 505.);
     //g_S1.GetHistogram()->GetXaxis()->SetRangeUser(0., 1.12);
+    g_S1.GetHistogram()->GetXaxis()->SetTitleSize(0.07);
+    g_S1.GetHistogram()->GetYaxis()->SetTitleSize(0.04);
+    g_S1.GetHistogram()->GetXaxis()->SetLabelOffset(0.005);
+    g_S1.GetHistogram()->GetYaxis()->SetLabelOffset(0.001);
+
     g_S1.Draw("AP");
+    c1.Print("Grafici/Soglia S1.pdf", "pdf");
+
 
     TCanvas c2;
     c2.SetGridx();
     c2.SetGridy();
     c2.SetLeftMargin(.15);
+    c2.SetBottomMargin(.15);
+
     //c2.SetWindowSize (1050, 900);
 
-    g_S2.SetTitle("Conteggi degli eventi rilevati da S2 al variare della tensione di soglia; V_{soglia} [V]; #frac{Conteggi}{Minuto}");
+    g_S2.SetTitle("; V_{soglia} [V]; #frac{Conteggi}{Minuto} #left[#frac{1}{min}#right]");
     //g_S2.GetHistogram()->GetYaxis()->SetRangeUser(0., 505.);
     //g_S2.GetHistogram()->GetXaxis()->SetRangeUser(0., 1.12);
+    g_S2.GetHistogram()->GetXaxis()->SetTitleSize(0.07);
+    g_S2.GetHistogram()->GetYaxis()->SetTitleSize(0.04);
+    g_S2.GetHistogram()->GetXaxis()->SetLabelOffset(0.005);
+    g_S2.GetHistogram()->GetYaxis()->SetLabelOffset(0.001);
     g_S2.Draw("AP");
+
+    c2.Print("Grafici/Soglia S2.pdf", "pdf");
+
 
     theApp.Run();
 

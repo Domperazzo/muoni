@@ -44,7 +44,7 @@ int main(int argc, char **argv) {
     g1.SetPoint(i, v_soglie.at(i), v_media.at(i));
   }
   for (int i = 0; i < v_media.size(); i++) {
-  g1.SetPointError(i, 0., sqrt(48));
+  g1.SetPointError(i, 0.001, sqrt(48));
   }
 
   g1.SetMarkerStyle(20);

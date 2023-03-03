@@ -60,7 +60,7 @@ int main(int argc, char **argv) {
   }
 
   for (int i = 0; i < v_sigma.size()-5; i++) {
-    g1.SetPointError(i, 0., sqrt(v_media.at(i))/v_tempo.at(i)); //distribuzione poissoniana -> sigma=rad(n)
+    g1.SetPointError(i, 0.001, sqrt(v_media.at(i))/v_tempo.at(i)); //distribuzione poissoniana -> sigma=rad(n)
   }
 
 
