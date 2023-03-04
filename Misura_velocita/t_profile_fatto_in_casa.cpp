@@ -41,13 +41,42 @@ int main (int argc, char ** argv){
 
     vector<double> ADC1, ADC2, TDC_scorretto, TDC_corretto, x1, e1, y1, ex1, x2, e2, ex2, y2;
     double adc1, adc2, tdc_s, tdc_c, maxADC1 = 0, minADC1 = 10000, maxADC2 = 0, minADC2 = 10000, bin1, bin2, peso1, peso2, somma1 = 0, sommapesi1 = 0, somma2 = 0, sommapesi2 = 0, i = 0, j = 0;
-
+    double taglioSupADC1, taglioInfADC1, taglioInfADC2, taglioSupADC2;
     ifstream dati;
     string fileDati = "Dati/Dati_tdcadc_";
     string lunghezza = argv[1];
     string estensione = ".txt";
     dati.open((fileDati+lunghezza+estensione).c_str());
 
+
+    if(stod(argv[1]) == 9.5){
+      e_TDC = 17.15; //canali
+      taglioInfADC1 = 180;
+      taglioSupADC1 = 300;
+      taglioInfADC2 = 120;
+      taglioSupADC2 = 240;
+    }
+    if(stod(argv[1]) == 38.2){
+      e_TDC = 19.04; //canali
+      taglioInfADC1 = 140;
+      taglioSupADC1 = 320;
+      taglioInfADC2 = 120;
+      taglioSupADC2 = 240;
+    }
+    if(stod(argv[1]) == 97.15){
+      e_TDC = 23.8; //canali
+      taglioInfADC1 = 120;
+      taglioSupADC1 = 320;
+      taglioInfADC2 = 80;
+      taglioSupADC2 = 200;
+    }
+    if(stod(argv[1]) == 171.5){
+      e_TDC = 26.94; //canali
+      taglioInfADC1 = 120;
+      taglioSupADC1 = 320;
+      taglioInfADC2 = 70;
+      taglioSupADC2 = 180;
+    }
     while (!dati.eof())
     {
 
@@ -56,8 +85,7 @@ int main (int argc, char ** argv){
 
       dati >> adc1;
       dati >> adc2;
-      if (adc1 >= 140 && adc1 <= 320 && adc2 >= 120 && adc2 <= 240) 
-      {
+      if (adc1 >= taglioInfADC1 && adc1 <= taglioSupADC1 && adc2 >= taglioInfADC2 && adc2 <= taglioSupADC2){
 
         ADC1.push_back(adc1);
         ADC2.push_back(adc2);
@@ -82,19 +110,6 @@ int main (int argc, char ** argv){
   bin1=(maxADC1-minADC1)/nbin;
       
   bin2=(maxADC2-minADC2)/nbin;
-
-  if(stod(argv[1]) == 9.5){
-    e_TDC = 17.15; //canali
-  }
-  if(stod(argv[1]) == 38.2){
-    e_TDC = 19.04; //canali
-  }
-  if(stod(argv[1]) == 97.15){
-    e_TDC = 23.8; //canali
-  }
-  if(stod(argv[1]) == 171.5){
-    e_TDC = 26.94; //canali
-  }
       
   for(i=0;i<nbin;i++){
           

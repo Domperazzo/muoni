@@ -15,7 +15,7 @@ int main(int argc, char* argv[]){
     double tau2_medio[2] = {0, 0}, Vs2_medio[2] = {0, 0};
 
     ifstream parametri1;
-    parametri1.open("Dati/Parametri_correzione_9,5cm.txt");
+    parametri1.open("Dati/Parametri_correzione_9.5cm.txt");
     parametri1.ignore(numeric_limits<streamsize>::max(), '\n');
     parametri1 >> tau1[0] >> e_tau1[0] >> tau2[0] >> e_tau2[0] >> Vs1[0] >> e_vs1[0] >> Vs2[0] >> e_vs2[0];
     parametri1.close();
@@ -23,19 +23,19 @@ int main(int argc, char* argv[]){
 
 
     ifstream parametri2;
-    parametri2.open("Dati/Parametri_correzione_38,2cm.txt");
+    parametri2.open("Dati/Parametri_correzione_38.2cm.txt");
     parametri2.ignore(numeric_limits<streamsize>::max(), '\n');
     parametri2 >> tau1[1] >> e_tau1[1] >> tau2[1] >> e_tau2[1] >> Vs1[1] >> e_vs1[1] >> Vs2[1] >> e_vs2[1];
     parametri2.close();
 
     ifstream parametri3;
-    parametri3.open("Dati/Parametri_correzione_97,15cm.txt");
+    parametri3.open("Dati/Parametri_correzione_97.15cm.txt");
     parametri3.ignore(numeric_limits<streamsize>::max(), '\n');
     parametri3 >> tau1[2] >> e_tau1[2] >> tau2[2] >> e_tau2[2] >> Vs1[2] >> e_vs1[2] >> Vs2[2] >> e_vs2[2];
     parametri3.close();
 
     ifstream parametri4;
-    parametri4.open("Dati/Parametri_correzione_171,5cm.txt");
+    parametri4.open("Dati/Parametri_correzione_171.5cm.txt");
     parametri4.ignore(numeric_limits<streamsize>::max(), '\n');
     parametri4 >> tau1[3] >> e_tau1[3] >> tau2[3] >> e_tau2[3] >> Vs1[3] >> e_vs1[3] >> Vs2[3] >> e_vs2[3];
     parametri4.close();
