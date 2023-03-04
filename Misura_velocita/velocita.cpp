@@ -21,7 +21,7 @@ c++ -o velocita velocita.cpp `root-config --glibs --cflags`
 
 double retta (double * x, double * par)
   {
-    return par[0] + par[1] * x[0] ;
+    return par[1] + par[0] * x[0] ;
   }
 
 using namespace std;
@@ -32,8 +32,9 @@ int main(int argc, char* argv[]){
     vector<double> TDC, TDC_err, dist, dist_err;
     double adc1, adc2, tdc, e_tdc, somma=0, peso, sommapesi=0;
     TCanvas c1 ("c1", "c1", 100, 100, 1000, 1000) ;
-    double correzione[4] = {11.22, 40.90, 99.21, 172.9};
-    double e_correzione[4] = {2.883/sqrt(pow(10, 8)), 2.279/sqrt(pow(10, 8)), 3.332/sqrt(pow(10, 8)), 2.248/sqrt(pow(10, 8))};
+    double parametro_correttivo[4] = {11.22/9.5, 40.90/38.2, 99.21/97.15, 172.9/171.5};
+    double distanze[4] = {9.5, 38.2, 97.15, 171.5};
+    double e_distanze[4] = {1, 1, 1, 1};
 	
     ifstream dati_corretti;
     string fileDati = "Dati/Dati_tdcadc_";
@@ -55,13 +56,14 @@ int main(int argc, char* argv[]){
 	dati_corretti.close();
 	  
     TDC.push_back(somma/sommapesi);
-    cout << "media tempi: " << somma/sommapesi << endl;
     TDC_err.push_back(sqrt(1/sommapesi));
-    cout << "errore:" <<sqrt(1/sommapesi) << endl;
+    cout<<"err tdc: "<<sqrt(1/sommapesi)<<endl;
    
-    dist.push_back(correzione[i]/100.);
-    cout << "lunghezza non corretta in metri: " << stod(argv[i+1])/100. << endl;
-    dist_err.push_back(e_correzione[i]/100);
+    dist.push_back(distanze[i]*parametro_correttivo[i]/100.);
+    cout << "lunghezza corretta in metri: " << distanze[i]*parametro_correttivo[i]/100. << endl;
+    dist_err.push_back(e_distanze[i]*parametro_correttivo[i]/100);
+    cout << "errore lunghezza corretta in metri: " << e_distanze[i]*parametro_correttivo[i]/100 << endl;
+
    
     somma = 0; 
     sommapesi = 0;
@@ -72,24 +74,24 @@ int main(int argc, char* argv[]){
 	funz.SetMarkerColor (kRed) ;
 	
 	funz.GetXaxis()->SetTitle("distanze [m]");
-    funz.GetYaxis()->SetTitle("tempi[ns]");
+  funz.GetYaxis()->SetTitle("tempi[ns]");
     
-    funz.SetTitle("tempi di volo Vs distanze");
+  funz.SetTitle("tempi di volo Vs distanze");
 
-    TF1 f_fit ("f_fit", retta, 0., 3., 2) ;
-    TFitResultPtr fit_result = funz.Fit (&f_fit, "S") ;
+  TF1 f_fit ("f_fit", retta, 0., 3., 2) ;
+  TFitResultPtr fit_result = funz.Fit (&f_fit, "S") ;
 
-  	cout << endl ;
+  cout << endl ;
 	cout.precision (7) ;
-    cout << "risultato del fit: " << fit_result->IsValid () << endl ;
-    cout << "termine noto : " << f_fit.GetParameter (0) << "\t+- " << f_fit.GetParError (0) << endl ;
-    cout << "pendenza (inverso velocità muoni)     : " << f_fit.GetParameter (1) << "\t+- " << f_fit.GetParError (1) << endl ;
+  cout << "risultato del fit: " << fit_result->IsValid () << endl ;
+  cout << "termine noto : " << f_fit.GetParameter (0) << "\t+- " << f_fit.GetParError (0) << endl ;
+  cout << "pendenza (inverso velocità muoni)     : " << f_fit.GetParameter (1) << "\t+- " << f_fit.GetParError (1) << endl ;
     
-    cout<< "valore velocita: " << pow(10, 9)/f_fit.GetParameter (1) << "m/s +- " << f_fit.GetParError (1)*pow(10, 9)/pow(f_fit.GetParameter (1), 2) << "m/s" << endl;
+  cout<< "valore velocita: " << pow(10, 9)/f_fit.GetParameter (1) << "m/s +- " << f_fit.GetParError (1)*pow(10, 9)/pow(f_fit.GetParameter (1), 2) << "m/s" << endl;
 
 
-    funz.Draw ("AP") ;
-    c1.Print ("velocità_finale.pdf", "pdf") ; 
+  funz.Draw ("AP") ;
+  c1.Print ("velocità_finale.pdf", "pdf") ; 
 
 
     return 0;

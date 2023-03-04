@@ -1,6 +1,7 @@
 /*
   c++ -o controllotempi controllotempi.cpp `root-config --glibs --cflags`
   ./controllotempi 9.5cm
+  abbassare gli errori di un fattore necessario a rendere il tutto piu bello
 */
 
 #include <iostream>
@@ -142,17 +143,17 @@ int main (int argc, char ** argv){
     }
           
     x1.push_back(minADC1+i*bin1+bin1/2);
-    ex1.push_back(0);
+    ex1.push_back(1);
 
     y1.push_back(somma1/sommapesi1);
-    e1.push_back(1);
+    e1.push_back(1/sqrt(sommapesi1));
 
 
     x2.push_back(minADC2+i*bin2+bin2/2);
-    ex2.push_back(0);
+    ex2.push_back(1);
 
     y2.push_back(somma2/sommapesi2);    
-    e2.push_back(1);
+    e2.push_back(1/sqrt(sommapesi2));
           
     somma1=0;
     sommapesi1=0;

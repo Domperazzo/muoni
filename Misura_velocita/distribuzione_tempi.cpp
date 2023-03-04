@@ -43,7 +43,7 @@ int main(int argc, char* argv[]){
     }
     dati.close();
 
-    TCanvas c1 ("c1", "", 800, 800) ;
+    TCanvas c1 ("c1", "", 800, 800);
 
     distribuzione_tempi.SetFillColor (kOrange + 2) ;
     distribuzione_tempi.Draw ();
