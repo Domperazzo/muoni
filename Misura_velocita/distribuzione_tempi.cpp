@@ -45,9 +45,9 @@ int main(int argc, char* argv[]){
     }
     if(stod(argv[1]) == 38.2){
         taglioInfADC1 = 100; //-->-0.1canali (--> -0.1)
-        taglioSupADC1 = 360;
+        taglioSupADC1 = 380;
         taglioInfADC2 = 80;
-        taglioSupADC2 = 280;
+        taglioSupADC2 = 300;
       }
     if(stod(argv[1]) == 97.15){
         taglioInfADC1 = 80; //-->+0.1canali (--> +0.6)

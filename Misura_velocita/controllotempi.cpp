@@ -58,28 +58,28 @@ int main (int argc, char ** argv){
   dati.open((fileDati+lunghezza+estensione).c_str());
 
   if(stod(argv[1]) == 9.5){
-    e_TDC = 9.878; //canali, 
+    e_TDC = 10.45; //canali, 
     taglioInfADC1 = 180;
     taglioSupADC1 = 300;
     taglioInfADC2 = 120;
     taglioSupADC2 = 240;
   }
   if(stod(argv[1]) == 38.2){
-    e_TDC = 11.25; //canali
+    e_TDC = 11.91; //canali
     taglioInfADC1 = 140;
     taglioSupADC1 = 320;
     taglioInfADC2 = 120;
     taglioSupADC2 = 240;
   }
   if(stod(argv[1]) == 97.15){
-    e_TDC = 15.53; //canali
+    e_TDC = 16.39; //canali
     taglioInfADC1 = 120;
     taglioSupADC1 = 320;
     taglioInfADC2 = 80;
     taglioSupADC2 = 200;
   }
   if(stod(argv[1]) == 171.5){
-    e_TDC = 17.84; //canali
+    e_TDC = 19.41; //canali
     taglioInfADC1 = 120;
     taglioSupADC1 = 320;
     taglioInfADC2 = 80;
@@ -191,15 +191,20 @@ int main (int argc, char ** argv){
 
   funz.SetMarkerStyle(105);
   funz.SetMarkerColor(4);
+  funz.GetXaxis()->SetTitleSize(0.05);
+  funz.GetYaxis()->SetTitleSize(0.05);
+
   funz2.SetMarkerStyle(105);
   funz2.SetMarkerColor(4);
+  funz2.GetXaxis()->SetTitleSize(0.05);
+  funz2.GetYaxis()->SetTitleSize(0.05);
 
-  funz.SetTitle("tempi di volo Vs energia 1");
+  funz.SetTitle("  ");
 
   funz.GetXaxis()->SetTitle("ADC1");
   funz.GetYaxis()->SetTitle("TDC");
 
-  funz2.SetTitle("tempi di volo Vs energia 2");
+  funz2.SetTitle("  ");
 
   funz2.GetXaxis()->SetTitle("ADC2");
   funz2.GetYaxis()->SetTitle("TDC");
@@ -216,6 +221,8 @@ int main (int argc, char ** argv){
   cout << " m: " << f_fit.GetParameter(1) << "\t+- " << f_fit.GetParError(1) << endl;
 
   TCanvas c1 ("c1", "", 800, 800) ;
+  c1.SetLeftMargin(0.15);
+  c1.SetBottomMargin(0.15);
   funz.Draw ("AP") ;
   string fileGrafici = "Grafici/";
   string estensionePDF1 = "_corretto_ADC1.pdf";
@@ -236,6 +243,8 @@ int main (int argc, char ** argv){
   cout << " m: " << f_fit2.GetParameter(1) << "\t+- " << f_fit2.GetParError(1) << endl;
 
   TCanvas c2 ("c2", "", 800, 800) ;
+  c2.SetLeftMargin(0.15);
+  c2.SetBottomMargin(0.15);
   funz2.Draw ("AP") ;
   string estensionePDF2 = "_corretto_ADC2.pdf";
   

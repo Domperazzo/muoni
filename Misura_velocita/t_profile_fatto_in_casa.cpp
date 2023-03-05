@@ -51,28 +51,28 @@ int main (int argc, char ** argv){
 
 
     if(stod(argv[1]) == 9.5){
-      e_TDC = 9.878 ; //canali
+      e_TDC = 10.45 ; //canali - 9.878
       taglioInfADC1 = 180;
       taglioSupADC1 = 300;
       taglioInfADC2 = 120;
       taglioSupADC2 = 240;
     }
     if(stod(argv[1]) == 38.2){
-      e_TDC = 11.25; //canali
+      e_TDC = 11.91; //canali - 11.25
       taglioInfADC1 = 140;
       taglioSupADC1 = 320;
       taglioInfADC2 = 120;
       taglioSupADC2 = 240;
     }
     if(stod(argv[1]) == 97.15){
-      e_TDC = 15.53; //canali 
+      e_TDC = 16.39; //canali - 15.53 
       taglioInfADC1 = 120;
       taglioSupADC1 = 320;
       taglioInfADC2 = 80;
       taglioSupADC2 = 200;
     }
     if(stod(argv[1]) == 171.5){
-      e_TDC = 17.84; //canali 
+      e_TDC = 19.41; //canali -17.84 
       taglioInfADC1 = 120;
       taglioSupADC1 = 320;
       taglioInfADC2 = 80;
@@ -169,14 +169,23 @@ int main (int argc, char ** argv){
   funz.SetMarkerColor (4) ;
   funz2.SetMarkerStyle (105) ;
   funz2.SetMarkerColor (4) ;
-  funz.SetTitle("Tempi di volo vs Energia rivelatore S1");
+  funz.SetTitle(" ");
 
   funz.GetXaxis()->SetTitle("ADC1 [canali]");
+  funz.GetXaxis()->SetTitleSize(0.05);
   funz.GetYaxis()->SetTitle("TDC [ns]");
-  funz2.SetTitle("Tempi di volo vs Energia rivelatore S2");
+  funz.GetYaxis()->SetTitleSize(0.05);
+ 
+
+  funz2.SetTitle(" ");
 
   funz2.GetXaxis()->SetTitle("ADC2 [canali]");
+  funz2.GetXaxis()->SetTitleSize(0.05);
   funz2.GetYaxis()->SetTitle("TDC [ns]");
+  funz2.GetYaxis()->SetTitleSize(0.05);
+ 
+
+
 //fit energia 1
 
   TF1 f_fit ("f_fit", logo, minADC1-bin1 - 50, maxADC1+bin1, 3) ;
@@ -212,6 +221,8 @@ int main (int argc, char ** argv){
   cout << " Vs: " << f_fit.GetParameter (2) << "\t+- " << f_fit.GetParError (2) << endl ;
 
   TCanvas c1 ("c1", "", 800, 800) ;
+  c1.SetLeftMargin(0.15);
+  c1.SetBottomMargin(0.15);
   funz.Draw ("AP") ;
   string fileGrafici = "Grafici/amplitude_walk_";
   string estensionePDF1 = "_ADC1.pdf";
@@ -262,6 +273,8 @@ int main (int argc, char ** argv){
   }
 
   TCanvas c2 ("c2", "", 800, 800) ;
+  c2.SetLeftMargin(0.15);
+  c2.SetBottomMargin(0.15);
   funz2.Draw("AP") ;
   string estensionePDF2 = "_ADC2.pdf";
   c2.Print ((fileGrafici+lunghezza+estensionePDF2).c_str(), "pdf") ; 

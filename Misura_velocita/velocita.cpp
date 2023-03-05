@@ -100,6 +100,9 @@ int main(int argc, char* argv[]){
 	
 	funz.GetXaxis()->SetTitle("distanze [m]");
   funz.GetYaxis()->SetTitle("tempi[ns]");
+  funz.GetXaxis()->SetTitleSize(0.05);
+  funz.GetYaxis()->SetTitleSize(0.05);
+
   funz.SetTitle(" ");
     
   TF1 f_fit ("f_fit", retta, 0., 3., 2) ;
@@ -115,6 +118,8 @@ int main(int argc, char* argv[]){
     
   cout<< "valore velocita: " << pow(10, 9)/f_fit.GetParameter (1) << "m/s +- " << f_fit.GetParError (1)*pow(10, 9)/pow(f_fit.GetParameter (1), 2) << "m/s" << endl;
 
+  c1.SetLeftMargin(0.15);
+  c1.SetBottomMargin(0.15);
   funz.Draw ("AP") ;
   c1.Print ("velocità_finale.pdf", "pdf") ; 
 
