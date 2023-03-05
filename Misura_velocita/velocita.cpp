@@ -14,10 +14,14 @@ c++ -o velocita velocita.cpp `root-config --glibs --cflags`
 #include "TApplication.h"
 #include "TCanvas.h"
 #include "TGraphErrors.h"
+#include "TGraph.h"
 #include "TF1.h"
 #include "TAxis.h"
 #include "TFitResult.h"
 #include "TStyle.h"
+#include "TGraphPainter.h"
+#include "TFrame.h"
+#include "TGraphAsymmErrors.h"
 
 double retta (double * x, double * par)
   {
@@ -28,10 +32,12 @@ using namespace std;
 int main(int argc, char* argv[]){
   TApplication theApp("theApp", &argc, argv);
 
-
+  double m[] = {0.1221, 0.0008013}; // coefficiente angolare retta di calibrazione TDC
+  double q[] = {0.8727, 0.3014};    // intercetta retta di calibrazione TDC
+  
   gStyle->SetOptFit(1112);
 
-  vector<double> TDC, TDC_err, dist, dist_err;
+  vector<double> TDC, TDC_err, TDC_errb, TDC_errt, dist, dist_err;
   double adc1, adc2, tdc, e_tdc, somma=0, peso, sommapesi=0;
   TCanvas c1 ("c1", "c1", 100, 100, 1000, 1000) ;
   double parametro_correttivo[4] = {11.22/9.5, 40.90/38.2, 99.21/97.15, 172.9/171.5};
@@ -59,27 +65,43 @@ int main(int argc, char* argv[]){
   	  
     TDC.push_back(somma/sommapesi);
     TDC_err.push_back(sqrt(1/sommapesi));
+
     cout<<"err tdc: "<<sqrt(1/sommapesi)<<endl;
-   
+
+
     dist.push_back(distanze[i]*parametro_correttivo[i]/100.);
-    cout << "lunghezza corretta in metri: " << distanze[i]*parametro_correttivo[i]/100. << endl;
+    //cout << "lunghezza corretta in metri: " << distanze[i]*parametro_correttivo[i]/100. << endl;
     dist_err.push_back(e_distanze[i]*parametro_correttivo[i]/100);
-    cout << "errore lunghezza corretta in metri: " << e_distanze[i]*parametro_correttivo[i]/100 << endl;
+    //cout << "errore lunghezza corretta in metri: " << e_distanze[i]*parametro_correttivo[i]/100 << endl;
 
    
     somma = 0; 
     sommapesi = 0;
   }
 	
-	TGraphErrors funz (dist.size (), &dist[0], &TDC[0], &dist_err[0], &TDC_err[0]) ;
+
+  
+  vector<double> TDC_errb_agg{0.4*m[0] + q[0], 0.1*m[0] + q[0], 0, 0.4*m[0] + q[0]};
+  vector<double> TDC_errt_agg{0, 0, 0.1*m[0] + q[0], 0};
+
+  for(int i = 0; i<4; i++){
+    TDC_errb.push_back(TDC_err.at(i) + TDC_errb_agg.at(i));
+    TDC_errt.push_back(TDC_err.at(i) + TDC_errt_agg.at(i));
+
+  }
+
+  TGraphAsymmErrors funz(dist.size (), &dist[0], &TDC[0], &dist_err[0], &dist_err[0], &TDC_errb[0], &TDC_errt[0]);
+  
+  //gae->Draw("a2");
+  //gae->Draw("p");
+	//TGraphErrors funz (dist.size (), &dist[0], &TDC[0], &dist_err[0], &dist_err[0], &TDC_errb[0], &TDC_errt[0]) ;
 	funz.SetMarkerStyle (4) ;
 	funz.SetMarkerColor (kRed) ;
 	
 	funz.GetXaxis()->SetTitle("distanze [m]");
   funz.GetYaxis()->SetTitle("tempi[ns]");
+  funz.SetTitle(" ");
     
-  funz.SetTitle("tempi di volo Vs distanze");
-
   TF1 f_fit ("f_fit", retta, 0., 3., 2) ;
   f_fit.SetParNames("m", "q");
 

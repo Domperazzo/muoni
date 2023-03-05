@@ -51,7 +51,6 @@ int main (int argc, char ** argv){
   vector<double> ADC1, ADC2, TDC_megacorretto, e_TDC_megacorretto, TDC_scorretto, eTDC, x1, e1, y1, ex1, x2, e2, ex2, y2;
   double adc1, adc2, tdc_c, tdc_s, maxADC1 = 0, minADC1 = 10000, maxADC2 = 0, minADC2 = 10000, bin1, bin2, peso1, peso2, somma1 = 0, sommapesi1 = 0, somma2 = 0, sommapesi2 = 0, varianza_tdc, i = 0, j = 0;
   double taglioSupADC1, taglioInfADC1, taglioInfADC2, taglioSupADC2;
-
   ifstream dati;
   string fileDati = "Dati/Dati_tdcadc_";
   string lunghezza = argv[1];
@@ -59,32 +58,32 @@ int main (int argc, char ** argv){
   dati.open((fileDati+lunghezza+estensione).c_str());
 
   if(stod(argv[1]) == 9.5){
-    e_TDC = 17.15; //canali
+    e_TDC = 9.878; //canali, 
     taglioInfADC1 = 180;
     taglioSupADC1 = 300;
     taglioInfADC2 = 120;
     taglioSupADC2 = 240;
   }
   if(stod(argv[1]) == 38.2){
-    e_TDC = 19.04; //canali
+    e_TDC = 11.25; //canali
     taglioInfADC1 = 140;
     taglioSupADC1 = 320;
     taglioInfADC2 = 120;
     taglioSupADC2 = 240;
   }
   if(stod(argv[1]) == 97.15){
-    e_TDC = 23.8; //canali
+    e_TDC = 15.53; //canali
     taglioInfADC1 = 120;
     taglioSupADC1 = 320;
     taglioInfADC2 = 80;
     taglioSupADC2 = 200;
   }
   if(stod(argv[1]) == 171.5){
-    e_TDC = 26.94; //canali
+    e_TDC = 17.84; //canali
     taglioInfADC1 = 120;
     taglioSupADC1 = 320;
-    taglioInfADC2 = 70;
-    taglioSupADC2 = 180;
+    taglioInfADC2 = 80;
+    taglioSupADC2 = 200;
   }
 
   while (!dati.eof())
@@ -103,7 +102,9 @@ int main (int argc, char ** argv){
       TDC_scorretto.push_back(tdc_s);
       TDC_megacorretto.push_back(tdc_c - tau1[0] * log(adc1 / (adc1 - Vs1[0])) + tau2[0] * log(adc2 / (adc2 - Vs2[0]))); /*correzione tempi*/
       varianza_tdc = pow(q[1], 2) + pow(e_TDC*m[0], 2) + pow(tdc_s*m[1], 2) + pow(tau1[1]*log( adc1/(adc1-Vs1[0]) ), 2) + pow(tau2[1]*log(adc2/(adc2-Vs2[0])), 2) + pow(Vs1[1]*tau1[0]/(adc1-Vs1[0]), 2) + pow(Vs2[1]*tau2[0]/(adc2-Vs2[0]), 2);
+
       e_TDC_megacorretto.push_back( sqrt(varianza_tdc) );
+      cout<<" errore tdc corretto: "<<sqrt(varianza_tdc)<<endl;
 
       if (adc1 < minADC1)
         minADC1 = adc1;

@@ -17,6 +17,7 @@
 #include "TApplication.h"
 #include "TStyle.h"
 #include "TLatex.h"
+#include "TMatrix.h"
 
 
 double logo (double * x, double * par)
@@ -50,32 +51,32 @@ int main (int argc, char ** argv){
 
 
     if(stod(argv[1]) == 9.5){
-      e_TDC = 17.15; //canali
+      e_TDC = 9.878 ; //canali
       taglioInfADC1 = 180;
       taglioSupADC1 = 300;
       taglioInfADC2 = 120;
       taglioSupADC2 = 240;
     }
     if(stod(argv[1]) == 38.2){
-      e_TDC = 19.04; //canali
+      e_TDC = 11.25; //canali
       taglioInfADC1 = 140;
       taglioSupADC1 = 320;
       taglioInfADC2 = 120;
       taglioSupADC2 = 240;
     }
     if(stod(argv[1]) == 97.15){
-      e_TDC = 23.8; //canali
+      e_TDC = 15.53; //canali 
       taglioInfADC1 = 120;
       taglioSupADC1 = 320;
       taglioInfADC2 = 80;
       taglioSupADC2 = 200;
     }
     if(stod(argv[1]) == 171.5){
-      e_TDC = 26.94; //canali
+      e_TDC = 17.84; //canali 
       taglioInfADC1 = 120;
       taglioSupADC1 = 320;
-      taglioInfADC2 = 70;
-      taglioSupADC2 = 180;
+      taglioInfADC2 = 80;
+      taglioSupADC2 = 200;
     }
     while (!dati.eof())
     {
@@ -136,7 +137,7 @@ int main (int argc, char ** argv){
 
     y1.push_back(somma1/sommapesi1);
     e1.push_back(1/sqrt(sommapesi1));
-    //cout<<y1.at(i)<<" \n "<<endl;
+    cout<<e1.at(i)<<" \n "<<endl;
 
     x2.push_back(minADC2+i*bin2+bin2/2);
     ex2.push_back(1);
@@ -185,8 +186,8 @@ int main (int argc, char ** argv){
 
   /*
   9:     0 --> 31
-         1 --> 0.04
-         2 --> 31
+         1 --> 0.4
+         2 --> 18
   38,2:  0 --> 31 
          1 --> 0.4 
          2 --> 18
@@ -195,12 +196,12 @@ int main (int argc, char ** argv){
          2 --> 18
   171,5: 0 --> 31
          1 --> 0.4
-         2 --> 18
+         2 --> 80
 
   */
   f_fit.SetParameter (0, 31);
   f_fit.SetParameter (1, 0.4);
-  f_fit.SetParameter (2, 18); //perche i tagli tolgono la parte piu interessante del fit?(dove non è piu una retta)
+  f_fit.SetParameter (2, 80); //perche i tagli tolgono la parte piu interessante del fit?(dove non è piu una retta)
   TFitResultPtr fit_result = funz.Fit (&f_fit, "SQ") ;
 
   cout << endl ;
