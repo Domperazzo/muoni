@@ -18,6 +18,7 @@
 #include "TStyle.h"
 #include "TLatex.h"
 #include "TMatrix.h"
+#include "TMatrixDSym.h"
 
 
 double logo (double * x, double * par)
@@ -210,8 +211,9 @@ int main (int argc, char ** argv){
   */
   f_fit.SetParameter (0, 31);
   f_fit.SetParameter (1, 0.4);
-  f_fit.SetParameter (2, 80); //perche i tagli tolgono la parte piu interessante del fit?(dove non è piu una retta)
+  f_fit.SetParameter (2, 18); //perche i tagli tolgono la parte piu interessante del fit?(dove non è piu una retta)
   TFitResultPtr fit_result = funz.Fit (&f_fit, "SQ") ;
+
 
   cout << endl ;
   cout.precision (3) ;
@@ -220,6 +222,7 @@ int main (int argc, char ** argv){
   cout << " tau: " << f_fit.GetParameter (1) << "\t+- " << f_fit.GetParError (1) << endl ;
   cout << " Vs: " << f_fit.GetParameter (2) << "\t+- " << f_fit.GetParError (2) << endl ;
 
+
   TCanvas c1 ("c1", "", 800, 800) ;
   c1.SetLeftMargin(0.15);
   c1.SetBottomMargin(0.15);
@@ -227,6 +230,7 @@ int main (int argc, char ** argv){
   string fileGrafici = "Grafici/amplitude_walk_";
   string estensionePDF1 = "_ADC1.pdf";
   c1.Print ((fileGrafici+lunghezza+estensionePDF1).c_str(), "pdf");
+
 
 // fit energia 2
   TF1 f_fit2 ("f_fit2", logo, minADC2-bin2 - 50, maxADC2+bin2, 3);
@@ -248,8 +252,8 @@ int main (int argc, char ** argv){
          2 --> 18
   */
   f_fit2.SetParameter (0, 31); 
-  f_fit2.SetParameter (1, -0.04);
-  f_fit2.SetParameter (2, 18); 
+  f_fit2.SetParameter (1, -1.3);
+  f_fit2.SetParameter (2, 31); 
   TFitResultPtr fit_result2 = funz2.Fit (&f_fit2, "SQ") ;
 
   cout << endl ;

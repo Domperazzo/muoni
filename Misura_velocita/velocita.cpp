@@ -64,6 +64,7 @@ int main(int argc, char* argv[]){
   	dati_corretti.close();
   	  
     TDC.push_back(somma/sommapesi);
+    cout<<"tdc: "<<somma/sommapesi<<endl;
     TDC_err.push_back(sqrt(1/sommapesi));
 
     cout<<"err tdc: "<<sqrt(1/sommapesi)<<endl;
@@ -106,7 +107,7 @@ int main(int argc, char* argv[]){
   funz.SetTitle(" ");
     
   TF1 f_fit ("f_fit", retta, 0., 3., 2) ;
-  f_fit.SetParNames("m", "q");
+  f_fit.SetParNames("q", "m");
 
   TFitResultPtr fit_result = funz.Fit (&f_fit, "S") ;
 
