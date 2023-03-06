@@ -23,7 +23,10 @@ using namespace std;
 int main(int argc, char* argv[]){
 
 //distribuzione dei tempi di volo per ogni distanza L    
-    TH1F distribuzione_tempi_tagliati_eccesso ("hist", "  ", sqrt(NEV), 1., 500.); // nome, n bin, min, max
+    TH1F distribuzione_tempi_tagliati_eccesso ("171.5 cm", "  ", sqrt(NEV), 1., 500.); // nome, n bin, min, max
+    
+    TApplication theApp("theApp", &argc, argv);
+
 
     ifstream dati_tagliati_eccesso;
 	string fileDati = "Dati/Dati_tdcadc_";
@@ -45,9 +48,9 @@ int main(int argc, char* argv[]){
     }
     if(stod(argv[1]) == 38.2){
         taglioInfADC1 = 100; //-->-0.1canali (--> -0.1)
-        taglioSupADC1 = 380;
+        taglioSupADC1 = 360;
         taglioInfADC2 = 80;
-        taglioSupADC2 = 300;
+        taglioSupADC2 = 280;
       }
     if(stod(argv[1]) == 97.15){
         taglioInfADC1 = 80; //-->+0.1canali (--> +0.6)
@@ -72,6 +75,7 @@ int main(int argc, char* argv[]){
         } 
     }
     dati_tagliati_eccesso.close();
+    
 
     TCanvas c1 ("c1", "", 800, 800);
 
@@ -79,11 +83,11 @@ int main(int argc, char* argv[]){
     distribuzione_tempi_tagliati_eccesso.Draw ();
     string fileGrafici = "Grafici/distribuzione_tempi_tagliati_eccesso";
     string estensionePDF = ".pdf";
+
     c1.Print((fileGrafici+lunghezza+estensionePDF).c_str(), "pdf");
-    
 
 //distribuzione dei tempi di volo per ogni distanza L    
-    TH1F distribuzione_tempi_tagliati_giusti ("hist", "  ", sqrt(NEV), 1., 500.); // nome, n bin, min, max
+    TH1F distribuzione_tempi_tagliati_giusti ("171.5 cm", "  ", sqrt(NEV), 1., 500.); // nome, n bin, min, max
 
     ifstream dati_tagliati;
     dati_tagliati.open((fileDati+lunghezza+estensione).c_str(), ios::in);
@@ -131,6 +135,6 @@ int main(int argc, char* argv[]){
     distribuzione_tempi_tagliati_giusti.Draw ();
     string fileGraficiTagliati = "Grafici/Distribuzione_tempi_tagliati_";
     c2.Print((fileGraficiTagliati+lunghezza+estensionePDF).c_str(), "pdf");
-    
+    theApp.Run();
     return 0;
 }
