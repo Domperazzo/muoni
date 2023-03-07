@@ -23,7 +23,7 @@ c++ -o simulazione controlli.cc muon_class.cc simulazione.cpp `root-config --gli
 #include "muon_class.h"
 
 
-#define L 97.15 //distanza tra i 2 rivelatori in cm
+#define L 15.00 //distanza tra i 2 rivelatori in cm
 #define N 1e8 //tentativi
 #define larghezza 80.0 //in cm
 #define profondita 30.0 //in cm
@@ -42,6 +42,7 @@ int main (int argc, char ** argv){
 
     int j=0;
     int conteggi = 0;
+    int conteggio_verticale = 0;
     while (j < N){
       muone muon(rand_theta(f_cos2, -M_PI/2, 0, 4/M_PI), rand_phi(0, 2*M_PI)); /*distribuzione cos^2*/
       double x0 = rand_range(-larghezza / 2, larghezza / 2);
@@ -51,6 +52,8 @@ int main (int argc, char ** argv){
         path_lenght = get_path(L, muon.coeff_x(), muon.coeff_y(), rand_range(-larghezza / 2, larghezza / 2), rand_range(-profondita / 2, profondita / 2));
         h_path.Fill(path_lenght);
         h2_positions.Fill(x_coinc_coord(L, muon.coeff_x(), x0), y_coinc_coord(L, muon.coeff_y(), y0));
+        
+        if  ( controllo_verticale( muon.get_theta() ) == true ) conteggio_verticale++ ;
   
         conteggi++;
 
@@ -63,7 +66,8 @@ int main (int argc, char ** argv){
     
 
     std::cout.precision(3);
-    std::cout << "il " << conteggi*100./pow(10, 8) << " % " << " di " << N << " muoni sono passati sul secondo rilevatore dopo essere passati dal primo" << "\n" ;
+    std::cout << "il " << conteggi*100./static_cast<double> (N) << " % " << " di " << N << " muoni sono passati sul secondo rilevatore dopo essere passati dal primo" << std:: endl;
+    std::cout << "il " << conteggio_verticale*100./conteggi << " % " << " di " << N << " muoni hanno angolo theta tra 0° e 1°" << std:: endl;
 
     std::ofstream outfile_media("distanze.txt", std::ios::app);
     if (outfile_media.is_open())
