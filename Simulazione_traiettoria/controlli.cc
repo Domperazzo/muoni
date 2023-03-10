@@ -65,7 +65,7 @@ double get_path (double L, double K_x, double K_y, double x0, double y0){
 
 bool   controllo_verticale( double x )
 {
-	if( x <=0 && x>= -M_PI/180. ) return true;
+	if( x <=0 && x>= -0.572 ) return true;
 	else return false;
 }
 

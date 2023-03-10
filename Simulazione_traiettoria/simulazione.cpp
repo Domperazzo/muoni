@@ -23,7 +23,7 @@ c++ -o simulazione controlli.cc muon_class.cc simulazione.cpp `root-config --gli
 #include "muon_class.h"
 
 
-#define L 15.00 //distanza tra i 2 rivelatori in cm
+#define L 32.00 //distanza tra i 2 rivelatori in cm
 #define N 1e8 //tentativi
 #define larghezza 80.0 //in cm
 #define profondita 30.0 //in cm
@@ -67,7 +67,7 @@ int main (int argc, char ** argv){
 
     std::cout.precision(3);
     std::cout << "il " << conteggi*100./static_cast<double> (N) << " % " << " di " << N << " muoni sono passati sul secondo rilevatore dopo essere passati dal primo" << std:: endl;
-    std::cout << "il " << conteggio_verticale*100./conteggi << " % " << " di " << N << " muoni hanno angolo theta tra 0° e 1°" << std:: endl;
+    std::cout << "il " << conteggio_verticale*100./conteggi << " % " << " di " << N << " muoni stanno in 1 steradiante" << std:: endl;
 
     std::ofstream outfile_media("distanze.txt", std::ios::app);
     if (outfile_media.is_open())

@@ -60,12 +60,13 @@ int main(int argc, char **argv) {
   }
 
   for (int i = 0; i < v_sigma.size()-5; i++) {
-    g1.SetPointError(i, 0.001, sqrt(v_media.at(i))/v_tempo.at(i)); //distribuzione poissoniana -> sigma=rad(n)
+    g1.SetPointError(i, 0.001, sqrt(v_media.at(i))/v_tempo.at(i)); //distribuzione poissoniana -> sigma=radice(n)
   }
 
 
-  g1.SetMarkerStyle(20);
-  g1.SetMarkerSize(0.5);
+  g1.SetMarkerStyle(21);
+  g1.SetMarkerSize(0.75);
+
 
   g1.SetTitle("Rate vs Soglia");
   g1.GetHistogram()-> GetXaxis()->SetTitle("V_{soglia}");
@@ -73,29 +74,48 @@ int main(int argc, char **argv) {
   g1.GetHistogram()-> GetYaxis()->SetTitle("Conteggi/Minuto");
 
 
-  double rangeX_min, rangeX_max;
+  double rangeX_1, rangeX_2;
 
-  rangeX_min = .410;
-  rangeX_max = .509;
+  rangeX_1 = .400;
+  rangeX_2 = .510;
 
 
   TGraph g_fill1, g_fill2;
-  for (int i = 0; i < 505; i++) {
-    g_fill1.SetPoint(i, rangeX_min, i);
-    g_fill2.SetPoint(i, rangeX_max, i);
+  
+  int k = 0;
+  for(int j = 56; j < rangeX_1*200.; j++){
+    for(int i = 0; i < 500; i+=5){
+      //  std::cout<<i<<std::endl;
+        g_fill1.SetPoint(k, j/200., i);
+        k++;
+      }
+  }
+  k = 0;
+  for(int m = rangeX_2*200; m<=224; m++){
+    for(int l = 0; l < 500; l+=5){
+        g_fill2.SetPoint(k, m/200., l);
+        k++;
+      }
   }
 
-  g_fill1.SetLineColor(4);
-  g_fill1.SetLineWidth(8000);
-  g_fill1.SetFillStyle(3004);
-  g_fill1.SetFillColor(6);
-  g_fill1.SetMarkerColor(0);
 
-  g_fill2.SetLineColor(4);
-  g_fill2.SetLineWidth(-10800);
+  //g_fill1.SetLineColor(33);
+  //g_fill1.SetLineWidth(8000);
+  g_fill1.SetFillStyle(3004);
+  g_fill1.SetFillColor(33);
+  g_fill1.SetMarkerColor(33);
+  g_fill1.SetMarkerSize(0.5);
+  g_fill1.SetMarkerStyle(20);
+
+
+
+  //g_fill2.SetLineColor(33);
+  //g_fill2.SetLineWidth(-10200);
   g_fill2.SetFillStyle(3004);
-  g_fill2.SetFillColor(6);
-  g_fill2.SetMarkerColor(0);
+  g_fill2.SetFillColor(33);
+  g_fill2.SetMarkerColor(33);
+  g_fill2.SetMarkerSize(0.5);
+  g_fill2.SetMarkerStyle(20);
 
   TMultiGraph multi;
   multi.Add(&g_fill1);
@@ -111,13 +131,13 @@ int main(int argc, char **argv) {
   c1.SetWindowSize (1050, 900);
 
   multi.SetTitle(" ; V_{soglia} [V]; #frac{Conteggi}{Minuto} #left[#frac{1}{min}#right]");
-  multi.GetHistogram()->GetYaxis()->SetRangeUser(0., 505.);
-  multi.GetHistogram()->GetXaxis()->SetRangeUser(0., 1.12);
+  multi.GetHistogram()->GetYaxis()->SetRangeUser(0., 520.);
+  multi.GetHistogram()->GetXaxis()->SetRangeUser(0., 1.2);
   multi.GetHistogram()->GetXaxis()->SetTitleSize(0.05);
   multi.GetHistogram()->GetYaxis()->SetTitleSize(0.04);
   multi.GetHistogram()->GetXaxis()->SetLabelOffset(0.005);
   multi.GetHistogram()->GetYaxis()->SetLabelOffset(0.001);
-  multi.Draw("ACP");
+  multi.Draw("AP");
 
 
   c1.Print("Grafici/plot_destra(rivelatore2).pdf", "pdf");
