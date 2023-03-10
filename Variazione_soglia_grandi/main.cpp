@@ -189,7 +189,7 @@ int main(int argc, char **argv) {
 
   c2.SetWindowSize (1050, 900);
 
-  multi.SetTitle(" ; V_{soglia} [V]; #frac{Conteggi}{Minuto} #left[#frac{1}{min}#right]");
+  multi2.SetTitle(" ; V_{soglia} [V]; #frac{Conteggi}{Minuto} #left[#frac{1}{min}#right]");
   multi2.GetHistogram()->GetXaxis()->SetTitleSize(0.05);
   multi2.GetHistogram()->GetYaxis()->SetTitleSize(0.04);
   multi2.GetHistogram()->GetXaxis()->SetLabelOffset(0.005);
