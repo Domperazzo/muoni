@@ -1,6 +1,7 @@
 /*
   c++ -o controllotempi controllotempi.cpp `root-config --glibs --cflags`
   ./controllotempi 9.5cm
+  abbassare gli errori di un fattore necessario a rendere il tutto piu bello
 */
 
 #include <iostream>
@@ -30,7 +31,7 @@ int main (int argc, char ** argv){
   gStyle->SetOptFit(1112);
   
   double tau1[2], tau2[2], Vs1[2], Vs2[2];
-  e_TDC;
+  double e_TDC;
 
   ifstream parametri;
   parametri.open("Dati/Parametri_medi.txt");
@@ -49,12 +50,41 @@ int main (int argc, char ** argv){
 
   vector<double> ADC1, ADC2, TDC_megacorretto, e_TDC_megacorretto, TDC_scorretto, eTDC, x1, e1, y1, ex1, x2, e2, ex2, y2;
   double adc1, adc2, tdc_c, tdc_s, maxADC1 = 0, minADC1 = 10000, maxADC2 = 0, minADC2 = 10000, bin1, bin2, peso1, peso2, somma1 = 0, sommapesi1 = 0, somma2 = 0, sommapesi2 = 0, varianza_tdc, i = 0, j = 0;
-
+  double taglioSupADC1, taglioInfADC1, taglioInfADC2, taglioSupADC2;
   ifstream dati;
   string fileDati = "Dati/Dati_tdcadc_";
   string lunghezza = argv[1];
   string estensione = ".txt";
   dati.open((fileDati+lunghezza+estensione).c_str());
+
+  if(stod(argv[1]) == 9.5){
+    e_TDC = 10.45; //canali, 
+    taglioInfADC1 = 180;
+    taglioSupADC1 = 300;
+    taglioInfADC2 = 120;
+    taglioSupADC2 = 240;
+  }
+  if(stod(argv[1]) == 38.2){
+    e_TDC = 11.91; //canali
+    taglioInfADC1 = 140;
+    taglioSupADC1 = 320;
+    taglioInfADC2 = 120;
+    taglioSupADC2 = 240;
+  }
+  if(stod(argv[1]) == 97.15){
+    e_TDC = 16.39; //canali
+    taglioInfADC1 = 120;
+    taglioSupADC1 = 320;
+    taglioInfADC2 = 80;
+    taglioSupADC2 = 200;
+  }
+  if(stod(argv[1]) == 171.5){
+    e_TDC = 19.41; //canali
+    taglioInfADC1 = 120;
+    taglioSupADC1 = 320;
+    taglioInfADC2 = 80;
+    taglioSupADC2 = 200;
+  }
 
   while (!dati.eof())
   {
@@ -65,28 +95,16 @@ int main (int argc, char ** argv){
     dati >> adc1;
     dati >> adc2;
 
-    if(stod(argv[1]) == 9.5){
-      e_TDC = 17.15; //canali
-    }
-    if(stod(argv[1]) == 38.2){
-      e_TDC = 19.04; //canali
-    }
-    if(stod(argv[1]) == 97.15){
-      e_TDC = 23.8; //canali
-    }
-    if(stod(argv[1]) == 171.5){
-      e_TDC = 26.94; //canali
-    }
-
-    if (adc1 >= 140 && adc1 <= 320 && adc2 >= 100 && adc2 <= 240)
-    {
+    if (adc1 >= taglioInfADC1 && adc1 <= taglioSupADC1 && adc2 >= taglioInfADC2 && adc2 <= taglioSupADC2){
 
       ADC1.push_back(adc1);
       ADC2.push_back(adc2);
       TDC_scorretto.push_back(tdc_s);
       TDC_megacorretto.push_back(tdc_c - tau1[0] * log(adc1 / (adc1 - Vs1[0])) + tau2[0] * log(adc2 / (adc2 - Vs2[0]))); /*correzione tempi*/
       varianza_tdc = pow(q[1], 2) + pow(e_TDC*m[0], 2) + pow(tdc_s*m[1], 2) + pow(tau1[1]*log( adc1/(adc1-Vs1[0]) ), 2) + pow(tau2[1]*log(adc2/(adc2-Vs2[0])), 2) + pow(Vs1[1]*tau1[0]/(adc1-Vs1[0]), 2) + pow(Vs2[1]*tau2[0]/(adc2-Vs2[0]), 2);
+
       e_TDC_megacorretto.push_back( sqrt(varianza_tdc) );
+      cout<<" errore tdc corretto: "<<sqrt(varianza_tdc)<<endl;
 
       if (adc1 < minADC1)
         minADC1 = adc1;
@@ -142,17 +160,17 @@ int main (int argc, char ** argv){
     }
           
     x1.push_back(minADC1+i*bin1+bin1/2);
-    ex1.push_back(0);
+    ex1.push_back(1);
 
     y1.push_back(somma1/sommapesi1);
-    e1.push_back(1);
+    e1.push_back(1/sqrt(sommapesi1));
 
 
     x2.push_back(minADC2+i*bin2+bin2/2);
-    ex2.push_back(0);
+    ex2.push_back(1);
 
     y2.push_back(somma2/sommapesi2);    
-    e2.push_back(1);
+    e2.push_back(1/sqrt(sommapesi2));
           
     somma1=0;
     sommapesi1=0;
@@ -173,15 +191,20 @@ int main (int argc, char ** argv){
 
   funz.SetMarkerStyle(105);
   funz.SetMarkerColor(4);
+  funz.GetXaxis()->SetTitleSize(0.05);
+  funz.GetYaxis()->SetTitleSize(0.05);
+
   funz2.SetMarkerStyle(105);
   funz2.SetMarkerColor(4);
+  funz2.GetXaxis()->SetTitleSize(0.05);
+  funz2.GetYaxis()->SetTitleSize(0.05);
 
-  funz.SetTitle("tempi di volo Vs energia 1");
+  funz.SetTitle("  ");
 
   funz.GetXaxis()->SetTitle("ADC1");
   funz.GetYaxis()->SetTitle("TDC");
 
-  funz2.SetTitle("tempi di volo Vs energia 2");
+  funz2.SetTitle("  ");
 
   funz2.GetXaxis()->SetTitle("ADC2");
   funz2.GetYaxis()->SetTitle("TDC");
@@ -198,6 +221,8 @@ int main (int argc, char ** argv){
   cout << " m: " << f_fit.GetParameter(1) << "\t+- " << f_fit.GetParError(1) << endl;
 
   TCanvas c1 ("c1", "", 800, 800) ;
+  c1.SetLeftMargin(0.15);
+  c1.SetBottomMargin(0.15);
   funz.Draw ("AP") ;
   string fileGrafici = "Grafici/";
   string estensionePDF1 = "_corretto_ADC1.pdf";
@@ -218,6 +243,8 @@ int main (int argc, char ** argv){
   cout << " m: " << f_fit2.GetParameter(1) << "\t+- " << f_fit2.GetParError(1) << endl;
 
   TCanvas c2 ("c2", "", 800, 800) ;
+  c2.SetLeftMargin(0.15);
+  c2.SetBottomMargin(0.15);
   funz2.Draw ("AP") ;
   string estensionePDF2 = "_corretto_ADC2.pdf";
   

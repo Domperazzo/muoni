@@ -1,1 +1,5 @@
 La sigma mi fornisce il valore di \tau, il valore ricavato con i valori è 248.803
+
+misure effettuati in 5 minuti
+
+i punti da -154 a -120 e i punti da 121 a 154 non li considero ne nella retta (troppo alti) ne nella gaussiana (troppo bassi)
