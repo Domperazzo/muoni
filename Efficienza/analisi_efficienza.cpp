@@ -27,7 +27,7 @@ int main(int argc, char **argv) {
   gStyle->SetOptFit(1112);
 //abbiamo usato una soglia di 800mV
   std::ifstream dati;
-  dati.open("Dati/dati.txt", std::ios::in);
+  dati.open("dati.txt", std::ios::in);
   std::vector<double> v_AlimentazioneS1, v_AlimentazioneS2, v_doppia, v_triplaS1, v_triplaS2, v_conteggiS1, v_conteggiS2;
   while (true) {
       double AlimentazioneS1, AlimentazioneS2, doppia, triplaS1, triplaS2, conteggiS1, conteggiS2;
@@ -79,9 +79,9 @@ int main(int argc, char **argv) {
   g_S1.RemovePoint(10);
 
   g_S1.SetMarkerStyle(20);
-  g_S1.SetMarkerSize(0.5);
+  g_S1.SetMarkerSize(0.7);
   g_S2.SetMarkerStyle(20);
-  g_S2.SetMarkerSize(0.5);
+  g_S2.SetMarkerSize(0.7);
 
   g_conteggiS1.SetMarkerStyle(20);
   g_conteggiS1.SetMarkerSize(0.5);
@@ -93,7 +93,7 @@ int main(int argc, char **argv) {
   c1.SetGridx();
   c1.SetGridy();
   c1.SetLeftMargin(.15);
-  //c1.SetWindowSize (1050, 900);
+  c1.SetWindowSize (1050, 900);
 
   g_S1.SetTitle("Conteggi degli eventi rilevati da S1 al variare della tensione di alimentazione; V_{alimentazione} [V]; Efficienza");
   //g_S1.GetHistogram()->GetYaxis()->SetRangeUser(0., 505.);
@@ -105,7 +105,7 @@ int main(int argc, char **argv) {
   c2.SetGridx();
   c2.SetGridy();
   c2.SetLeftMargin(.15);
-  //c2.SetWindowSize (1050, 900);
+  c2.SetWindowSize (1050, 900);
 
   g_S2.SetTitle("Conteggi degli eventi rilevati da S2 al variare della tensione di alimentazione; V_{alimentazione} [V]; Efficienza");
   //g_S2.GetHistogram()->GetYaxis()->SetRangeUser(0., 505.);
@@ -117,11 +117,13 @@ int main(int argc, char **argv) {
   c3.SetGridx();
   c3.SetGridy();
   c3.SetLeftMargin(.15);
-  //c2.SetWindowSize (1050, 900);
+  c3.SetWindowSize (1050, 900);
 
   g_conteggiS1.SetTitle("Conteggi vs Alimentazione per S1; V_{alimentazione} [V]; Conteggi");
   //g_S2.GetHistogram()->GetYaxis()->SetRangeUser(0., 505.);
   //g_S2.GetHistogram()->GetXaxis()->SetRangeUser(0., 1.12);
+  g_conteggiS1.GetHistogram()->GetXaxis()->SetTitleSize(0.05);
+  g_conteggiS1.GetHistogram()->GetYaxis()->SetTitleSize(0.05);
   g_conteggiS1.Draw("AP");
 
   TCanvas c4;
@@ -129,11 +131,13 @@ int main(int argc, char **argv) {
   c4.SetGridx();
   c4.SetGridy();
   c4.SetLeftMargin(.15);
-  //c2.SetWindowSize (1050, 900);
+  c4.SetWindowSize (1050, 900);
 
   g_conteggiS2.SetTitle("Conteggi vs Alimentazione per S2; V_{alimentazione} [V]; Conteggi");
   //g_S2.GetHistogram()->GetYaxis()->SetRangeUser(0., 505.);
   //g_S2.GetHistogram()->GetXaxis()->SetRangeUser(0., 1.12);
+  g_conteggiS2.GetHistogram()->GetXaxis()->SetTitleSize(0.05);
+  g_conteggiS2.GetHistogram()->GetYaxis()->SetTitleSize(0.05);
   g_conteggiS2.Draw("AP");
 
   theApp.Run();

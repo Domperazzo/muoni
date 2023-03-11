@@ -48,7 +48,7 @@ int main(int argc, char **argv) {
   }
 
   g1.SetMarkerStyle(20);
-  g1.SetMarkerSize(0.5);
+  g1.SetMarkerSize(0.7);
 
   double rangeX_1, rangeX_2;
 
@@ -65,13 +65,13 @@ int main(int argc, char **argv) {
   g_fill1.SetLineColor(4);
   g_fill1.SetLineWidth(8000);
   g_fill1.SetFillStyle(3004);
-  g_fill1.SetFillColor(6);
+  g_fill1.SetFillColor(40);
   g_fill1.SetMarkerColor(0);
 
   g_fill2.SetLineColor(4);
   g_fill2.SetLineWidth(-10200);
   g_fill2.SetFillStyle(3004);
-  g_fill2.SetFillColor(6);
+  g_fill2.SetFillColor(40);
   g_fill2.SetMarkerColor(0);
 
 
@@ -89,8 +89,9 @@ int main(int argc, char **argv) {
   multi.SetTitle("Conteggi degli eventi al variare della tensione di soglia; V_{soglia} [V]; #frac{Conteggi}{Minuto} #left[#frac{1}{Minuto}#right]");
   multi.GetHistogram()->GetYaxis()->SetRangeUser(0., 350.);
   multi.GetHistogram()->GetXaxis()->SetRangeUser(0., 0.82);
-  multi.Draw("ACP");
-
+  multi.GetHistogram()->GetXaxis()->SetTitleSize(0.045);
+  multi.GetHistogram()->GetYaxis()->SetTitleSize(0.045);
+  multi.Draw("ALP");
 
   c1.Print("plot_sinistra.pdf", "pdf");
   theApp.Run();

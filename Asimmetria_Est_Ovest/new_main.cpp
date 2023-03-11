@@ -128,22 +128,22 @@ std::vector<double> get_diff(std::vector<double> v1, std::vector<double> v2){
     std::ifstream datiEst;
     datiEst.open("Dati/medie_angoliEst.txt", std::ios::in);
     std::vector<double> v_angoliEst, v_meanEst, v_sigmaEst;
-    do
+    while (true)
     {
         double p0, p1, p2;
         datiEst >> p0 >> p1 >> p2;
         if (datiEst.eof() == true)
-           break;
+            break;
         v_angoliEst.push_back(p0);
         v_meanEst.push_back(p1);
         v_sigmaEst.push_back(p2);
-    }while( datiEst.is_open() == true);
+    }
     datiEst.close();
 
     std::ifstream datiOvest;
     datiOvest.open("Dati/medie_angoliOvest.txt", std::ios::in);
     std::vector<double> v_angoliOvest, v_meanOvest, v_sigmaOvest;
-    do
+    while (true)
     {
         double p00, p01, p02;
         datiOvest >> p00 >> p01 >> p02;
@@ -152,10 +152,9 @@ std::vector<double> get_diff(std::vector<double> v1, std::vector<double> v2){
         v_angoliOvest.push_back(p00);
         v_meanOvest.push_back(p01);
         v_sigmaOvest.push_back(p02);
-        
-    }while( datiOvest.is_open() == true);
+    }
     datiOvest.close();
-    
+
     analisi_differenze(v_meanEst, v_meanOvest, v_angoliEst);
     
 
@@ -175,19 +174,19 @@ std::vector<double> get_diff(std::vector<double> v1, std::vector<double> v2){
     std::cout << "La percentuale media è: " << mean_perc(get_diff(v_meanEst, v_meanOvest), v_meanEst) << "e l'errore sulla percentuale è: " << sqrt(get_sigma(v_perc)) << "\n";
 
     //  v_meanOvest[1] = v_meanEst[1];
-    double normalizzazione = v_meanEst[0];
-    double n_sigma = v_sigmaEst[0];
+    double normalizzazione = v_meanEst.at(0);
+    double n_sigma = v_sigmaEst.at(0);
 
     TGraphErrors * punti_E = new TGraphErrors();
     TGraphErrors * punti_O = new TGraphErrors();
     for (int i = 0; i < v_angoliEst.size(); i++){
-        punti_E->SetPoint(i, v_angoliEst[i], v_meanEst[i] / normalizzazione);
-        punti_E->SetPointError(i, 2., propagazione_errori( v_meanEst[i] , normalizzazione , v_sigmaEst[i], n_sigma ) );
+        punti_E->SetPoint(i, v_angoliEst.at(i), v_meanEst.at(i) / normalizzazione);
+        punti_E->SetPointError(i, 2., propagazione_errori(v_meanEst.at(i), normalizzazione, v_sigmaEst.at(i), n_sigma));
     }
 
     for (int i = 0; i < v_angoliOvest.size(); i++){
-        punti_O->SetPoint(i, -v_angoliOvest[i], v_meanOvest[i]/normalizzazione);
-        punti_O->SetPointError(i, 2., propagazione_errori(v_meanOvest[i] , normalizzazione , v_sigmaOvest[i], n_sigma));
+        punti_O->SetPoint(i, -v_angoliOvest.at(i), v_meanOvest.at(i) / normalizzazione);
+        punti_O->SetPointError(i, 2., propagazione_errori(v_meanOvest.at(i), normalizzazione, v_sigmaOvest.at(i), n_sigma));
     }
     
     punti_E->SetMarkerStyle(20);
@@ -225,7 +224,7 @@ std::vector<double> get_diff(std::vector<double> v1, std::vector<double> v2){
     TCanvas * c1 = new TCanvas;
     multi->Draw("AP");
     c1->BuildLegend();
-   // theApp.Run();
+    theApp.Run();
 
    
    return 0;

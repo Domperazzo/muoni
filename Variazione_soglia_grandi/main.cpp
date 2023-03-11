@@ -60,6 +60,33 @@ int main(int argc, char **argv) {
     g_S2.SetMarkerStyle(20);
     g_S2.SetMarkerSize(0.5);
 
+    double rangeX_min, rangeX_max;
+
+    rangeX_min = 1.348;
+    rangeX_max = 1.450;
+
+    TGraph g_fill1, g_fill2;
+    for (int i = 0; i < 505; i++){
+      g_fill1.SetPoint(i, rangeX_min, i);
+      g_fill2.SetPoint(i, rangeX_max, i);
+    }
+
+    g_fill1.SetLineColor(4);
+    g_fill1.SetLineWidth(10000);
+    g_fill1.SetFillStyle(3004);
+    g_fill1.SetFillColor(40);
+    g_fill1.SetMarkerColor(0);
+
+    g_fill2.SetLineColor(4);
+    g_fill2.SetLineWidth(-10800);
+    g_fill2.SetFillStyle(3004);
+    g_fill2.SetFillColor(40);
+    g_fill2.SetMarkerColor(0);
+
+    TMultiGraph multi;
+    multi.Add(&g_fill1);
+    multi.Add(&g_fill2);
+    multi.Add(&g_S1);
 
     TCanvas c1;
     c1.SetGridx();
@@ -68,21 +95,10 @@ int main(int argc, char **argv) {
 
     //c1.SetWindowSize (1050, 900);
 
-    g_S1.SetTitle("Conteggi degli eventi rilevati da S1 al variare della tensione di soglia; V_{soglia} [V]; #frac{Conteggi}{Minuto}");
+    multi.SetTitle("Conteggi degli eventi rilevati da S1 al variare della tensione di soglia; V_{soglia} [V]; #frac{Conteggi}{Minuto}");
     //g_S1.GetHistogram()->GetYaxis()->SetRangeUser(0., 505.);
     //g_S1.GetHistogram()->GetXaxis()->SetRangeUser(0., 1.12);
-    g_S1.Draw("AP");
-
-    TCanvas c2;
-    c2.SetGridx();
-    c2.SetGridy();
-    c2.SetLeftMargin(.15);
-    //c2.SetWindowSize (1050, 900);
-
-    g_S2.SetTitle("Conteggi degli eventi rilevati da S2 al variare della tensione di soglia; V_{soglia} [V]; #frac{Conteggi}{Minuto}");
-    //g_S2.GetHistogram()->GetYaxis()->SetRangeUser(0., 505.);
-    //g_S2.GetHistogram()->GetXaxis()->SetRangeUser(0., 1.12);
-    g_S2.Draw("AP");
+    multi.Draw("AP");
 
     theApp.Run();
 
