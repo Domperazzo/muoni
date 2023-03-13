@@ -5,6 +5,7 @@
 #include <string>
 #include <sstream>
 
+#include "TH1F.h"
 #include "TF1.h"
 #include "TMultiGraph.h"
 #include "TGraph.h"
@@ -16,7 +17,8 @@
 #include "TStyle.h"
 #define USE_MATH_DEFINES
 
-int get_i_max(std::vector<double> vec){
+
+int get_i_max(std::vector<double> vec){ //usato
     int max = 0;
     int i_max = 0;
     for (int i = 0; i < vec.size(); i++){
@@ -28,83 +30,9 @@ int get_i_max(std::vector<double> vec){
     return i_max;
 }
 
+//  DIFFERENZE (vettori)
 
-double get_perc(int i, std::vector<double> v1, std::vector<double> v2){
-    double perc = 0.0;
-    if (v1.at(i)>v2.at(i)){
-        perc = (v2.at(i)/v1.at(i))*100;
-    } else {
-        perc = (v1.at(i) / v2.at(i)) * 100;
-    }
-    return perc;
-}
-
-double mean_perc(std::vector<double> v1, std::vector<double> v2){ //v1 diff
-    double temp = 0;
-    for (int i = 0; i < v1.size(); i++){
-        temp += v1.at(i)/v2.at(i);
-        
-    }
-    return temp*100/v1.size();
-}
-
-
-double get_error(std::vector<double> v1, std::vector<double> v2){
-    double temp = 0;
-    for (int i = 0; i < v1.size(); i++){
-        temp +=v1.at(i)+v2.at(i);
-    }
-    return temp/v1.size();
-}
-
-double get_err_perc(double p1, double p2, double p3, double p4){
-    double perc = 0.0;
-
-    perc = p2/p3+(p1*p4)/(p3*p3);
-
-    return perc;
-}
-
-void analisi_differenze(std::vector<double> v1, std::vector<double> v2, std::vector<double> v3){
-    std::vector<double> diff;
-    for (int i = 0; i < v2.size(); i++){
-        diff.push_back(v2.at(i)-v1.at(i));
-    }
-    for (int i = 0; i < diff.size(); i++){
-        if (diff.at(i) < 0){
-            diff.at(i) = -diff.at(i);
-        }
-    }
-    int i_max = get_i_max(diff);
-    std::cout << "La distanza massima si trova a " << v3.at(i_max) << " gradi e la differenza è di " << diff.at(i_max) << " in percentuale: " << 100-get_perc(i_max, v1, v2)  << "%" << "\n";
-}
-
-double calcola_media(std::vector<double> vec){
-    double temp = 0.0;
-    for (int i = 0; i < vec.size(); i++){
-        temp += vec.at(i);
-    }
-    return temp/vec.size();
-}
-
-double get_sigma(std::vector<double> v_campione)
-{
-    double media = 0.;
-    double numeratore = 0.;
-    media = calcola_media(v_campione);
-    for (int i = 0; i < v_campione.size(); i++)
-    {
-        numeratore += (v_campione.at(i) - media) * (v_campione.at(i) - media);
-    }
-    return (numeratore / (v_campione.size()));
-}
-
-double propagazione_errori( double x, double y, double sigma_x, double sigma_y)
-{
-	return sqrt( pow(x*sigma_y, 2) + pow(y*sigma_x , 2) )/pow(y,2);
-}
-
-std::vector<double> get_diff(std::vector<double> v1, std::vector<double> v2){
+std::vector<double> get_diff(std::vector<double> v1, std::vector<double> v2){ //usato
     std::vector<double> diff;
     for (int i = 0; i < v2.size(); i++)
     {
@@ -120,61 +48,168 @@ std::vector<double> get_diff(std::vector<double> v1, std::vector<double> v2){
     return diff;
 }
 
-    int main(int argc, char **argv)
+std::vector<double> get_diff_err(std::vector<double> v1_err, std::vector<double> v2_err){ //usato
+    std::vector<double> diff_err;
+    for (int i = 0; i < v2_err.size(); i++)
+    {
+        diff_err.push_back(  sqrt( pow(v1_err.at(i), 2) + pow(v2_err.at(i), 2) )  );
+    }
+    return diff_err;
+}
+
+
+//  PERCENTUALI
+
+double get_perc(int i, std::vector<double> v_diff, std::vector<double> v_est){ //calcola la percentuale di asimmetria
+
+    double perc = v_diff.at(i)*100/v_est.at(i);
+    return perc;
+}
+
+double get_err_perc(int i, std::vector<double> v_diff, std::vector<double> v_diff_err, std::vector<double> v_est, std::vector<double> v_est_err){
+
+    double err_perc = (get_perc(i, v_diff, v_est))*(  v_diff_err.at(i)/v_diff.at(i)  +   v_est_err.at(i)/v_est.at(i)  );
+    return err_perc;
+}
+
+
+std::vector<double> get_v_perc(std::vector<double> v_meanEst, std::vector<double> v_meanOvest){
+    std::vector<double> v_perc;
+    for (int i = 0; i < v_meanEst.size(); i++){
+        v_perc.push_back(get_perc(i, get_diff(v_meanEst, v_meanOvest), v_meanEst));
+    }
+    return v_perc;
+}
+
+std::vector<double> get_v_err_perc(std::vector<double> perc, std::vector<double> v_diff, std::vector<double> v_diff_err, std::vector<double> v_est, std::vector<double> v_est_err){
+    std::vector<double> v_errore_perc;
+    for(int i = 0; i<perc.size(); i++){
+        v_errore_perc.push_back( get_err_perc(i, v_diff, v_diff_err, v_est, v_est_err) ); //errore sulla divisione di due numeri con errore
+    }
+
+    return v_errore_perc;
+}
+
+//  ANALISI DIFFERENZE
+void analisi_differenze(std::vector<double> v1, std::vector<double> v1_err , std::vector<double> v2, std::vector<double> v2_err, std::vector<double> v3){ //usato
+    std::vector<double> diff;
+    for (int i = 0; i < v2.size(); i++){
+        diff.push_back(v2.at(i)-v1.at(i));
+    }
+    for (int i = 0; i < diff.size(); i++){
+        if (diff.at(i) < 0){
+            diff.at(i) = -diff.at(i);
+        }
+    }
+    int i_max = get_i_max(diff);
+
+    std::cout << "La distanza massima si trova a " << v3.at(i_max) << " gradi e la differenza è di " << diff.at(i_max) << " in percentuale: " << get_perc(i_max, get_diff(v1, v2), v1) <<" +- " << get_err_perc(i_max, get_diff(v1, v2), get_diff_err(v1_err, v2_err), v1, v1_err) << "%" << "\n";
+}
+
+//  MEDIE PERCENTUALI PESATE
+
+double get_mean_perc(std::vector<double> perc, std::vector<double> v_diff, std::vector<double> v_diff_err, std::vector<double> v_est, std::vector<double> v_est_err){ //usato
+    double temp;
+    double sommapesi = 0, sigma;
+    for (int i = 0; i < perc.size(); i++){
+        sigma = get_v_err_perc(perc, v_diff, v_diff_err, v_est, v_est_err).at(i);
+        sommapesi += 1/pow(sigma, 2);
+        temp += perc.at(i)/pow(sigma, 2);
+        
+    }
+    return temp/sommapesi;
+}
+
+double get_err_mean_perc(std::vector<double> perc, std::vector<double> v_diff, std::vector<double> v_diff_err, std::vector<double> v_est, std::vector<double> v_est_err){
+    double sommapesi = 0, sigma;
+    for (int i = 0; i < perc.size(); i++){
+        sigma = get_v_err_perc(perc, v_diff, v_diff_err, v_est, v_est_err).at(i);
+        sommapesi += 1/pow(sigma, 2);
+    }
+    return 1/sqrt(sommapesi);
+}
+
+//   PER FIT
+double propagazione_errori( double x, double y, double sigma_x, double sigma_y) //usato
 {
+	return sqrt( pow(x*sigma_y, 2) + pow(y*sigma_x , 2) )/pow(y,2);
+}
+
+
+
+int main(int argc, char **argv){
     gStyle->SetOptFit(1112);
     TApplication theApp("theApp", &argc, argv);
 
     std::ifstream datiEst;
     datiEst.open("Dati/medie_angoliEst.txt", std::ios::in);
     std::vector<double> v_angoliEst, v_meanEst, v_sigmaEst;
+    
+    double p01, p11, p21, a01, c01, e01;
+    datiEst >> a01 >> c01 >> e01;
+
     do
     {
-        double p0, p1, p2;
-        datiEst >> p0 >> p1 >> p2;
+        datiEst >> p01 >> p11 >> p21;
+        v_angoliEst.push_back(p01);
+        v_meanEst.push_back(p11);
+        v_sigmaEst.push_back(p21);
+        std::cout<<"p01: "<<p01<<std::endl;
+        std::cout<<"p11: "<< p11<<std::endl;
         if (datiEst.eof() == true)
-           break;
-        v_angoliEst.push_back(p0);
-        v_meanEst.push_back(p1);
-        v_sigmaEst.push_back(p2);
+            break;
+        
     }while( datiEst.is_open() == true);
     datiEst.close();
 
     std::ifstream datiOvest;
     datiOvest.open("Dati/medie_angoliOvest.txt", std::ios::in);
     std::vector<double> v_angoliOvest, v_meanOvest, v_sigmaOvest;
+    
+    double p02, p12, p22, a02, c02, e02;
+    datiOvest >> a02 >> c02 >> e02;
+
     do
     {
-        double p00, p01, p02;
-        datiOvest >> p00 >> p01 >> p02;
+        datiOvest >> p02 >> p12 >> p22;
+        v_angoliOvest.push_back(p02);
+        v_meanOvest.push_back(p12);
+        v_sigmaOvest.push_back(p22);
+        std::cout<<"p02: "<<p02<<std::endl;
+        std::cout<<"p12: "<< p12<<std::endl;
         if (datiOvest.eof() == true)
             break;
-        v_angoliOvest.push_back(p00);
-        v_meanOvest.push_back(p01);
-        v_sigmaOvest.push_back(p02);
         
     }while( datiOvest.is_open() == true);
     datiOvest.close();
     
-    analisi_differenze(v_meanEst, v_meanOvest, v_angoliEst);
+    analisi_differenze(v_meanEst, v_sigmaEst,v_meanOvest, v_sigmaOvest, v_angoliEst);
+
+    std::vector<double> v_perc = get_v_perc(v_meanEst, v_meanOvest);
+
+    std::cout << "La percentuale media(pesata) è: " << get_mean_perc(v_perc, get_diff(v_meanEst,v_meanOvest), get_diff_err(v_sigmaEst, v_sigmaOvest), v_meanEst , v_sigmaEst) << " e l'errore sulla percentuale è: " << get_err_mean_perc(v_perc, get_diff(v_meanEst,v_meanOvest), get_diff_err(v_sigmaEst, v_sigmaOvest), v_meanEst , v_sigmaEst) << std::endl;
+//doppio fit con distribuzione cos^2
+    v_angoliEst.push_back(a01);
+    v_meanEst.push_back(c01);
+    v_sigmaEst.push_back(e01);
+
+    v_angoliOvest.push_back(a02);
+    v_meanOvest.push_back(c02);
+    v_sigmaOvest.push_back(e02);
+
     
+    for(int i = 0; i<v_meanEst.size(); i++){
+        std::cout<<v_meanEst.at(i)<<std::endl;
+        std::cout<<v_sigmaEst.at(i)<<std::endl;
+        std::cout<<v_meanOvest.at(i)<<std::endl;
+        std::cout<<v_sigmaOvest.at(i)<<std::endl;
 
-    double media_diff = calcola_media(get_diff(v_meanEst, v_meanOvest));
-    double sigma_diff = get_sigma(get_diff(v_meanEst, v_meanOvest));
-    double err_perc = get_err_perc(media_diff, sigma_diff, calcola_media(v_meanEst), get_sigma(v_meanEst));
-    std::vector<double> v_perc;
-
-
-    for (int i = 0; i < v_meanEst.size()-1; i++){
-        std::vector<double> v1 = get_diff(v_meanEst, v_meanOvest);
-        v_perc.push_back(v1.at(i)/v_meanEst.at(i)*100);
     }
-    
 
 
-    std::cout << "La percentuale media è: " << mean_perc(get_diff(v_meanEst, v_meanOvest), v_meanEst) << "e l'errore sulla percentuale è: " << sqrt(get_sigma(v_perc)) << "\n";
+    std::cout<<v_meanEst.size()<<std::endl; //stampa i conteggi da 20 a 80
+    std::cout<<v_meanOvest.size()<<std::endl; //stampa i conteggi da 20 a 80
 
-    //  v_meanOvest[1] = v_meanEst[1];
     double normalizzazione = v_meanEst[0];
     double n_sigma = v_sigmaEst[0];
 
@@ -217,39 +252,22 @@ std::vector<double> get_diff(std::vector<double> v1, std::vector<double> v2){
     punti_O->Fit(modelloOvest, "Q", "", -90, 0.);
     punti_E->Fit(modelloEst, "Q", "", 0., 90.);
     
-   TMultiGraph * multi = new TMultiGraph;
-   multi->Add(punti_O);
-   multi->Add(punti_E);
-   multi->SetTitle("Conteggi al variare dell'angolo zenitale #vartheta; Angolo zenitale #vartheta; Conteggi");
+    TMultiGraph * multi = new TMultiGraph;
+    multi->Add(punti_O);
+    multi->Add(punti_E);
+    multi->SetTitle(" ; Angolo zenitale #vartheta [gradi]; Conteggi normalizzati");
+    multi->GetHistogram()->GetXaxis()->SetTitleSize(0.05);
+    multi->GetHistogram()->GetYaxis()->SetTitleSize(0.05);
 
     TCanvas * c1 = new TCanvas;
+    c1->SetLeftMargin(.15);
+    c1->SetBottomMargin(.15);
     multi->Draw("AP");
     c1->BuildLegend();
-   // theApp.Run();
+    
+    theApp.Run();
 
    
    return 0;
    
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

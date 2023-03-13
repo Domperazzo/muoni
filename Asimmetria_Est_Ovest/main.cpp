@@ -45,7 +45,7 @@ int main(int argc, char **argv){
     datiEst.close();
 
     std::ifstream datiOvest;
-    datiOvest.open("medie_angoliOvest.txt", std::ios::in);
+    datiOvest.open("Dati/medie_angoliOvest.txt", std::ios::in);
     std::vector<double> v_angoliOvest, v_meanOvest, v_sigmaOvest;
     while (true)
     {

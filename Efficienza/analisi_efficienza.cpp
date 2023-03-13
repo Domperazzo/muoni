@@ -82,26 +82,27 @@ int main(int argc, char **argv) {
 
   g_S1.RemovePoint(10);
 
-  g_S1.SetMarkerStyle(20);
-  g_S1.SetMarkerSize(0.5);
-  g_S2.SetMarkerStyle(20);
-  g_S2.SetMarkerSize(0.5);
+  g_S1.SetMarkerStyle(21);
+  g_S1.SetMarkerSize(1.5);
+  g_S2.SetMarkerStyle(21);
+  g_S2.SetMarkerSize(1.5);
 
-  g_conteggiS1.SetMarkerStyle(20);
-  g_conteggiS1.SetMarkerSize(0.5);
-  g_conteggiS2.SetMarkerStyle(20);
-  g_conteggiS2.SetMarkerSize(0.5);
+  g_conteggiS1.SetMarkerStyle(21);
+  g_conteggiS1.SetMarkerSize(1.5);
+  g_conteggiS2.SetMarkerStyle(21);
+  g_conteggiS2.SetMarkerSize(1.5);
+
 
   TCanvas c1;
   c1.cd(1);
   c1.SetGridx();
   c1.SetGridy();
-  c1.SetLeftMargin(.15);
-  c1.SetBottomMargin(.15);
+  c1.SetLeftMargin(.17);
+  c1.SetBottomMargin(.17);
 
-  c1.SetWindowSize (1250, 900);
-  g_S1.GetHistogram()->GetXaxis()->SetTitleSize(0.06);
-  g_S1.GetHistogram()->GetYaxis()->SetTitleSize(0.04);
+  c1.SetWindowSize (1150, 900);
+  g_S1.GetHistogram()->GetXaxis()->SetTitleSize(0.07);
+  g_S1.GetHistogram()->GetYaxis()->SetTitleSize(0.05);
   g_S1.GetHistogram()->GetXaxis()->SetLabelOffset(0.005);
   g_S1.GetHistogram()->GetYaxis()->SetLabelOffset(0.001);
 
@@ -116,12 +117,12 @@ int main(int argc, char **argv) {
   c2.cd(2);
   c2.SetGridx();
   c2.SetGridy();
-  c2.SetLeftMargin(.15);
-  c2.SetBottomMargin(.15);
+  c2.SetLeftMargin(.17);
+  c2.SetBottomMargin(.17);
 
   c2.SetWindowSize (1150, 900);
-  g_S2.GetHistogram()->GetXaxis()->SetTitleSize(0.06);
-  g_S2.GetHistogram()->GetYaxis()->SetTitleSize(0.04);
+  g_S2.GetHistogram()->GetXaxis()->SetTitleSize(0.07);
+  g_S2.GetHistogram()->GetYaxis()->SetTitleSize(0.05);
   g_S2.GetHistogram()->GetXaxis()->SetLabelOffset(0.005);
   g_S2.GetHistogram()->GetYaxis()->SetLabelOffset(0.001);
 
@@ -137,12 +138,14 @@ int main(int argc, char **argv) {
   c3.cd(3);
   c3.SetGridx();
   c3.SetGridy();
-  c3.SetLeftMargin(.15);
-  c3.SetBottomMargin(.15);
+  c3.SetLeftMargin(.17);
+  c3.SetBottomMargin(.17);
 
   c3.SetWindowSize (1150, 900);
-  g_conteggiS1.GetHistogram()->GetXaxis()->SetTitleSize(0.06);
-  g_conteggiS1.GetHistogram()->GetYaxis()->SetTitleSize(0.04);
+  g_conteggiS1.GetHistogram()->GetXaxis()->SetRangeUser(800., 1500.);
+  g_conteggiS1.GetHistogram()->GetYaxis()->SetRangeUser(0., 450000.);
+  g_conteggiS1.GetHistogram()->GetXaxis()->SetTitleSize(0.065);
+  g_conteggiS1.GetHistogram()->GetYaxis()->SetTitleSize(0.045);
   g_conteggiS1.GetHistogram()->GetXaxis()->SetLabelOffset(0.005);
   g_conteggiS1.GetHistogram()->GetYaxis()->SetLabelOffset(0.001);
 
@@ -157,12 +160,14 @@ int main(int argc, char **argv) {
   c4.cd(4);
   c4.SetGridx();
   c4.SetGridy();
-  c4.SetLeftMargin(.15);
-  c4.SetBottomMargin(.15);
+  c4.SetLeftMargin(.17);
+  c4.SetBottomMargin(.17);
 
   c4.SetWindowSize (1150, 900);
-  g_conteggiS2.GetHistogram()->GetXaxis()->SetTitleSize(0.06);
-  g_conteggiS2.GetHistogram()->GetYaxis()->SetTitleSize(0.04);
+  g_conteggiS2.GetHistogram()->GetXaxis()->SetRangeUser(800., 1500.);
+  g_conteggiS2.GetHistogram()->GetYaxis()->SetRangeUser(0., 350000.);
+  g_conteggiS2.GetHistogram()->GetXaxis()->SetTitleSize(0.065);
+  g_conteggiS2.GetHistogram()->GetYaxis()->SetTitleSize(0.045);
   g_conteggiS2.GetHistogram()->GetXaxis()->SetLabelOffset(0.005);
   g_conteggiS2.GetHistogram()->GetYaxis()->SetLabelOffset(0.001);
 

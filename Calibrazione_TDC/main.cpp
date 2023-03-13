@@ -30,7 +30,7 @@ int main(int argc, char **argv) {
 
 
   std::ifstream dati;
-  dati.open("Dati/calibrazione_TDC2.txt", std::ios::in);
+  dati.open("Dati/calibrazione_TDC1.txt", std::ios::in);
   std::vector<double> v_tempo, v_tdc;
   while (true) {
       double tempo, tdc;
@@ -51,6 +51,8 @@ int main(int argc, char **argv) {
 
   g1.SetMarkerStyle(20);
   g1.SetMarkerSize(0.3);
+  g1.GetHistogram()->GetXaxis()->SetTitleSize(0.06);
+  g1.GetHistogram()->GetYaxis()->SetTitleSize(0.06);
 
 
   TF1 modello("modello", "[0]*x+[1]");
@@ -60,7 +62,13 @@ int main(int argc, char **argv) {
   TFitResultPtr fit_result = g1.Fit(&modello, "S");
 
   TCanvas c1;
-  g1.SetTitle("Calibrazione TDC; TDC; Tempo [ns]");
+
+  c1.SetLeftMargin(.15);
+  c1.SetBottomMargin(.15);
+  
+  g1.SetTitle(" ; TDC [canali]; Tempo [ns]");
+  g1.GetHistogram()->GetXaxis()->SetLabelSize(0.06);
+  g1.GetHistogram()->GetYaxis()->SetLabelSize(0.06);
   g1.Draw("AP");
   theApp.Run();
 

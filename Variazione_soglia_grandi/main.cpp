@@ -56,9 +56,9 @@ int main(int argc, char **argv) {
 
 
   g_S1.SetMarkerStyle(21);
-  g_S1.SetMarkerSize(0.75);
+  g_S1.SetMarkerSize(1.2);
   g_S2.SetMarkerStyle(21);
-  g_S2.SetMarkerSize(0.75);
+  g_S2.SetMarkerSize(1.2);
 
   g_S1.GetHistogram()-> GetXaxis()->SetTitle("V_{soglia}");
   g_S1.GetHistogram()-> GetYaxis()->SetTitle("Conteggi/Minuto");

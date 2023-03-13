@@ -96,14 +96,14 @@ int main(int argc, char **argv) {
 
   double coincidenze_acc;
 
-
+/*
   TF1 modello("modello", "gaus");
   TFitResultPtr fit_result = g2.Fit(&modello, "S");
 
   double sigma = modello.GetParameter(2);
   double resolving_time_ns = sigma/2;
   cout << " resolving time secondo il fit a campana = " << resolving_time_ns << " ns" << endl;
-
+*/
   //dai dati.txt dell'Effiecienza, conteggi/min associati alle tensioni di Alimentazione scelte 
   double rA = 229165;
   double rB = 213969;
@@ -115,13 +115,12 @@ int main(int argc, char **argv) {
 
   std::cout << "coincidenze accidentali teoricamente = " << coincidenze_acc <<  " 1/min" << "\n";
 
-/*
+
   TF1 retta("retta", "[0]");
   TFitResultPtr fit_result2 = g1.Fit(&retta, "S");
   //retta.SetParName(0, "m");
   retta.SetParName(0, "q");
   //retta.SetParameter(0, 1.);
-*/
 
   TMultiGraph multi;
 
@@ -131,8 +130,14 @@ int main(int argc, char **argv) {
 
 
   TCanvas c1;
-  c1.SetLeftMargin(.15);
-  multi.SetTitle("Rate coincidenze accidentali; Ritardo [ns]; #frac{Conteggi}{Minuto} #left[#frac{1}{min}#right]");
+  c1.SetLeftMargin(.18);
+  c1.SetBottomMargin(.18);
+  multi.SetTitle(" ; Ritardo [ns]; #frac{Conteggi}{Minuto} #left[#frac{1}{min}#right]");
+  multi.GetHistogram()->GetXaxis()->SetTitleSize(0.055);
+  multi.GetHistogram()->GetYaxis()->SetTitleSize(0.055);
+  multi.GetHistogram()->GetXaxis()->SetLabelSize(0.05);
+  multi.GetHistogram()->GetYaxis()->SetLabelSize(0.05);
+
   multi.Draw("AP");
   theApp.Run();
 
