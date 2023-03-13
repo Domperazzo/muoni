@@ -46,159 +46,61 @@ int main(int argc, char **argv) {
 
 
 
-  TGraphErrors g_S1, g_S2, g_conteggiS1, g_conteggiS2;
-  for (int i = 0; i < v_sogliaS1.size(); i++) {
-    g_S1.SetPoint(i, v_sogliaS1.at(i), v_conteggiS1.at(i)/2);
-    g_S1.SetPointError(i, .001, sqrt(v_conteggiS1.at(i)/2));
-    g_S2.SetPoint(i, v_sogliaS2.at(i), v_conteggiS2.at(i)/2);
-    g_S2.SetPointError(i, .001, sqrt(v_conteggiS2.at(i)/2));
-  }
+    TGraphErrors g_S1, g_S2, g_conteggiS1, g_conteggiS2;
+    for (int i = 0; i < v_sogliaS1.size(); i++) {
+      g_S1.SetPoint(i, v_sogliaS1.at(i), v_conteggiS1.at(i)/2);
+      g_S1.SetPointError(i, 0., sqrt(v_conteggiS1.at(i)/2));
+      g_S2.SetPoint(i, v_sogliaS2.at(i), v_conteggiS2.at(i)/2);
+      g_S2.SetPointError(i, 0., sqrt(v_conteggiS2.at(i)/2));
+    }
 
 
-  g_S1.SetMarkerStyle(21);
-  g_S1.SetMarkerSize(1.2);
-  g_S2.SetMarkerStyle(21);
-  g_S2.SetMarkerSize(1.2);
+    g_S1.SetMarkerStyle(20);
+    g_S1.SetMarkerSize(0.5);
+    g_S2.SetMarkerStyle(20);
+    g_S2.SetMarkerSize(0.5);
 
-  g_S1.GetHistogram()-> GetXaxis()->SetTitle("V_{soglia}");
-  g_S1.GetHistogram()-> GetYaxis()->SetTitle("Conteggi/Minuto");
+    double rangeX_min, rangeX_max;
 
-  g_S2.GetHistogram()-> GetXaxis()->SetTitle("V_{soglia}");
-  g_S2.GetHistogram()-> GetYaxis()->SetTitle("Conteggi/Minuto");
+    rangeX_min = 1.348;
+    rangeX_max = 1.450;
 
-//grafico soglia S1
-  double rangeX_1, rangeX_2;
+    TGraph g_fill1, g_fill2;
+    for (int i = 0; i < 505; i++){
+      g_fill1.SetPoint(i, rangeX_min, i);
+      g_fill2.SetPoint(i, rangeX_max, i);
+    }
 
-  rangeX_1 = 1.40;
-  rangeX_2 = 1.80;
+    g_fill1.SetLineColor(4);
+    g_fill1.SetLineWidth(10000);
+    g_fill1.SetFillStyle(3004);
+    g_fill1.SetFillColor(40);
+    g_fill1.SetMarkerColor(0);
 
+    g_fill2.SetLineColor(4);
+    g_fill2.SetLineWidth(-10800);
+    g_fill2.SetFillStyle(3004);
+    g_fill2.SetFillColor(40);
+    g_fill2.SetMarkerColor(0);
 
-  TGraph g_fill1, g_fill2;
-  
-  int k = 0;
-  for(int j = 70; j < rangeX_1*100.; j++){
-    for(int i = 0; i < 110000; i+=1000){
-        g_fill1.SetPoint(k, j/100., i);
-        k++;
-      }
-  }
-  k = 0;
-  for(int m = rangeX_2*100; m<=200; m++){
-    for(int l = 0; l < 110000; l+=1000){
-        g_fill2.SetPoint(k, m/100., l);
-        k++;
-      }
-  }
+    TMultiGraph multi;
+    multi.Add(&g_fill1);
+    multi.Add(&g_fill2);
+    multi.Add(&g_S1);
 
+    TCanvas c1;
+    c1.SetGridx();
+    c1.SetGridy();
+    c1.SetLeftMargin(.15);
 
-  //g_fill1.SetLineColor(33);
-  //g_fill1.SetLineWidth(8000);
-  g_fill1.SetFillStyle(3004);
-  g_fill1.SetFillColor(33);
-  g_fill1.SetMarkerColor(33);
-  g_fill1.SetMarkerSize(0.5);
-  g_fill1.SetMarkerStyle(20);
+    //c1.SetWindowSize (1050, 900);
 
+    multi.SetTitle("Conteggi degli eventi rilevati da S1 al variare della tensione di soglia; V_{soglia} [V]; #frac{Conteggi}{Minuto}");
+    //g_S1.GetHistogram()->GetYaxis()->SetRangeUser(0., 505.);
+    //g_S1.GetHistogram()->GetXaxis()->SetRangeUser(0., 1.12);
+    multi.Draw("AP");
 
-
-  //g_fill2.SetLineColor(33);
-  //g_fill2.SetLineWidth(-10200);
-  g_fill2.SetFillStyle(3004);
-  g_fill2.SetFillColor(33);
-  g_fill2.SetMarkerColor(33);
-  g_fill2.SetMarkerSize(0.5);
-  g_fill2.SetMarkerStyle(20);
-
-  TMultiGraph multi;
-  multi.Add(&g_fill1);
-  multi.Add(&g_fill2);
-  multi.Add(&g_S1);
-
-  TCanvas c1;
-  c1.SetGridx ();
-  c1.SetGridy ();
-  c1.SetLeftMargin(.15);
-  c1.SetBottomMargin(.15);
-
-  c1.SetWindowSize (1050, 900);
-
-  multi.SetTitle(" ; V_{soglia} [V]; #frac{Conteggi}{Minuto} #left[#frac{1}{min}#right]");
-  multi.GetHistogram()->GetXaxis()->SetTitleSize(0.05);
-  multi.GetHistogram()->GetYaxis()->SetTitleSize(0.04);
-  multi.GetHistogram()->GetXaxis()->SetLabelOffset(0.005);
-  multi.GetHistogram()->GetYaxis()->SetLabelOffset(0.001);
-  multi.Draw("AP");
-
-
-  c1.Print("Grafici/Soglia S1.pdf", "pdf");
-
-
-//grafico soglia S2
-  double rangeX_3, rangeX_4;
-
-  rangeX_3 = 1.40;
-  rangeX_4 = 1.80;
-
-
-  TGraph g_fill3, g_fill4;
-  
-  int k2 = 0;
-  for(int j2 = 70; j2 < rangeX_3*100.; j2++){
-    for(int i2 = 0; i2 < 110000; i2+=1000){
-        g_fill3.SetPoint(k2, j2/100., i2);
-        k2++;
-      }
-  }
-  k2 = 0;
-  for(int m2 = rangeX_4*100; m2<=200; m2++){
-    for(int l2 = 0; l2 < 110000; l2+=1000){
-        g_fill4.SetPoint(k2, m2/100., l2);
-        k2++;
-      }
-  }
-
-
-  //g_fill3.SetLineColor(33);
-  //g_fill3.SetLineWidth(8000);
-  g_fill3.SetFillStyle(3004);
-  g_fill3.SetFillColor(33);
-  g_fill3.SetMarkerColor(33);
-  g_fill3.SetMarkerSize(0.5);
-  g_fill3.SetMarkerStyle(20);
-
-
-
-  //g_fill4.SetLineColor(33);
-  //g_fill4.SetLineWidth(-10200);
-  g_fill4.SetFillStyle(3004);
-  g_fill4.SetFillColor(33);
-  g_fill4.SetMarkerColor(33);
-  g_fill4.SetMarkerSize(0.5);
-  g_fill4.SetMarkerStyle(20);
-
-  TMultiGraph multi2;
-  multi2.Add(&g_fill3);
-  multi2.Add(&g_fill4);
-  multi2.Add(&g_S2);
-
-  TCanvas c2;
-  c2.SetGridx ();
-  c2.SetGridy ();
-  c2.SetLeftMargin(.15);
-  c2.SetBottomMargin(.15);
-
-  c2.SetWindowSize (1050, 900);
-
-  multi2.SetTitle(" ; V_{soglia} [V]; #frac{Conteggi}{Minuto} #left[#frac{1}{min}#right]");
-  multi2.GetHistogram()->GetXaxis()->SetTitleSize(0.05);
-  multi2.GetHistogram()->GetYaxis()->SetTitleSize(0.04);
-  multi2.GetHistogram()->GetXaxis()->SetLabelOffset(0.005);
-  multi2.GetHistogram()->GetYaxis()->SetLabelOffset(0.001);
-  multi2.Draw("AP");
-
-
-  c2.Print("Grafici/Soglia S2.pdf", "pdf");
-  theApp.Run();
+    theApp.Run();
 
   return 0;
 }

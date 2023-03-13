@@ -23,7 +23,7 @@ c++ -o simulazione controlli.cc muon_class.cc simulazione.cpp `root-config --gli
 #include "muon_class.h"
 
 
-#define L 32.00 //distanza tra i 2 rivelatori in cm
+#define L 171.5 //distanza tra i 2 rivelatori in cm
 #define N 1e8 //tentativi
 #define larghezza 80.0 //in cm
 #define profondita 30.0 //in cm
@@ -32,17 +32,15 @@ c++ -o simulazione controlli.cc muon_class.cc simulazione.cpp `root-config --gli
 
 int main (int argc, char ** argv){
 
-    auto start = std::chrono::system_clock::now();
     TApplication theApp("theApp", &argc, argv);
     srand(time(NULL)); 
     double path_lenght;
 
-    TH1F h_path ("stats", "Simulazione spazio percorso muoni", sqrt(sqrt(N)), L-1, L+40);
+    TH1F h_path("171.5 cm", "Simulazione spazio percorso muoni", sqrt(sqrt(N)), L - 1, 193);
     TH2F h2_positions("stats", "Distribuzione sul secondo rivelatore", 160, -40, 40, 60, -15, 15); // nbinx minx maxx nbiny miny maxy
 
     int j=0;
     int conteggi = 0;
-    int conteggio_verticale = 0;
     while (j < N){
       muone muon(rand_theta(f_cos2, -M_PI/2, 0, 4/M_PI), rand_phi(0, 2*M_PI)); /*distribuzione cos^2*/
       double x0 = rand_range(-larghezza / 2, larghezza / 2);
@@ -52,8 +50,6 @@ int main (int argc, char ** argv){
         path_lenght = get_path(L, muon.coeff_x(), muon.coeff_y(), rand_range(-larghezza / 2, larghezza / 2), rand_range(-profondita / 2, profondita / 2));
         h_path.Fill(path_lenght);
         h2_positions.Fill(x_coinc_coord(L, muon.coeff_x(), x0), y_coinc_coord(L, muon.coeff_y(), y0));
-        
-        if  ( controllo_verticale( muon.get_theta() ) == true ) conteggio_verticale++ ;
   
         conteggi++;
 
@@ -66,8 +62,7 @@ int main (int argc, char ** argv){
     
 
     std::cout.precision(3);
-    std::cout << "il " << conteggi*100./static_cast<double> (N) << " % " << " di " << N << " muoni sono passati sul secondo rilevatore dopo essere passati dal primo" << std:: endl;
-    std::cout << "il " << conteggio_verticale*100./conteggi << " % " << " di " << N << " muoni stanno in 1 steradiante" << std:: endl;
+    std::cout << "il " << conteggi*100./pow(10, 8) << " % " << " di " << N << " muoni sono passati sul secondo rilevatore dopo essere passati dal primo" << "\n" ;
 
     std::ofstream outfile_media("distanze.txt", std::ios::app);
     if (outfile_media.is_open())
@@ -84,6 +79,8 @@ int main (int argc, char ** argv){
     TCanvas c1;
     h_path.GetXaxis()->SetTitle("distanza percorsa");
     h_path.GetYaxis()->SetTitle("conteggi");
+    h_path.GetXaxis()->SetTitleSize(0.045);
+    h_path.GetYaxis()->SetTitleSize(0.045);
     h_path.SetFillColor (kOrange + 1) ;
     h_path.Draw ();
     std::string fileDistanze = "Distanze_simulate_";
@@ -108,7 +105,7 @@ int main (int argc, char ** argv){
     projh2Y->SetFillColor(kViolet);
     projh2Y->Draw();
     c4.Print("Distribuzione2Dy_171.5.pdf", "pdf");
-/*
+
     questo a cosa serviva?
     TCanvas c6;
     h_theta.Draw();
