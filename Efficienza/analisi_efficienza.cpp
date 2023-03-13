@@ -78,15 +78,15 @@ int main(int argc, char **argv) {
 
   g_S1.RemovePoint(10);
 
-  g_S1.SetMarkerStyle(20);
-  g_S1.SetMarkerSize(0.7);
-  g_S2.SetMarkerStyle(20);
-  g_S2.SetMarkerSize(0.7);
+  g_S1.SetMarkerStyle(21);
+  g_S1.SetMarkerSize(0.8);
+  g_S2.SetMarkerStyle(21);
+  g_S2.SetMarkerSize(0.8);
 
-  g_conteggiS1.SetMarkerStyle(20);
-  g_conteggiS1.SetMarkerSize(0.5);
-  g_conteggiS2.SetMarkerStyle(20);
-  g_conteggiS2.SetMarkerSize(0.5);
+  g_conteggiS1.SetMarkerStyle(21);
+  g_conteggiS1.SetMarkerSize(0.8);
+  g_conteggiS2.SetMarkerStyle(21);
+  g_conteggiS2.SetMarkerSize(0.8);
 
   TCanvas c1;
   c1.cd(1);
