@@ -23,7 +23,7 @@ c++ -o simulazione controlli.cc muon_class.cc simulazione.cpp `root-config --gli
 #include "muon_class.h"
 
 
-#define L 9.5 //distanza tra i 2 rivelatori in cm
+#define L 97.15 //distanza tra i 2 rivelatori in cm
 #define N 1e8 //tentativi
 #define larghezza 80.0 //in cm
 #define profondita 30.0 //in cm
@@ -36,8 +36,8 @@ int main (int argc, char ** argv){
     srand(time(NULL)); 
     double path_lenght;
 
-    TH1F h_path("9.5 cm", " ", sqrt(sqrt(N)), L - 1, 84);
-    TH2F h2_positions("9.5 cm", " ", 160, -40, 40, 60, -15, 15); // nbinx minx maxx nbiny miny maxy
+    TH1F h_path("97.15 cm", " ", sqrt(sqrt(N)), L - 1, 130);
+    TH2F h2_positions("97.15 cm", " ", 160, -40, 40, 60, -15, 15); // nbinx minx maxx nbiny miny maxy
 
     int j=0;
     int conteggi = 0;
