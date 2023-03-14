@@ -23,7 +23,7 @@ using namespace std;
 int main(int argc, char* argv[]){
 
 //distribuzione dei tempi di volo per ogni distanza L    
-    TH1F distribuzione_tempi_tagliati_eccesso ("171.5 cm", "  ", sqrt(NEV), 1., 500.); // nome, n bin, min, max
+    TH1F distribuzione_tempi_tagliati_eccesso ("9.5 cm", "  ", sqrt(NEV), 1., 500.); // nome, n bin, min, max
     
     TApplication theApp("theApp", &argc, argv);
 
@@ -79,15 +79,26 @@ int main(int argc, char* argv[]){
 
     TCanvas c1 ("c1", "", 800, 800);
 
+    c1.SetLeftMargin(.17);
+    c1.SetBottomMargin(.17);
+    
+    distribuzione_tempi_tagliati_eccesso.GetXaxis()->SetTitle("TDC [canali]");
+    distribuzione_tempi_tagliati_eccesso.GetYaxis()->SetTitle("conteggi");
+    distribuzione_tempi_tagliati_eccesso.GetXaxis()->SetTitleSize(0.055);
+    distribuzione_tempi_tagliati_eccesso.GetYaxis()->SetTitleSize(0.055);
+    distribuzione_tempi_tagliati_eccesso.GetXaxis()->SetLabelSize(0.035);
+    distribuzione_tempi_tagliati_eccesso.GetYaxis()->SetLabelSize(0.035);
+
+
     distribuzione_tempi_tagliati_eccesso.SetFillColor (kOrange + 2) ;
     distribuzione_tempi_tagliati_eccesso.Draw ();
     string fileGrafici = "Grafici/distribuzione_tempi_tagliati_eccesso";
     string estensionePDF = ".pdf";
 
-    c1.Print((fileGrafici+lunghezza+estensionePDF).c_str(), "pdf");
+ //   c1.Print((fileGrafici+lunghezza+estensionePDF).c_str(), "pdf");
 
 //distribuzione dei tempi di volo per ogni distanza L    
-    TH1F distribuzione_tempi_tagliati_giusti ("171.5 cm", "  ", sqrt(NEV), 1., 500.); // nome, n bin, min, max
+    TH1F distribuzione_tempi_tagliati_giusti ("9.5 cm", "  ", sqrt(NEV), 1., 500.); // nome, n bin, min, max
 
     ifstream dati_tagliati;
     dati_tagliati.open((fileDati+lunghezza+estensione).c_str(), ios::in);
@@ -130,6 +141,18 @@ int main(int argc, char* argv[]){
     dati_tagliati.close();
 
     TCanvas c2 ("c2", "", 800, 800);
+
+    c2.SetLeftMargin(.17);
+    c2.SetBottomMargin(.17);
+    
+    distribuzione_tempi_tagliati_giusti.GetXaxis()->SetTitle("TDC [canali]");
+    distribuzione_tempi_tagliati_giusti.GetYaxis()->SetTitle("conteggi");
+    distribuzione_tempi_tagliati_giusti.GetXaxis()->SetTitleSize(0.055);
+    distribuzione_tempi_tagliati_giusti.GetYaxis()->SetTitleSize(0.055);
+    distribuzione_tempi_tagliati_giusti.GetXaxis()->SetLabelSize(0.035);
+    distribuzione_tempi_tagliati_giusti.GetYaxis()->SetLabelSize(0.035);
+
+
 
     distribuzione_tempi_tagliati_giusti.SetFillColor (kOrange + 2) ;
     distribuzione_tempi_tagliati_giusti.Draw ();
