@@ -165,7 +165,7 @@ int main(int argc, char **argv) {
 
   c4.SetWindowSize (1150, 900);
   g_conteggiS2.GetHistogram()->GetXaxis()->SetRangeUser(800., 1500.);
-  g_conteggiS2.GetHistogram()->GetYaxis()->SetRangeUser(0., 350000.);
+  g_conteggiS2.GetHistogram()->GetYaxis()->SetRangeUser(0., 450000.);
   g_conteggiS2.GetHistogram()->GetXaxis()->SetTitleSize(0.065);
   g_conteggiS2.GetHistogram()->GetYaxis()->SetTitleSize(0.045);
   g_conteggiS2.GetHistogram()->GetXaxis()->SetLabelOffset(0.005);
