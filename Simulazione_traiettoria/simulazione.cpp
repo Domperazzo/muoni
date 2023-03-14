@@ -23,7 +23,7 @@ c++ -o simulazione controlli.cc muon_class.cc simulazione.cpp `root-config --gli
 #include "muon_class.h"
 
 
-#define L 171.5 //distanza tra i 2 rivelatori in cm
+#define L 9.5 //distanza tra i 2 rivelatori in cm
 #define N 1e8 //tentativi
 #define larghezza 80.0 //in cm
 #define profondita 30.0 //in cm
@@ -36,8 +36,8 @@ int main (int argc, char ** argv){
     srand(time(NULL)); 
     double path_lenght;
 
-    TH1F h_path("171.5 cm", " ", sqrt(sqrt(N)), L - 1, 89);
-    TH2F h2_positions("171.5 cm", " ", 160, -40, 40, 60, -15, 15); // nbinx minx maxx nbiny miny maxy
+    TH1F h_path("9.5 cm", " ", sqrt(sqrt(N)), L - 1, 84);
+    TH2F h2_positions("9.5 cm", " ", 160, -40, 40, 60, -15, 15); // nbinx minx maxx nbiny miny maxy
 
     int j=0;
     int conteggi = 0;
@@ -91,6 +91,8 @@ int main (int argc, char ** argv){
     h_path.GetYaxis()->SetTitle(" conteggi ");
     h_path.GetXaxis()->SetTitleSize(0.07);
     h_path.GetYaxis()->SetTitleSize(0.07);
+    h_path.GetXaxis()->SetLabelSize(0.05);
+    h_path.GetYaxis()->SetLabelSize(0.05);
     h_path.SetFillColor (kOrange + 1) ;
     h_path.Draw ();
     std::string fileDistanze = "Distanze_simulate_";
@@ -105,6 +107,9 @@ int main (int argc, char ** argv){
     c2.SetBottomMargin(.15);
     c2.SetRightMargin(.15);
     gStyle->SetPalette(57);
+    h2_positions.GetXaxis()->SetLabelSize(0.05);
+    h2_positions.GetYaxis()->SetLabelSize(0.05);
+
     h2_positions.Draw("COLZ1");
     std::string fileDistribuzione = "Distribuzione2D_";
     c2.Print((fileDistribuzione+lunghezza+estensione).c_str(), "pdf");
