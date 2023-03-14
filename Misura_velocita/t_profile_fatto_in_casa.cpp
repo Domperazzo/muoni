@@ -170,12 +170,15 @@ int main (int argc, char ** argv){
   funz.SetMarkerColor (4) ;
   funz2.SetMarkerStyle (105) ;
   funz2.SetMarkerColor (4) ;
+  
   funz.SetTitle(" ");
 
   funz.GetXaxis()->SetTitle("ADC1 [canali]");
-  funz.GetXaxis()->SetTitleSize(0.05);
+  funz.GetXaxis()->SetTitleSize(0.055);
+  funz.GetXaxis()->SetLabelSize(0.045);
   funz.GetYaxis()->SetTitle("TDC [ns]");
-  funz.GetYaxis()->SetTitleSize(0.05);
+  funz.GetYaxis()->SetTitleSize(0.055);
+  funz.GetYaxis()->SetLabelSize(0.045);
  
 
   funz2.SetTitle(" ");
