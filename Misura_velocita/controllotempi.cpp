@@ -191,23 +191,26 @@ int main (int argc, char ** argv){
 
   funz.SetMarkerStyle(105);
   funz.SetMarkerColor(4);
-  funz.GetXaxis()->SetTitleSize(0.05);
-  funz.GetYaxis()->SetTitleSize(0.05);
+  funz.GetXaxis()->SetTitleSize(0.055);
+  funz.GetXaxis()->SetLabelSize(0.045);
+  funz.GetYaxis()->SetTitleSize(0.055);
+  funz.GetYaxis()->SetLabelSize(0.045);
+
+  funz.SetTitle("  ");
+  funz.GetXaxis()->SetTitle("ADC1 [canali]");
+  funz.GetYaxis()->SetTitle("TDC [ns]");
 
   funz2.SetMarkerStyle(105);
   funz2.SetMarkerColor(4);
-  funz2.GetXaxis()->SetTitleSize(0.05);
-  funz2.GetYaxis()->SetTitleSize(0.05);
+  funz2.GetXaxis()->SetTitleSize(0.055);
+  funz2.GetXaxis()->SetLabelSize(0.045);
+  funz2.GetYaxis()->SetTitleSize(0.055);
+  funz2.GetYaxis()->SetLabelSize(0.045);
 
-  funz.SetTitle("  ");
-
-  funz.GetXaxis()->SetTitle("ADC1");
-  funz.GetYaxis()->SetTitle("TDC");
 
   funz2.SetTitle("  ");
-
-  funz2.GetXaxis()->SetTitle("ADC2");
-  funz2.GetYaxis()->SetTitle("TDC");
+  funz2.GetXaxis()->SetTitle("ADC2 [canali]");
+  funz2.GetYaxis()->SetTitle("TDC [ns]");
 
 //fit energia 1
   TF1 f_fit ("f_fit", logo, minADC1-bin1, maxADC1+bin1, 2) ;

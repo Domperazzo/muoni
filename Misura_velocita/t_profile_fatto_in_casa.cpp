@@ -181,9 +181,13 @@ int main (int argc, char ** argv){
   funz2.SetTitle(" ");
 
   funz2.GetXaxis()->SetTitle("ADC2 [canali]");
-  funz2.GetXaxis()->SetTitleSize(0.05);
+  funz2.GetXaxis()->SetTitleSize(0.055);
+  funz2.GetXaxis()->SetLabelSize(0.045);
+
   funz2.GetYaxis()->SetTitle("TDC [ns]");
-  funz2.GetYaxis()->SetTitleSize(0.05);
+  funz2.GetYaxis()->SetTitleSize(0.055);
+  funz2.GetYaxis()->SetLabelSize(0.045);
+
  
 
 
@@ -252,8 +256,8 @@ int main (int argc, char ** argv){
          2 --> 18
   */
   f_fit2.SetParameter (0, 31); 
-  f_fit2.SetParameter (1, -1.3);
-  f_fit2.SetParameter (2, 31); 
+  f_fit2.SetParameter (1, -0.04);
+  f_fit2.SetParameter (2, 18); 
   TFitResultPtr fit_result2 = funz2.Fit (&f_fit2, "SQ") ;
 
   cout << endl ;
