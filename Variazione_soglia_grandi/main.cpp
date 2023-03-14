@@ -46,61 +46,88 @@ int main(int argc, char **argv) {
 
 
 
-    TGraphErrors g_S1, g_S2, g_conteggiS1, g_conteggiS2;
-    for (int i = 0; i < v_sogliaS1.size(); i++) {
-      g_S1.SetPoint(i, v_sogliaS1.at(i), v_conteggiS1.at(i)/2);
-      g_S1.SetPointError(i, 0., sqrt(v_conteggiS1.at(i)/2));
-      g_S2.SetPoint(i, v_sogliaS2.at(i), v_conteggiS2.at(i)/2);
-      g_S2.SetPointError(i, 0., sqrt(v_conteggiS2.at(i)/2));
+  TGraphErrors g_S1, g_S2;
+
+  for (int i = 0; i < v_sogliaS1.size(); i++) {
+    g_S1.SetPoint(i, v_sogliaS1.at(i), v_conteggiS1.at(i)/2);
+    g_S1.SetPointError(i, 0.001, sqrt(v_conteggiS1.at(i)/2));
+    g_S2.SetPoint(i, v_sogliaS2.at(i), v_conteggiS2.at(i)/2);
+    g_S2.SetPointError(i, 0.001, sqrt(v_conteggiS2.at(i)/2));
+  }
+
+
+  g_S1.SetMarkerStyle(20);
+  g_S1.SetMarkerSize(0.5);
+  g_S2.SetMarkerStyle(20);
+  g_S2.SetMarkerSize(0.5);
+
+  double rangeX_1, rangeX_2;
+  int k = 0;
+  rangeX_1 = 1.350;
+  rangeX_2 = 1.450;
+
+  TGraph g_fill1, g_fill2;
+  for(int j = 70.; j<rangeX_1*100.; j++){
+    for (int i = 20000; i < 110000; i+=2000) {
+      g_fill1.SetPoint(k, j/100., i);
+      k++;
     }
+  }
 
-
-    g_S1.SetMarkerStyle(20);
-    g_S1.SetMarkerSize(0.5);
-    g_S2.SetMarkerStyle(20);
-    g_S2.SetMarkerSize(0.5);
-
-    double rangeX_min, rangeX_max;
-
-    rangeX_min = 1.348;
-    rangeX_max = 1.450;
-
-    TGraph g_fill1, g_fill2;
-    for (int i = 0; i < 505; i++){
-      g_fill1.SetPoint(i, rangeX_min, i);
-      g_fill2.SetPoint(i, rangeX_max, i);
+  k = 0;
+  for(int j = rangeX_2*100.; j<=200.; j++){
+    for (int i = 20000; i < 110000; i+=2000) {
+      g_fill2.SetPoint(k, j/100., i);
+      k++;
     }
+  }
+  g_fill1.SetFillStyle(3004);
+  g_fill1.SetMarkerStyle(20);
+  g_fill1.SetMarkerColor(33);
+  g_fill1.SetMarkerSize(0.5);
 
-    g_fill1.SetLineColor(4);
-    g_fill1.SetLineWidth(10000);
-    g_fill1.SetFillStyle(3004);
-    g_fill1.SetFillColor(40);
-    g_fill1.SetMarkerColor(0);
+  g_fill2.SetFillStyle(3004);
+  g_fill2.SetMarkerStyle(20);
+  g_fill2.SetMarkerColor(33);
+  g_fill2.SetMarkerSize(0.5);
 
-    g_fill2.SetLineColor(4);
-    g_fill2.SetLineWidth(-10800);
-    g_fill2.SetFillStyle(3004);
-    g_fill2.SetFillColor(40);
-    g_fill2.SetMarkerColor(0);
 
-    TMultiGraph multi;
-    multi.Add(&g_fill1);
-    multi.Add(&g_fill2);
-    multi.Add(&g_S1);
+  TMultiGraph multi;
+  multi.Add(&g_fill1);
+  multi.Add(&g_fill2);
+  multi.Add(&g_S1);
 
-    TCanvas c1;
-    c1.SetGridx();
-    c1.SetGridy();
-    c1.SetLeftMargin(.15);
+  TCanvas c1;
+  c1.SetGridx();
+  c1.SetGridy();
+  c1.SetLeftMargin(.15);
 
-    //c1.SetWindowSize (1050, 900);
 
-    multi.SetTitle("Conteggi degli eventi rilevati da S1 al variare della tensione di soglia; V_{soglia} [V]; #frac{Conteggi}{Minuto}");
-    //g_S1.GetHistogram()->GetYaxis()->SetRangeUser(0., 505.);
-    //g_S1.GetHistogram()->GetXaxis()->SetRangeUser(0., 1.12);
-    multi.Draw("AP");
+  multi.SetTitle("  ;V_{soglia} [V]; #frac{Conteggi}{Minuto}");
+  multi.GetHistogram()->GetYaxis()->SetRangeUser(15000., 115000.);
+  multi.GetHistogram()->GetXaxis()->SetRangeUser(10., 2.2);
+  multi.GetHistogram()->GetXaxis()->SetTitleSize(0.045);
+  multi.GetHistogram()->GetYaxis()->SetTitleSize(0.045);
+  multi.Draw("AP");
 
-    theApp.Run();
+  TMultiGraph multi2;
+  multi2.Add(&g_fill1);
+  multi2.Add(&g_fill2);
+  multi2.Add(&g_S2);
 
+  TCanvas c2;
+  c2.SetGridx();
+  c2.SetGridy();
+  c2.SetLeftMargin(.15);
+
+
+  multi2.SetTitle("  ;V_{soglia} [V]; #frac{Conteggi}{Minuto}");
+  multi2.GetHistogram()->GetYaxis()->SetRangeUser(15000., 115000.);
+  multi2.GetHistogram()->GetXaxis()->SetRangeUser(10., 2.2);
+  multi2.GetHistogram()->GetXaxis()->SetTitleSize(0.045);
+  multi2.GetHistogram()->GetYaxis()->SetTitleSize(0.045);
+  multi2.Draw("AP");
+
+  theApp.Run();
   return 0;
 }

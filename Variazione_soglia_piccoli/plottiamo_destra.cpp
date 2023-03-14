@@ -73,29 +73,37 @@ int main(int argc, char **argv) {
   g1.GetHistogram()-> GetYaxis()->SetTitle("Conteggi/Minuto");
 
 
-  double rangeX_min, rangeX_max;
+  double rangeX_1, rangeX_2;
+  int k = 0;
+  rangeX_1 = .410;
+  rangeX_2 = .509;
 
-  rangeX_min = .410;
-  rangeX_max = .509;
 
-
-  TGraph g_fill1, g_fill2;
-  for (int i = 0; i < 505; i++) {
-    g_fill1.SetPoint(i, rangeX_min, i);
-    g_fill2.SetPoint(i, rangeX_max, i);
+ TGraph g_fill1, g_fill2;
+  for(int j = 60.; j<rangeX_1*200.; j++){
+    for (int i = 0; i < 500; i+=5) {
+      g_fill1.SetPoint(k, j/200., i);
+      k++;
+    }
   }
 
-  g_fill1.SetLineColor(4);
-  g_fill1.SetLineWidth(8000);
+  k = 0;
+  for(int j = rangeX_2*200.; j<=240.; j++){
+    for (int i = 0; i < 500; i+=5) {
+      g_fill2.SetPoint(k, j/200., i);
+      k++;
+    }
+  }
   g_fill1.SetFillStyle(3004);
-  g_fill1.SetFillColor(40);
-  g_fill1.SetMarkerColor(0);
+  g_fill1.SetMarkerStyle(20);
+  g_fill1.SetMarkerColor(33);
+  g_fill1.SetMarkerSize(0.75);
 
-  g_fill2.SetLineColor(4);
-  g_fill2.SetLineWidth(-10800);
   g_fill2.SetFillStyle(3004);
-  g_fill2.SetFillColor(40);
-  g_fill2.SetMarkerColor(0);
+  g_fill2.SetMarkerStyle(20);
+  g_fill2.SetMarkerColor(33);
+  g_fill2.SetMarkerSize(0.75);
+
 
   TMultiGraph multi;
   multi.Add(&g_fill1);
@@ -108,12 +116,12 @@ int main(int argc, char **argv) {
   c1.SetLeftMargin(.15);
   c1.SetWindowSize (1050, 900);
 
-  multi.SetTitle("Conteggi degli eventi al variare della tensione di soglia; V_{soglia} [V]; #frac{Conteggi}{Minuto} #left[#frac{1}{Minuto}#right]");
+  multi.SetTitle("; V_{soglia} [V]; #frac{Conteggi}{Minuto} #left[#frac{1}{Minuto}#right]");
   multi.GetHistogram()->GetYaxis()->SetRangeUser(0., 505.);
   multi.GetHistogram()->GetXaxis()->SetRangeUser(0., 1.12);
   multi.GetHistogram()->GetXaxis()->SetTitleSize(0.045);
   multi.GetHistogram()->GetYaxis()->SetTitleSize(0.045);
-  multi.Draw("ALP");
+  multi.Draw("AP");
 
 
   //c1.Print("plot_destra.pdf", "pdf");

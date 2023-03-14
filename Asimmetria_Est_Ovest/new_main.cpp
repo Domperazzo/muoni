@@ -258,10 +258,12 @@ int main(int argc, char **argv){
     multi->SetTitle(" ; Angolo zenitale #vartheta [gradi]; Conteggi normalizzati");
     multi->GetHistogram()->GetXaxis()->SetTitleSize(0.05);
     multi->GetHistogram()->GetYaxis()->SetTitleSize(0.05);
+    multi->GetHistogram()->GetXaxis()->SetLabelSize(0.05);
+    multi->GetHistogram()->GetYaxis()->SetLabelSize(0.05);
 
     TCanvas * c1 = new TCanvas;
-    c1->SetLeftMargin(.15);
-    c1->SetBottomMargin(.15);
+    c1->SetLeftMargin(.2);
+    c1->SetBottomMargin(.2);
     multi->Draw("AP");
     c1->BuildLegend();
     
