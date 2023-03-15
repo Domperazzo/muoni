@@ -236,13 +236,13 @@ int main(int argc, char **argv){
     punti_O->SetMarkerColor(4);
     punti_O->SetTitle("Ovest");
 
-    TF1 *modelloOvest = new TF1("modelloOvest", "[0]*cos([1]*x)^2", -90., 0.); //[1] ha le dimensioni di radianti/grado
+    TF1 *modelloOvest = new TF1("modelloOvest", "[0]*cos([1]*(3.1415/180)*x)^2", -90., 0.); //[1] ha le dimensioni di radianti/grado
     modelloOvest->SetParName(0, "Ovest0");
     modelloOvest->SetParName(1, "Ovest1");
     modelloOvest->SetParameter(0, 1.);
     modelloOvest->SetLineColor(kGreen+3);
    // modelloOvest->FixParameter(1, 3.14/180);
-    TF1 * modelloEst = new TF1 ("modelloEst", "[0]*cos([1]*x)^2", 0. , 90.);
+    TF1 * modelloEst = new TF1 ("modelloEst", "[0]*cos([1]*(3.1415/180)*x)^2", 0. , 90.);
     modelloEst->SetParName(0, "Est0");
     modelloEst->SetParName(1, "Est1");
     modelloEst->SetParameter(0, 1.);
