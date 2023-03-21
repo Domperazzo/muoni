@@ -68,7 +68,7 @@ int main (int argc, char ** argv){
 
     std::cout.precision(3);
     std::cout << "il " << conteggi*100./pow(10, 8) << " % " << " di " << N << " muoni sono passati sul secondo rilevatore dopo essere passati dal primo" << "\n" ;
-    std::cout << "il " << conteggi_verticale*100./pow(10, 8) << " % " << " di " << N << " muoni avevano inclinazione compresa in uno steradiante" << "\n" ;
+    std::cout << "il " << conteggi_verticale*100./conteggi << " % " << " di " << N << " muoni avevano inclinazione compresa in uno steradiante" << "\n" ;
 
     std::ofstream outfile_media("distanze.txt", std::ios::app);
     if (outfile_media.is_open())
